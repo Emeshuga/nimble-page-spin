@@ -9,6 +9,9 @@ import {
   CheckCircle2,
   Sparkles,
   ArrowRight,
+  MessageCircle,
+  Plus,
+  Minus,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
