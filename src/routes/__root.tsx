@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { META_PIXEL_ID, pixelHeadScript, trackPixel } from "../lib/meta-pixel";
 
 function NotFoundComponent() {
   return (
@@ -78,10 +79,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "VetBridge USA — Trabaja como Veterinario en Estados Unidos | Visa TN y Licencia" },
-      { name: "description", content: "Programa para veterinarios mexicanos: preparación NAVLE, licencia estatal, visa TN y colocación en clínicas de EE.UU. Egresados UNAM 2011–2025: proceso acelerado. Evaluación gratuita." },
+      {
+        name: "description",
+        content:
+          "Programa para veterinarios mexicanos: preparación NAVLE, licencia estatal, visa TN y colocación en clínicas de EE.UU. Egresados UNAM 2011–2025: proceso acelerado. Evaluación gratuita.",
+      },
       { name: "author", content: "VetBridge USA" },
-      { property: "og:title", content: "VetBridge USA — Trabaja como Veterinario en Estados Unidos | Visa TN y Licencia" },
-      { property: "og:description", content: "Programa para veterinarios mexicanos: preparación NAVLE, licencia estatal, visa TN y colocación en clínicas de EE.UU. Egresados UNAM 2011–2025: proceso acelerado. Evaluación gratuita." },
+      {
+        property: "og:title",
+        content: "VetBridge USA — Trabaja como Veterinario en Estados Unidos | Visa TN y Licencia",
+      },
+      {
+        property: "og:description",
+        content:
+          "Programa para veterinarios mexicanos: preparación NAVLE, licencia estatal, visa TN y colocación en clínicas de EE.UU. Egresados UNAM 2011–2025: proceso acelerado. Evaluación gratuita.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -101,9 +113,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <HeadContent />
+        {META_PIXEL_ID && (
+          <script dangerouslySetInnerHTML={{ __html: pixelHeadScript(META_PIXEL_ID) }} />
+        )}
       </head>
       <body>
         {children}
@@ -115,6 +130,20 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  // The pixel's base snippet fires PageView on full page loads; this covers
+  // client-side navigations (e.g. form -> /gracias) without double-counting the first load.
+  useEffect(() => {
+    let firstResolve = true;
+    return router.subscribe("onResolved", () => {
+      if (firstResolve) {
+        firstResolve = false;
+        return;
+      }
+      trackPixel("PageView");
+    });
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>
