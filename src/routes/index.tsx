@@ -328,6 +328,7 @@ function FormSection() {
       >
         <Field label="Nombre Completo">
           <input
+            name="nombre_completo"
             required
             minLength={2}
             maxLength={120}
@@ -341,6 +342,7 @@ function FormSection() {
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Correo Electrónico">
             <input
+              name="correo_electronico"
               required
               type="email"
               maxLength={254}
@@ -351,6 +353,7 @@ function FormSection() {
           </Field>
           <Field label="Teléfono con WhatsApp">
             <input
+              name="telefono"
               required
               type="tel"
               minLength={7}
@@ -366,6 +369,7 @@ function FormSection() {
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Universidad de Egreso">
             <select
+              name="universidad"
               required
               value={form.universidad}
               onChange={(e) => update("universidad", e.target.value as FormState["universidad"])}
@@ -378,6 +382,7 @@ function FormSection() {
           </Field>
           <Field label="Año de Graduación">
             <select
+              name="ano_graduacion"
               required
               value={form.ano_graduacion}
               onChange={(e) => update("ano_graduacion", e.target.value)}
@@ -395,15 +400,16 @@ function FormSection() {
 
         <Field label="Nivel de Inglés">
           <select
+            name="nivel_ingles"
             required
             value={form.nivel_ingles}
             onChange={(e) => update("nivel_ingles", e.target.value as FormState["nivel_ingles"])}
             className={inputCls}
           >
             <option value="">Selecciona…</option>
-            <option>Básico</option>
-            <option>Intermedio</option>
-            <option>Avanzado</option>
+            <option value="Básico">Básico</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
             <option value="Fluido/Nativo">Fluido/Nativo</option>
           </select>
         </Field>
@@ -435,15 +441,16 @@ function FormSection() {
 
         <Field label="¿Has presentado o estudiado para el NAVLE?">
           <select
+            name="navle_status"
             required
             value={form.navle_status}
             onChange={(e) => update("navle_status", e.target.value as FormState["navle_status"])}
             className={inputCls}
           >
             <option value="">Selecciona…</option>
-            <option>Aprobado</option>
-            <option>Estudiando</option>
-            <option>No</option>
+            <option value="Aprobado">Aprobado</option>
+            <option value="Estudiando">Estudiando</option>
+            <option value="No">No</option>
           </select>
         </Field>
 
