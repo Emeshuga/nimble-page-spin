@@ -48,10 +48,14 @@ function Index() {
       <Header />
       <Hero />
       <ValueProps />
+      <SalaryComparison />
       <PoolAlert />
       <Process />
+      <FAQ />
       <FormSection />
+      <About />
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 }
