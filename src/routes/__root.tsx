@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "VetBridge USA — Trabaja como Médico Veterinario en Estados Unidos" },
+      { name: "description", content: "Tramitamos tu licencia y visa TN para ejercer como veterinario en EE.UU. Fast track para egresados FMVZ-UNAM 2011–2025. Salarios de $100k–$140k USD." },
+      { name: "author", content: "VetBridge USA" },
+      { property: "og:title", content: "Trabaja como Veterinario en EE.UU. — VetBridge USA" },
+      { property: "og:description", content: "Multiplica tu salario ejerciendo como MVZ en Estados Unidos. Proceso acelerado para egresados UNAM." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
