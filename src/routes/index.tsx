@@ -494,3 +494,144 @@ function Footer() {
     </footer>
   );
 }
+
+function SalaryComparison() {
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-20">
+      <div className="mx-auto max-w-2xl text-center">
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          Misma profesión, ingresos muy distintos
+        </h2>
+        <p className="mt-4 text-muted-foreground">
+          Compara lo que gana un MVZ en México vs. en Estados Unidos.
+        </p>
+      </div>
+      <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            México
+          </div>
+          <div className="mt-3 text-3xl font-bold text-foreground">
+            $250,000 – $450,000 MXN
+          </div>
+          <div className="mt-1 text-sm text-muted-foreground">al año</div>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Promedio nacional MVZ.
+          </p>
+        </div>
+        <div className="relative rounded-2xl border-2 border-primary bg-card p-8 shadow-md">
+          <div className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+            <Sparkles className="h-3.5 w-3.5" /> Con VetBridge
+          </div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Estados Unidos
+          </div>
+          <div className="mt-3 text-3xl font-bold text-foreground">
+            $100,000 – $140,000 USD
+          </div>
+          <div className="mt-1 text-sm text-muted-foreground">al año</div>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Veterinario asociado.
+          </p>
+        </div>
+      </div>
+      <p className="mt-8 text-center text-lg font-semibold text-foreground">
+        Hasta <span className="text-primary">8 veces más ingresos</span> ejerciendo la misma profesión.
+      </p>
+    </section>
+  );
+}
+
+function FAQ() {
+  const items = [
+    {
+      q: "¿Cuánto cuesta el programa?",
+      a: "La evaluación de tu perfil es 100% gratuita. La mayor parte de los costos del proceso son cubiertos por las clínicas patrocinadoras en EE.UU. Un coordinador te explicará tu caso específico sin ningún compromiso.",
+    },
+    {
+      q: "¿Necesito hablar inglés perfecto?",
+      a: "No perfecto, pero sí funcional. El examen NAVLE y la comunicación con clientes son en inglés. Si tu nivel es intermedio, te orientamos con un plan para alcanzar el nivel necesario.",
+    },
+    {
+      q: "¿Cuánto tarda el proceso?",
+      a: "Egresados de la FMVZ-UNAM (2011–2025): desde 9–15 meses. Egresados de otras universidades: de 2 a 4 años por el proceso de equivalencia (ECFVG/PAVE). En tu evaluación gratuita te damos un cronograma personalizado.",
+    },
+    {
+      q: "¿Qué es la visa TN?",
+      a: "Es una visa de trabajo del tratado T-MEC exclusiva para profesionistas mexicanos y canadienses. La profesión de veterinario está incluida. No tiene lotería ni cupo anual como la H-1B, se renueva indefinidamente en periodos de 3 años, y se tramita directamente en el consulado de EE.UU. en México.",
+    },
+    {
+      q: "¿Puedo llevar a mi familia?",
+      a: "Sí. Tu cónyuge e hijos pueden acompañarte con la visa TD, derivada de tu visa TN.",
+    },
+  ];
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="border-t border-border bg-secondary/40">
+      <div className="mx-auto max-w-3xl px-4 py-20">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Preguntas frecuentes</h2>
+          <p className="mt-3 text-muted-foreground">Resolvemos las dudas más comunes.</p>
+        </div>
+        <div className="mt-10 space-y-3">
+          {items.map((it, i) => {
+            const isOpen = open === i;
+            return (
+              <div key={i} className="rounded-xl border border-border bg-card">
+                <button
+                  type="button"
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                  aria-expanded={isOpen}
+                >
+                  <span className="text-base font-semibold text-foreground">{it.q}</span>
+                  {isOpen ? (
+                    <Minus className="h-5 w-5 shrink-0 text-primary" />
+                  ) : (
+                    <Plus className="h-5 w-5 shrink-0 text-primary" />
+                  )}
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">
+                    {it.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function About() {
+  return (
+    <section className="border-t border-border">
+      <div className="mx-auto max-w-4xl px-4 py-20 text-center">
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Quiénes somos</h2>
+        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+          VetBridge USA conecta veterinarios mexicanos con clínicas en Estados Unidos que
+          necesitan talento. Trabajamos con abogados migratorios especializados en visas TN
+          y con mentores veterinarios que ya aprobaron el NAVLE. No somos una bolsa de
+          trabajo: te acompañamos en cada paso — examen, licencia estatal, visa y colocación.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function WhatsAppFloat() {
+  return (
+    <a
+      href="https://wa.me/13232503726?text=Hola%2C%20soy%20veterinario%2Fa%20y%20quiero%20información%20sobre%20el%20programa%20VetBridge%20USA"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Contactar por WhatsApp"
+      className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition hover:scale-105"
+      style={{ backgroundColor: "#25D366" }}
+    >
+      <MessageCircle className="h-7 w-7 text-white" fill="white" />
+    </a>
+  );
+}
