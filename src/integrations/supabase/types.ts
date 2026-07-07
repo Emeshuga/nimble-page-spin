@@ -14,7 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      candidates: {
+        Row: {
+          ano_graduacion: number
+          correo_electronico: string
+          created_at: string
+          id: string
+          licencia_mexico: boolean
+          navle_status: string
+          nivel_ingles: string
+          nombre_completo: string
+          telefono: string
+          universidad: string
+          vip_fast_track: boolean
+        }
+        Insert: {
+          ano_graduacion: number
+          correo_electronico: string
+          created_at?: string
+          id?: string
+          licencia_mexico: boolean
+          navle_status: string
+          nivel_ingles: string
+          nombre_completo: string
+          telefono: string
+          universidad: string
+          vip_fast_track?: boolean
+        }
+        Update: {
+          ano_graduacion?: number
+          correo_electronico?: string
+          created_at?: string
+          id?: string
+          licencia_mexico?: boolean
+          navle_status?: string
+          nivel_ingles?: string
+          nombre_completo?: string
+          telefono?: string
+          universidad?: string
+          vip_fast_track?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
