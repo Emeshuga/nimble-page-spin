@@ -226,7 +226,7 @@ function Process() {
     { n: "01", t: "Evaluación de perfil", d: "Analizamos tu universidad, año y nivel de inglés." },
     { n: "02", t: "Preparación NAVLE", d: "Curso intensivo con mentores que ya aprobaron." },
     { n: "03", t: "Licencia estatal", d: "Gestionamos toda la documentación con la junta veterinaria." },
-    { n: "04", t: "Visa TN + Clínica", d: "Colocación garantizada con clínica patrocinadora." },
+    { n: "04", t: "Visa TN + Clínica", d: "Colocación con clínicas patrocinadoras en EE.UU." },
   ];
   return (
     <section className="border-t border-border bg-secondary/40">
