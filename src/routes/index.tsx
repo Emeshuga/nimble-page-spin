@@ -96,7 +96,7 @@ function Hero() {
         <div className="max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5 text-accent" />
-            Programa oficial para MVZs mexicanos
+            Programa especializado para MVZs mexicanos
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
             Trabaja como Médico Veterinario en{" "}
