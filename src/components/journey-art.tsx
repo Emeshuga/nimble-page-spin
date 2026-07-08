@@ -127,25 +127,22 @@ export function HeroFlight({ className }: { className?: string }) {
         EE.UU.
       </text>
 
-      {/* ——— flight trajectory across the whole hero ——— */}
+      {/* ——— flight trajectory: climbs from Mexico, cruises high above the skyline, exits the page ——— */}
       <circle cx="300" cy="500" r="4" fill={ORANGE} />
       <path
-        d="M300 500 C 520 105, 950 55, 1250 480"
+        d="M300 500 C 480 240, 760 130, 1480 128"
         stroke={ORANGE}
         strokeWidth="3"
         strokeDasharray="1 15"
         opacity="0.8"
       />
-      {/* landing ring arriving over the city */}
-      <circle cx="1250" cy="480" r="8" stroke={ORANGE} strokeWidth="2.5" />
-      <circle cx="1250" cy="480" r="3" fill={ORANGE} />
 
       {/* animated plane (CSS motion path in styles.css) */}
       <g className="vb-plane">
         <PlaneGlyph />
       </g>
-      {/* static fallback near the apex when animation is unavailable */}
-      <g className="vb-plane-static" transform="translate(740 100) rotate(3)">
+      {/* static fallback in level cruise when animation is unavailable */}
+      <g className="vb-plane-static" transform="translate(860 132) rotate(-2)">
         <PlaneGlyph />
       </g>
     </svg>

@@ -152,7 +152,7 @@
   6% {
     opacity: 1;
   }
-  90% {
+  97% {
     opacity: 1;
   }
   100% {
@@ -162,7 +162,7 @@
 }
 
 .vb-plane {
-  offset-path: path("M300 500 C 520 105, 950 55, 1250 480");
+  offset-path: path("M300 500 C 480 240, 760 130, 1480 128");
   offset-rotate: auto;
   animation: vb-fly 12s ease-in-out infinite;
 }
