@@ -1,6 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { SITE } from "@/lib/site";
 import {
   Stethoscope,
   DollarSign,
@@ -528,15 +529,80 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function Footer() {
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Stethoscope className="h-4 w-4 text-primary" />© {new Date().getFullYear()} VetBridge
-          USA. Todos los derechos reservados.
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-2">
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
+                <Stethoscope className="h-5 w-5" />
+              </div>
+              <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
+            </div>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Conectamos veterinarios mexicanos con clínicas en Estados Unidos. Coordinamos examen
+              NAVLE, licencia estatal y visa TN junto con abogados migratorios especializados.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Contacto</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <a href={`mailto:${SITE.email}`} className="hover:text-foreground">
+                  {SITE.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-foreground"
+                >
+                  <MessageCircle className="h-4 w-4" /> WhatsApp
+                </a>
+              </li>
+              <li>
+                <a href="#formulario" className="hover:text-foreground">
+                  Evalúa tu perfil
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Legal</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link to="/privacidad" className="hover:text-foreground">
+                  Aviso de Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link to="/terminos" className="hover:text-foreground">
+                  Términos y Condiciones
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          Hecho con cuidado para MVZs mexicanos
-          <PawPrint className="h-3.5 w-3.5 text-primary/50" />
+
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
+          <div className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} {SITE.name}. Todos los derechos reservados.
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            Hecho con cuidado para MVZs mexicanos
+            <PawPrint className="h-3.5 w-3.5 text-primary/50" />
+          </div>
         </div>
+        <p className="mt-6 text-xs leading-relaxed text-muted-foreground/80">
+          VetBridge USA es un servicio de coordinación y reclutamiento. No es un despacho jurídico
+          ni ofrece asesoría legal migratoria; los trámites de visa los realizan abogados
+          migratorios independientes. No garantizamos la obtención de una visa, licencia o empleo;
+          los resultados dependen del perfil de cada candidato y de las autoridades
+          correspondientes.
+        </p>
       </div>
     </footer>
   );
