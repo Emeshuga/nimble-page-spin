@@ -13,6 +13,7 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
+import { HeroJourney, MonumentsBand } from "@/components/journey-art";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -51,6 +52,7 @@ function Index() {
       <SalaryComparison />
       <PoolAlert />
       <Process />
+      <LandmarksDivider />
       <FAQ />
       <FormSection />
       <About />
@@ -93,49 +95,63 @@ function Hero() {
         }}
       />
       <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-        <div className="max-w-3xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-accent" />
-            Programa especializado para MVZs mexicanos
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-            Trabaja como Médico Veterinario en <span className="text-primary">Estados Unidos</span>.
-            Gestionamos tu licencia y tu visa con abogados migratorios especializados.
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            Multiplica tu salario ejerciendo tu pasión. Si eres egresado de la{" "}
-            <strong className="text-foreground">FMVZ-UNAM (2011–2025)</strong>, tienes un proceso
-            acelerado para comenzar este mismo año.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#formulario"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
-            >
-              Evalúa tu Perfil Gratis
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#beneficios"
-              className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
-            >
-              Conoce el programa
-            </a>
-          </div>
-          <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> Sin lotería H-1B
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_400px]">
+          <div className="max-w-3xl">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+              <Sparkles className="h-3.5 w-3.5 text-accent" />
+              Programa especializado para MVZs mexicanos
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> Colocación en clínica
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+              Trabaja como Médico Veterinario en{" "}
+              <span className="text-primary">Estados Unidos</span>. Gestionamos tu licencia y tu
+              visa con abogados migratorios especializados.
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
+              Multiplica tu salario ejerciendo tu pasión. Si eres egresado de la{" "}
+              <strong className="text-foreground">FMVZ-UNAM (2011–2025)</strong>, tienes un proceso
+              acelerado para comenzar este mismo año.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#formulario"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+              >
+                Evalúa tu Perfil Gratis
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#beneficios"
+                className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
+              >
+                Conoce el programa
+              </a>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> Prep NAVLE incluido
+            <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> Sin lotería H-1B
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> Colocación en clínica
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> Prep NAVLE incluido
+              </div>
             </div>
           </div>
+          <HeroJourney className="mx-auto hidden w-full max-w-md lg:block" />
         </div>
       </div>
     </section>
+  );
+}
+
+function LandmarksDivider() {
+  return (
+    <div aria-hidden className="bg-secondary/40">
+      <div className="mx-auto max-w-6xl overflow-hidden px-4 pt-10">
+        <MonumentsBand className="w-full opacity-20" />
+      </div>
+    </div>
   );
 }
 
