@@ -12,6 +12,11 @@ import {
   MessageCircle,
   Plus,
   Minus,
+  PawPrint,
+  Dog,
+  Cat,
+  Rabbit,
+  Bird,
 } from "lucide-react";
 import { HeroFlight, MonumentsBand } from "@/components/journey-art";
 
@@ -255,6 +260,13 @@ function Process() {
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
           Tu camino a ejercer en EE.UU.
         </h2>
+        <div aria-hidden className="mt-4 flex items-center gap-4 text-primary/30">
+          <PawPrint className="h-4 w-4 -rotate-12" />
+          <PawPrint className="h-5 w-5 rotate-6" />
+          <PawPrint className="h-4 w-4 -rotate-12" />
+          <PawPrint className="h-5 w-5 rotate-6" />
+          <PawPrint className="h-4 w-4 -rotate-12" />
+        </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
             <div key={s.n} className="rounded-2xl border border-border bg-card p-6">
@@ -336,6 +348,12 @@ function FormSection() {
   return (
     <section id="formulario" className="mx-auto max-w-3xl px-4 py-24">
       <div className="mb-8 text-center">
+        <div aria-hidden className="mb-4 flex items-center justify-center gap-4 text-primary/40">
+          <Dog className="h-6 w-6" />
+          <Cat className="h-5 w-5" />
+          <Rabbit className="h-5 w-5" />
+          <Bird className="h-5 w-5" />
+        </div>
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Evalúa tu Perfil</h2>
         <p className="mt-3 text-muted-foreground">
           Toma menos de 2 minutos. Un coordinador te contactará en 24 horas.
@@ -515,7 +533,10 @@ function Footer() {
           <Stethoscope className="h-4 w-4 text-primary" />© {new Date().getFullYear()} VetBridge
           USA. Todos los derechos reservados.
         </div>
-        <div className="text-xs text-muted-foreground">Hecho con cuidado para MVZs mexicanos.</div>
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          Hecho con cuidado para MVZs mexicanos
+          <PawPrint className="h-3.5 w-3.5 text-primary/50" />
+        </div>
       </div>
     </footer>
   );
@@ -589,6 +610,7 @@ function FAQ() {
     <section className="border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-3xl px-4 py-20">
         <div className="text-center">
+          <Cat aria-hidden className="mx-auto mb-3 h-6 w-6 text-primary/40" />
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Preguntas frecuentes</h2>
           <p className="mt-3 text-muted-foreground">Resolvemos las dudas más comunes.</p>
         </div>

@@ -162,7 +162,7 @@
 }
 
 .vb-plane {
-  offset-path: path("M130 505 C 380 110, 980 60, 1250 480");
+  offset-path: path("M300 500 C 520 105, 950 55, 1250 480");
   offset-rotate: auto;
   animation: vb-fly 12s ease-in-out infinite;
 }
