@@ -142,3 +142,49 @@
     color: var(--color-foreground);
   }
 }
+
+/* ——— VetBridge hero flight animation (see components/journey-art.tsx) ——— */
+@keyframes vb-fly {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.vb-plane {
+  offset-path: path("M130 505 C 380 110, 980 60, 1250 480");
+  offset-rotate: auto;
+  animation: vb-fly 12s ease-in-out infinite;
+}
+
+.vb-plane-static {
+  display: none;
+}
+
+@supports not (offset-path: path("M0 0 L1 1")) {
+  .vb-plane {
+    display: none;
+  }
+  .vb-plane-static {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-plane {
+    display: none;
+  }
+  .vb-plane-static {
+    display: block;
+  }
+}
