@@ -55,6 +55,7 @@ export async function submitLeadToHubSpot(
         { name: "firstname", value: firstName || lead.nombre_completo },
         { name: "lastname", value: lastName },
         { name: "phone", value: lead.telefono },
+        { name: "brand", value: "VetBridge USA" },
         { name: "details", value: buildDetails(lead, utm) },
       ],
       context: {
