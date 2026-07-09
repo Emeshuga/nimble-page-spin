@@ -18,6 +18,10 @@ import {
   Cat,
   Rabbit,
   Bird,
+  Home,
+  Wallet,
+  Building2,
+  HeartHandshake,
 } from "lucide-react";
 import { HeroFlight, MonumentsBand } from "@/components/journey-art";
 
@@ -56,6 +60,7 @@ function Index() {
       <Hero />
       <ValueProps />
       <SalaryComparison />
+      <Lifestyle />
       <PoolAlert />
       <Process />
       <LandmarksDivider />
@@ -167,8 +172,8 @@ function ValueProps() {
   const items = [
     {
       icon: DollarSign,
-      title: "Salarios de Primer Nivel",
-      body: "Ingresos entre $100,000 y $140,000 USD anuales desde tu primer contrato como veterinario clínico en EE.UU.",
+      title: "Ofertas negociadas para ti",
+      body: "Ingresos de $100,000 a $140,000 USD al año. Entrevistamos clínicas y negociamos el mejor salario y prestaciones en tu nombre.",
     },
     {
       icon: Plane,
@@ -177,8 +182,8 @@ function ValueProps() {
     },
     {
       icon: ShieldCheck,
-      title: "Acompañamiento 360°",
-      body: "Preparación para el NAVLE, trámite de licencia estatal, colocación en clínica y soporte migratorio.",
+      title: "Contigo en cada paso",
+      body: "Preparación NAVLE, licencia estatal, visa y colocación — y acompañamiento continuo incluso ya trabajando en la clínica.",
     },
   ];
   return (
@@ -203,6 +208,56 @@ function ValueProps() {
               </div>
               <h3 className="mt-5 text-xl font-semibold">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Lifestyle() {
+  const items = [
+    {
+      icon: Wallet,
+      title: "Ahorra en dólares",
+      body: "Con un salario en dólares, cada mes construyes un patrimonio que en México tomaría años.",
+    },
+    {
+      icon: Home,
+      title: "Cerca de casa",
+      body: "Muchas clínicas están a un vuelo corto de México: visita a tu familia los fines de semana.",
+    },
+    {
+      icon: Building2,
+      title: "Tu propia práctica",
+      body: "Gana experiencia, reputación y capital para algún día abrir tu propia clínica en EE.UU.",
+    },
+    {
+      icon: HeartHandshake,
+      title: "Nunca solo",
+      body: "Te acompañamos antes, durante y después de tu llegada. Tu éxito es nuestro trabajo.",
+    },
+  ];
+  return (
+    <section className="border-y border-border bg-secondary/40">
+      <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            Más que un trabajo: una nueva vida
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Ejercer en Estados Unidos abre puertas que van mucho más allá del salario.
+          </p>
+        </div>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map(({ icon: Icon, title, body }) => (
+            <div key={title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{body}</p>
             </div>
           ))}
         </div>
@@ -247,13 +302,21 @@ function PoolAlert() {
 function Process() {
   const steps = [
     { n: "01", t: "Evaluación de perfil", d: "Analizamos tu universidad, año y nivel de inglés." },
-    { n: "02", t: "Preparación NAVLE", d: "Curso intensivo con mentores que ya aprobaron." },
+    {
+      n: "02",
+      t: "Preparación NAVLE",
+      d: "Preparación inmersiva con tutores que acompañan tu avance, no solo un curso.",
+    },
     {
       n: "03",
       t: "Licencia estatal",
       d: "Gestionamos toda la documentación con la junta veterinaria.",
     },
-    { n: "04", t: "Visa TN + Clínica", d: "Colocación con clínicas patrocinadoras en EE.UU." },
+    {
+      n: "04",
+      t: "Visa TN + Clínica",
+      d: "Entrevistas con clínicas patrocinadoras y apoyo con tu reubicación.",
+    },
   ];
   return (
     <section className="border-t border-border bg-secondary/40">
