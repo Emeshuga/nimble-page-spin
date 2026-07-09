@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SITE } from "@/lib/site";
+import { submitLeadToHubSpot } from "@/lib/hubspot";
 import {
   Stethoscope,
   DollarSign,
@@ -406,6 +407,10 @@ function FormSection() {
       );
       return;
     }
+
+    // Push into HubSpot CRM alongside Supabase. Fire-and-forget: a HubSpot
+    // failure must not block the lead (Supabase already has it) or the redirect.
+    void submitLeadToHubSpot(payload, utm);
     navigate({ to: "/gracias", search: vip ? { vip: 1 } : {} });
   }
 
