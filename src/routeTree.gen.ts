@@ -13,6 +13,7 @@ import { Route as VeterinariosRouteImport } from './routes/veterinarios'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as GraciasRouteImport } from './routes/gracias'
+import { Route as ClinicsRouteImport } from './routes/clinics'
 import { Route as IndexRouteImport } from './routes/index'
 
 const VeterinariosRoute = VeterinariosRouteImport.update({
@@ -35,6 +36,11 @@ const GraciasRoute = GraciasRouteImport.update({
   path: '/gracias',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClinicsRoute = ClinicsRouteImport.update({
+  id: '/clinics',
+  path: '/clinics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clinics': typeof ClinicsRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/clinics': typeof ClinicsRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/clinics': typeof ClinicsRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
@@ -65,12 +74,25 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gracias' | '/privacidad' | '/terminos' | '/veterinarios'
+  fullPaths:
+    | '/'
+    | '/clinics'
+    | '/gracias'
+    | '/privacidad'
+    | '/terminos'
+    | '/veterinarios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gracias' | '/privacidad' | '/terminos' | '/veterinarios'
+  to:
+    | '/'
+    | '/clinics'
+    | '/gracias'
+    | '/privacidad'
+    | '/terminos'
+    | '/veterinarios'
   id:
     | '__root__'
     | '/'
+    | '/clinics'
     | '/gracias'
     | '/privacidad'
     | '/terminos'
@@ -79,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClinicsRoute: typeof ClinicsRoute
   GraciasRoute: typeof GraciasRoute
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
@@ -115,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GraciasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clinics': {
+      id: '/clinics'
+      path: '/clinics'
+      fullPath: '/clinics'
+      preLoaderRoute: typeof ClinicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -127,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClinicsRoute: ClinicsRoute,
   GraciasRoute: GraciasRoute,
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,
