@@ -9,11 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VeterinariosRouteImport } from './routes/veterinarios'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as GraciasRouteImport } from './routes/gracias'
+import { Route as ClinicsRouteImport } from './routes/clinics'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardVetRouteImport } from './routes/dashboard.vet'
+import { Route as DashboardClinicRouteImport } from './routes/dashboard.clinic'
 
+const VeterinariosRoute = VeterinariosRouteImport.update({
+  id: '/veterinarios',
+  path: '/veterinarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
   path: '/terminos',
@@ -29,48 +39,123 @@ const GraciasRoute = GraciasRouteImport.update({
   path: '/gracias',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClinicsRoute = ClinicsRouteImport.update({
+  id: '/clinics',
+  path: '/clinics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardVetRoute = DashboardVetRouteImport.update({
+  id: '/dashboard/vet',
+  path: '/dashboard/vet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardClinicRoute = DashboardClinicRouteImport.update({
+  id: '/dashboard/clinic',
+  path: '/dashboard/clinic',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/clinics': typeof ClinicsRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
+  '/veterinarios': typeof VeterinariosRoute
+  '/dashboard/clinic': typeof DashboardClinicRoute
+  '/dashboard/vet': typeof DashboardVetRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/clinics': typeof ClinicsRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
+  '/veterinarios': typeof VeterinariosRoute
+  '/dashboard/clinic': typeof DashboardClinicRoute
+  '/dashboard/vet': typeof DashboardVetRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/clinics': typeof ClinicsRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
+  '/veterinarios': typeof VeterinariosRoute
+  '/dashboard/clinic': typeof DashboardClinicRoute
+  '/dashboard/vet': typeof DashboardVetRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gracias' | '/privacidad' | '/terminos'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/clinics'
+    | '/gracias'
+    | '/privacidad'
+    | '/terminos'
+    | '/veterinarios'
+    | '/dashboard/clinic'
+    | '/dashboard/vet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gracias' | '/privacidad' | '/terminos'
-  id: '__root__' | '/' | '/gracias' | '/privacidad' | '/terminos'
+  to:
+    | '/'
+    | '/auth'
+    | '/clinics'
+    | '/gracias'
+    | '/privacidad'
+    | '/terminos'
+    | '/veterinarios'
+    | '/dashboard/clinic'
+    | '/dashboard/vet'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/clinics'
+    | '/gracias'
+    | '/privacidad'
+    | '/terminos'
+    | '/veterinarios'
+    | '/dashboard/clinic'
+    | '/dashboard/vet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  ClinicsRoute: typeof ClinicsRoute
   GraciasRoute: typeof GraciasRoute
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
+  VeterinariosRoute: typeof VeterinariosRoute
+  DashboardClinicRoute: typeof DashboardClinicRoute
+  DashboardVetRoute: typeof DashboardVetRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/veterinarios': {
+      id: '/veterinarios'
+      path: '/veterinarios'
+      fullPath: '/veterinarios'
+      preLoaderRoute: typeof VeterinariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terminos': {
       id: '/terminos'
       path: '/terminos'
@@ -92,6 +177,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GraciasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clinics': {
+      id: '/clinics'
+      path: '/clinics'
+      fullPath: '/clinics'
+      preLoaderRoute: typeof ClinicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -99,25 +198,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/vet': {
+      id: '/dashboard/vet'
+      path: '/dashboard/vet'
+      fullPath: '/dashboard/vet'
+      preLoaderRoute: typeof DashboardVetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/clinic': {
+      id: '/dashboard/clinic'
+      path: '/dashboard/clinic'
+      fullPath: '/dashboard/clinic'
+      preLoaderRoute: typeof DashboardClinicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  ClinicsRoute: ClinicsRoute,
   GraciasRoute: GraciasRoute,
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,
+  VeterinariosRoute: VeterinariosRoute,
+  DashboardClinicRoute: DashboardClinicRoute,
+  DashboardVetRoute: DashboardVetRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
