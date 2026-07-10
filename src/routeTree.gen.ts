@@ -13,11 +13,15 @@ import { Route as VeterinariosRouteImport } from './routes/veterinarios'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as GraciasRouteImport } from './routes/gracias'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClinicsRouteImport } from './routes/clinics'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardVetRouteImport } from './routes/dashboard.vet'
 import { Route as DashboardClinicRouteImport } from './routes/dashboard.clinic'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const VeterinariosRoute = VeterinariosRouteImport.update({
   id: '/veterinarios',
@@ -39,14 +43,29 @@ const GraciasRoute = GraciasRouteImport.update({
   path: '/gracias',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClinicsRoute = ClinicsRouteImport.update({
   id: '/clinics',
   path: '/clinics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -64,38 +83,55 @@ const DashboardClinicRoute = DashboardClinicRouteImport.update({
   path: '/dashboard/clinic',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/clinics': typeof ClinicsRoute
+  '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/veterinarios': typeof VeterinariosRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/clinics': typeof ClinicsRoute
+  '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/veterinarios': typeof VeterinariosRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/clinics': typeof ClinicsRoute
+  '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
   '/veterinarios': typeof VeterinariosRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
 }
@@ -103,42 +139,57 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/auth'
+    | '/blog'
     | '/clinics'
+    | '/contact'
     | '/gracias'
     | '/privacidad'
     | '/terminos'
     | '/veterinarios'
+    | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
+    | '/blog'
     | '/clinics'
+    | '/contact'
     | '/gracias'
     | '/privacidad'
     | '/terminos'
     | '/veterinarios'
+    | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/auth'
+    | '/blog'
     | '/clinics'
+    | '/contact'
     | '/gracias'
     | '/privacidad'
     | '/terminos'
     | '/veterinarios'
+    | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRouteWithChildren
   ClinicsRoute: typeof ClinicsRoute
+  ContactRoute: typeof ContactRoute
   GraciasRoute: typeof GraciasRoute
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
@@ -177,6 +228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GraciasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/clinics': {
       id: '/clinics'
       path: '/clinics'
@@ -184,11 +242,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClinicsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -212,13 +284,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardClinicRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRouteWithChildren,
   ClinicsRoute: ClinicsRoute,
+  ContactRoute: ContactRoute,
   GraciasRoute: GraciasRoute,
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,

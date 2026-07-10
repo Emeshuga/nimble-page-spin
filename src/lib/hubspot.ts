@@ -37,6 +37,46 @@ function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string
   return lines.join("\n");
 }
 
+/**
+ * Push a general contact-form message into HubSpot as a contact, marked as an
+ * inbound contact-form inquiry. Fire-and-forget; never throws.
+ */
+export async function submitContactToHubSpot(msg: {
+  name: string;
+  email: string;
+  message: string;
+}): Promise<boolean> {
+  try {
+    const [firstName, ...rest] = msg.name.trim().split(/\s+/);
+    const body = {
+      fields: [
+        { name: "email", value: msg.email },
+        { name: "firstname", value: firstName || msg.name },
+        { name: "lastname", value: rest.join(" ") },
+        { name: "brand", value: "VetBridge USA" },
+        { name: "details", value: `✉️ CONTACT FORM MESSAGE\n\n${msg.message}` },
+      ],
+      context: {
+        pageUri: typeof window !== "undefined" ? window.location.href : "",
+        pageName: "VetBridge USA — Contact",
+      },
+    };
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      console.error("HubSpot contact submission failed:", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("HubSpot contact submission error:", err);
+    return false;
+  }
+}
+
 export type ClinicRequestForHubSpot = {
   clinic_name: string;
   state: string;

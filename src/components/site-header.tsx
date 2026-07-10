@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Stethoscope } from "lucide-react";
+import { SITE } from "@/lib/site";
 
 export function SiteHeader({ primaryCta }: { primaryCta?: { label: string; to: string } }) {
   const cta = primaryCta ?? { label: "Request Candidates", to: "/clinics" };
@@ -52,10 +53,16 @@ export function SiteFooter() {
               <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Bridging licensed international veterinary talent with U.S. clinics that need them.
-              We coordinate licensing, visa (via independent immigration attorneys), and
-              relocation end-to-end.
+              Bridging licensed international veterinary talent with U.S. clinics that need them. We
+              coordinate licensing, visa (via independent immigration attorneys), and relocation
+              end-to-end.
             </p>
+            <a
+              href={`mailto:${SITE.emailGeneral}`}
+              className="mt-4 inline-block text-sm text-muted-foreground hover:text-foreground"
+            >
+              {SITE.emailGeneral}
+            </a>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Company</h3>
@@ -68,6 +75,21 @@ export function SiteFooter() {
               <li>
                 <Link to="/clinics" className="hover:text-foreground">
                   For Clinics
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-foreground">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="hover:text-foreground">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-foreground">
+                  Contact
                 </Link>
               </li>
               <li>
@@ -94,8 +116,8 @@ export function SiteFooter() {
           </div>
         </div>
         <p className="mt-10 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground/80">
-          VetBridge USA is a recruitment and coordination service. It is not a law firm and does
-          not provide legal immigration advice; visa work is performed by independent immigration
+          VetBridge USA is a recruitment and coordination service. It is not a law firm and does not
+          provide legal immigration advice; visa work is performed by independent immigration
           attorneys. The 3-Year Placement Guarantee refers to candidate replacement only and does
           not guarantee visa or licensing outcomes, which depend on individual eligibility and the
           relevant authorities. © {new Date().getFullYear()} VetBridge USA.
