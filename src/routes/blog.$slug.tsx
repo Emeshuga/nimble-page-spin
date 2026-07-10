@@ -19,6 +19,31 @@ export const Route = createFileRoute("/blog/$slug")({
           { property: "og:type", content: "article" },
         ]
       : [{ title: "VetBridge USA Blog" }],
+    scripts: loaderData
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: loaderData.title,
+              description: loaderData.excerpt,
+              datePublished: loaderData.date,
+              dateModified: loaderData.date,
+              author: { "@type": "Organization", name: "VetBridge USA" },
+              publisher: {
+                "@type": "Organization",
+                name: "VetBridge USA",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://www.vetbridgeusa.com/apple-touch-icon.png",
+                },
+              },
+              mainEntityOfPage: `https://www.vetbridgeusa.com/blog/${loaderData.slug}`,
+            }),
+          },
+        ]
+      : [],
   }),
   component: Post,
 });

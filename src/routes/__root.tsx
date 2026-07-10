@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -12,6 +13,27 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { META_PIXEL_ID, pixelHeadScript, trackPixel } from "../lib/meta-pixel";
+import { GA4_ID, ga4ConfigScript, ga4PageView } from "../lib/analytics";
+
+const SITE_URL = "https://www.vetbridgeusa.com";
+
+/** Pages whose primary content is Spanish (everything else is English). */
+const SPANISH_PREFIXES = ["/veterinarios", "/privacidad", "/terminos"];
+
+function langForPath(pathname: string): "es" | "en" {
+  return SPANISH_PREFIXES.some((p) => pathname.startsWith(p)) ? "es" : "en";
+}
+
+const ORGANIZATION_JSONLD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "VetBridge USA",
+  url: SITE_URL,
+  logo: `${SITE_URL}/apple-touch-icon.png`,
+  email: "hello@vetbridgeusa.com",
+  description:
+    "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. veterinary clinics — coordinating licensing, TN visa, and relocation.",
+});
 
 function NotFoundComponent() {
   return (
@@ -78,22 +100,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "VetBridge USA — Trabaja como Veterinario en Estados Unidos | Visa TN y Licencia" },
+      { title: "VetBridge USA — Licensed international DVMs for U.S. clinics" },
       {
         name: "description",
         content:
-          "Programa para veterinarios mexicanos: preparación NAVLE, licencia estatal, visa TN y colocación en clínicas de EE.UU. Egresados UNAM 2011–2025: proceso acelerado. Evaluación gratuita.",
+          "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. clinics. We coordinate licensing, TN visa, and relocation end-to-end.",
       },
       { name: "author", content: "VetBridge USA" },
-      {
-        property: "og:title",
-        content: "VetBridge USA — Trabaja como Veterinario en Estados Unidos | Visa TN y Licencia",
-      },
-      {
-        property: "og:description",
-        content:
-          "Programa para veterinarios mexicanos: preparación NAVLE, licencia estatal, visa TN y colocación en clínicas de EE.UU. Egresados UNAM 2011–2025: proceso acelerado. Evaluación gratuita.",
-      },
+      { property: "og:site_name", content: "VetBridge USA" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -115,12 +129,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const lang = langForPath(pathname);
+  const canonical = SITE_URL + (pathname === "/" ? "" : pathname.replace(/\/$/, ""));
+
   return (
-    <html lang="es">
+    <html lang={lang}>
       <head>
         <HeadContent />
+        <link rel="canonical" href={canonical} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: ORGANIZATION_JSONLD }}
+        />
         {META_PIXEL_ID && (
           <script dangerouslySetInnerHTML={{ __html: pixelHeadScript(META_PIXEL_ID) }} />
+        )}
+        {GA4_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} />
+            <script dangerouslySetInnerHTML={{ __html: ga4ConfigScript(GA4_ID) }} />
+          </>
         )}
       </head>
       <body>
@@ -145,6 +174,7 @@ function RootComponent() {
         return;
       }
       trackPixel("PageView");
+      ga4PageView(window.location.pathname);
     });
   }, [router]);
 
