@@ -37,6 +37,68 @@ function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string
   return lines.join("\n");
 }
 
+export type ClinicRequestForHubSpot = {
+  clinic_name: string;
+  state: string;
+  role_type: string;
+  species_focus: string;
+  urgency: string;
+  contact_name: string;
+  contact_email: string;
+  contact_phone: string;
+};
+
+/**
+ * Push a clinic hiring request into HubSpot as a contact, distinctly marked as
+ * a CLINIC (buyer side) vs a veterinarian candidate. Same form/portal, so it
+ * reuses the existing property mapping; the details blob carries the request.
+ * Fire-and-forget; never throws.
+ */
+export async function submitClinicToHubSpot(req: ClinicRequestForHubSpot): Promise<boolean> {
+  try {
+    const [firstName, ...rest] = req.contact_name.trim().split(/\s+/);
+    const details = [
+      "🏥 CLÍNICA — SOLICITUD DE CONTRATACIÓN (CLINIC HIRING REQUEST)",
+      `Clinic: ${req.clinic_name}`,
+      `State: ${req.state}`,
+      `Role: ${req.role_type}`,
+      req.species_focus ? `Species focus: ${req.species_focus}` : null,
+      `Urgency: ${req.urgency}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const body = {
+      fields: [
+        { name: "email", value: req.contact_email },
+        { name: "firstname", value: firstName || req.contact_name },
+        { name: "lastname", value: rest.join(" ") },
+        { name: "phone", value: req.contact_phone },
+        { name: "brand", value: "VetBridge USA" },
+        { name: "details", value: details },
+      ],
+      context: {
+        pageUri: typeof window !== "undefined" ? window.location.href : "",
+        pageName: "VetBridge USA — Clinic Request",
+      },
+    };
+
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      console.error("HubSpot clinic submission failed:", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("HubSpot clinic submission error:", err);
+    return false;
+  }
+}
+
 /**
  * Submit a lead to HubSpot. Resolves true on success, false on any failure.
  * Never throws — safe to call without awaiting.

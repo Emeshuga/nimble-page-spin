@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { supabase } from "@/integrations/supabase/client";
+import { submitClinicToHubSpot } from "@/lib/hubspot";
 
 export const Route = createFileRoute("/clinics")({
   head: () => ({
@@ -79,9 +80,9 @@ function Hero() {
             <span className="text-primary">licensed and visa-ready</span>.
           </h1>
           <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            Every week a DVM role sits open is a week of turned-away patients, burned-out staff,
-            and lost revenue. We source licensed international veterinarians — Mexico and Canada —
-            and place them into U.S. clinics with a 3-year replacement guarantee.
+            Every week a DVM role sits open is a week of turned-away patients, burned-out staff, and
+            lost revenue. We source licensed international veterinarians — Mexico and Canada — and
+            place them into U.S. clinics with a 3-year replacement guarantee.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -176,11 +177,26 @@ function NewYork() {
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           {[
-            { icon: MapPin, title: "Start immediately", body: "Practice under supervision the day the permit is issued." },
-            { icon: Users, title: "Experienced candidates", body: "Many ECFVG-pathway DVMs bring 7–15 years of experience — including running entire hospitals — with strong English." },
-            { icon: Sparkles, title: "Structured integration", body: "Supervision as a benefit: your team onboards a licensed international DVM inside your standards, not in isolation." },
+            {
+              icon: MapPin,
+              title: "Start immediately",
+              body: "Practice under supervision the day the permit is issued.",
+            },
+            {
+              icon: Users,
+              title: "Experienced candidates",
+              body: "Many ECFVG-pathway DVMs bring 7–15 years of experience — including running entire hospitals — with strong English.",
+            },
+            {
+              icon: Sparkles,
+              title: "Structured integration",
+              body: "Supervision as a benefit: your team onboards a licensed international DVM inside your standards, not in isolation.",
+            },
           ].map(({ icon: Icon, title, body }) => (
-            <div key={title} className="rounded-2xl border border-border/60 bg-card/80 p-5 backdrop-blur">
+            <div
+              key={title}
+              className="rounded-2xl border border-border/60 bg-card/80 p-5 backdrop-blur"
+            >
               <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
                 <Icon className="h-5 w-5" />
               </div>
@@ -216,8 +232,8 @@ function GuaranteeBand() {
             3-Year Placement Guarantee
           </div>
           <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-            If your veterinarian leaves within 36 months, we replace them at no additional
-            placement fee.
+            If your veterinarian leaves within 36 months, we replace them at no additional placement
+            fee.
           </h2>
         </div>
         <a
@@ -260,7 +276,9 @@ function Handles() {
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             What we handle end-to-end
           </h2>
-          <p className="mt-4 text-muted-foreground">You interview and choose. We handle the rest.</p>
+          <p className="mt-4 text-muted-foreground">
+            You interview and choose. We handle the rest.
+          </p>
         </div>
         <div className="mx-auto mt-10 grid max-w-3xl gap-3">
           {items.map((it) => (
@@ -274,8 +292,8 @@ function Handles() {
           ))}
         </div>
         <p className="mx-auto mt-6 max-w-3xl text-center text-xs text-muted-foreground">
-          VetBridge USA is not a law firm. Immigration work is performed by independent
-          immigration attorneys.
+          VetBridge USA is not a law firm. Immigration work is performed by independent immigration
+          attorneys.
         </p>
       </div>
     </section>
@@ -368,6 +386,17 @@ function RequestForm() {
       setStatus("error");
       return;
     }
+    // Also push into HubSpot CRM (fire-and-forget; Supabase is source of truth).
+    void submitClinicToHubSpot({
+      clinic_name: form.clinic_name.trim(),
+      state: form.state.trim(),
+      role_type: form.role_type,
+      species_focus: form.species_focus,
+      urgency: form.urgency,
+      contact_name: form.contact_name.trim(),
+      contact_email: form.contact_email.trim(),
+      contact_phone: form.contact_phone.trim(),
+    });
     setStatus("done");
   }
 
@@ -412,9 +441,7 @@ function RequestForm() {
             </div>
             {n < 3 && (
               <div
-                className={`h-1 flex-1 rounded-full ${
-                  step > n ? "bg-primary" : "bg-secondary"
-                }`}
+                className={`h-1 flex-1 rounded-full ${step > n ? "bg-primary" : "bg-secondary"}`}
               />
             )}
           </div>
