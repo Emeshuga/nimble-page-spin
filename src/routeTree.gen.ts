@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VeterinariosRouteImport } from './routes/veterinarios'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as GraciasRouteImport } from './routes/gracias'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VeterinariosRoute = VeterinariosRouteImport.update({
+  id: '/veterinarios',
+  path: '/veterinarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
   path: '/terminos',
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
+  '/veterinarios': typeof VeterinariosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
+  '/veterinarios': typeof VeterinariosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/gracias': typeof GraciasRoute
   '/privacidad': typeof PrivacidadRoute
   '/terminos': typeof TerminosRoute
+  '/veterinarios': typeof VeterinariosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gracias' | '/privacidad' | '/terminos'
+  fullPaths: '/' | '/gracias' | '/privacidad' | '/terminos' | '/veterinarios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gracias' | '/privacidad' | '/terminos'
-  id: '__root__' | '/' | '/gracias' | '/privacidad' | '/terminos'
+  to: '/' | '/gracias' | '/privacidad' | '/terminos' | '/veterinarios'
+  id:
+    | '__root__'
+    | '/'
+    | '/gracias'
+    | '/privacidad'
+    | '/terminos'
+    | '/veterinarios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,10 +82,18 @@ export interface RootRouteChildren {
   GraciasRoute: typeof GraciasRoute
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
+  VeterinariosRoute: typeof VeterinariosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/veterinarios': {
+      id: '/veterinarios'
+      path: '/veterinarios'
+      fullPath: '/veterinarios'
+      preLoaderRoute: typeof VeterinariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terminos': {
       id: '/terminos'
       path: '/terminos'
@@ -107,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   GraciasRoute: GraciasRoute,
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,
+  VeterinariosRoute: VeterinariosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
