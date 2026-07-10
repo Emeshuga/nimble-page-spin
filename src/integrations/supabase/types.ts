@@ -56,6 +56,87 @@ export type Database = {
         }
         Relationships: []
       }
+      clinic_requests: {
+        Row: {
+          clinic_name: string
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          id: string
+          role_type: string
+          species_focus: string | null
+          state: string
+          status: string
+          urgency: string | null
+          user_id: string | null
+        }
+        Insert: {
+          clinic_name: string
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          id?: string
+          role_type: string
+          species_focus?: string | null
+          state: string
+          status?: string
+          urgency?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          clinic_name?: string
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          id?: string
+          role_type?: string
+          species_focus?: string | null
+          state?: string
+          status?: string
+          urgency?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          account_type: string
+          application_stage: string
+          clinic_name: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          account_type: string
+          application_stage?: string
+          clinic_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          account_type?: string
+          application_stage?: string
+          clinic_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
