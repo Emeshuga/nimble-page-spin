@@ -5,7 +5,10 @@ import { Stethoscope, LogOut, MessageCircle, CheckCircle2, Circle } from "lucide
 
 export const Route = createFileRoute("/dashboard/vet")({
   head: () => ({
-    meta: [{ title: "Panel del Veterinario — VetBridge USA" }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: "Panel del Veterinario — VetBridge USA" },
+      { name: "robots", content: "noindex" },
+    ],
   }),
   component: VetDashboard,
 });
@@ -88,7 +91,7 @@ function VetDashboard() {
       <main className="mx-auto max-w-4xl space-y-8 px-4 py-10">
         <section>
           <h1 className="text-3xl font-bold tracking-tight">
-            Hola, {profile.full_name?.split(" ")[0] || "Doctor(a)"} 👋
+            Hola, {profile.full_name?.split(" ")[0] || "Doctor(a)"}
           </h1>
           <p className="mt-2 text-muted-foreground">
             Sigue tu proceso y actualiza tu información aquí.
@@ -171,9 +174,7 @@ function VetDashboard() {
             >
               {saving ? "Guardando…" : "Guardar cambios"}
             </button>
-            {savedAt && (
-              <span className="text-xs text-muted-foreground">Cambios guardados.</span>
-            )}
+            {savedAt && <span className="text-xs text-muted-foreground">Cambios guardados.</span>}
           </div>
         </section>
 

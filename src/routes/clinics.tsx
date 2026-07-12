@@ -10,7 +10,6 @@ import {
   Plus,
   Minus,
   Users,
-  Sparkles,
   Zap,
 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
@@ -163,7 +162,7 @@ function NewYork() {
         }}
       >
         <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground">
-          <Sparkles className="h-3.5 w-3.5" />
+          <Zap className="h-3.5 w-3.5" />
           New York Fast Start
         </div>
         <h2 className="max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">
@@ -188,7 +187,7 @@ function NewYork() {
               body: "Many ECFVG-pathway DVMs bring 7–15 years of experience — including running entire hospitals — with strong English.",
             },
             {
-              icon: Sparkles,
+              icon: Zap,
               title: "Structured integration",
               body: "Supervision as a benefit: your team onboards a licensed international DVM inside your standards, not in isolation.",
             },

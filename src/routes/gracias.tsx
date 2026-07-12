@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { CheckCircle2, MessageCircle, Sparkles, Stethoscope } from "lucide-react";
+import { CheckCircle2, MessageCircle, Zap, Stethoscope } from "lucide-react";
 import { trackPixel } from "@/lib/meta-pixel";
 
 const WHATSAPP_URL =
@@ -49,7 +49,7 @@ function Gracias() {
           </h1>
           {vip === 1 && (
             <div className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase text-accent-foreground">
-              <Sparkles className="h-3.5 w-3.5" /> VIP · Fast Track UNAM
+              <Zap className="h-3.5 w-3.5" /> VIP · Fast Track UNAM
             </div>
           )}
           <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">

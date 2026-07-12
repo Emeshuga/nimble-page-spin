@@ -5,7 +5,7 @@ import {
   Stethoscope,
   Users,
   Building2,
-  Sparkles,
+  GraduationCap,
   CheckCircle2,
   Clock,
   Globe2,
@@ -241,8 +241,8 @@ function Guarantee() {
             fee.
           </h2>
           <p className="mt-3 text-primary-foreground/80">
-            The longest replacement guarantee in the international veterinary staffing space —
-            because we only place people we'd bet three years on.
+            A three-year replacement guarantee — because we only place people we'd bet three years
+            on.
           </p>
         </div>
       </div>
@@ -288,7 +288,7 @@ function HowItWorks() {
       body: "Networks in Mexico and Canada surface only candidates who are already licensed to practice.",
     },
     {
-      icon: Sparkles,
+      icon: GraduationCap,
       title: "Credential + license",
       body: "We manage NAVLE prep and state board applications alongside veterinarian mentors.",
     },
@@ -335,7 +335,8 @@ function FinalCta() {
         Choose your side of the bridge.
       </h2>
       <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-        One primary action per audience. No noise, no gimmicks.
+        Whether you're a veterinarian building a career in the U.S., or a clinic that needs to fill
+        a role — start here.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link

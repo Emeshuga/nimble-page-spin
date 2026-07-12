@@ -9,7 +9,7 @@ import {
   Plane,
   ShieldCheck,
   CheckCircle2,
-  Sparkles,
+  Zap,
   ArrowRight,
   MessageCircle,
   Plus,
@@ -115,7 +115,7 @@ function Hero() {
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-28 lg:pb-40">
         <div className="max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-accent" />
+            <Zap className="h-3.5 w-3.5 text-accent" />
             Programa especializado para MVZs mexicanos
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
@@ -278,7 +278,7 @@ function PoolAlert() {
         }}
       >
         <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground">
-          <Sparkles className="h-3.5 w-3.5" />
+          <Zap className="h-3.5 w-3.5" />
           Pool A — Fast Track UNAM
         </div>
         <h3 className="max-w-3xl text-2xl font-bold tracking-tight sm:text-3xl">
@@ -698,7 +698,7 @@ function SalaryComparison() {
         </div>
         <div className="relative rounded-2xl border-2 border-primary bg-card p-8 shadow-md">
           <div className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
-            <Sparkles className="h-3.5 w-3.5" /> Con VetBridge
+            <Zap className="h-3.5 w-3.5" /> Con VetBridge
           </div>
           <div className="text-xs font-semibold uppercase tracking-wide text-primary">
             Estados Unidos
