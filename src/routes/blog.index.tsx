@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { POSTS, formatDate } from "@/lib/blog";
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title: "VetBridge USA Blog | Working as a Veterinarian in the U.S." },

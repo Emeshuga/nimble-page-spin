@@ -14,6 +14,30 @@ export type BlogPost = {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: "cant-find-a-veterinarian-to-hire",
+    title: "Can't find a veterinarian to hire? Look across the border",
+    excerpt:
+      "Your job posting has been up for months and the few applicants you get are fielding multiple offers. Here's the hiring channel most US clinics haven't tried: licensed DVMs from Mexico and Canada on TN visas.",
+    date: "2026-07-12",
+    readMinutes: 6,
+    body: [
+      "If you run a veterinary practice, you already know the problem. The job posting has been up for months. The recruiters keep calling with the same short list of candidates, and every one of them is fielding multiple offers. Meanwhile appointments back up, your existing doctors absorb the overflow, and burnout compounds the very shortage you're trying to hire your way out of.",
+      "Most practices respond by bidding higher on the same small pool: bigger signing bonuses, higher salaries, more recruiter fees. That can work, but it's expensive, and it doesn't change the underlying math. There simply aren't enough US-trained veterinarians entering the workforce to fill the open roles.",
+      "## The pool nobody is recruiting from",
+      "Here's what most clinic owners don't know: the talent shortage is largely a US problem, not a North American one. Mexico graduates far more veterinarians than its market can absorb, and many of them trained at a school that held full AVMA accreditation. Canada's veterinary schools are all AVMA-accredited, and many Canadian veterinarians have already passed the NAVLE, the same licensing exam American graduates take.",
+      "These are qualified doctors, examined to the same standard as US graduates, who want to practice in the United States. The reason your recruiter never mentions them is that placing them requires coordinating licensing and immigration steps that traditional recruiting firms don't handle.",
+      "## The visa is simpler than you think",
+      "Veterinarian is one of the professions covered by the TN visa under the USMCA trade agreement. Unlike the H-1B most employers associate with foreign hiring, the TN has no annual lottery and no cap. It's issued in three-year increments and is renewable. Canadian citizens can be approved directly at the border or airport preclearance; Mexican citizens apply at a US consulate.",
+      "For the hiring clinic, this means no lottery gamble and no multi-year uncertainty. What it does require is a qualifying job offer and a candidate with the right credentials, which is why the licensing and visa steps have to move together, in the right order.",
+      "## What the timeline actually looks like",
+      "It depends on the candidate. A licensed Canadian veterinarian who has already passed the NAVLE can be placeable remarkably quickly, since the remaining steps are state licensing and a border-issued visa. A graduate of UNAM's veterinary school from its AVMA accreditation window follows an accelerated path. Other internationally trained veterinarians take longer because they complete an equivalency process first.",
+      "The practical takeaway: this is not a same-week solution like relief staffing, but it is a real pipeline of full-time doctors, and some candidates are much closer to ready than most clinic owners assume.",
+      "## What to look for in a placement partner",
+      "If you explore this route, the whole value is in execution. Ask who manages the NAVLE and state-licensing steps, who handles the visa work (it should be independent immigration attorneys, not the recruiter), and what happens if the placement doesn't work out. At VetBridge USA, placements are backed by a three-year replacement guarantee, because a hire like this should be a long-term answer, not another turnover cycle.",
+      "The veterinarians exist. They're trained, examined, and motivated. What's been missing is the bridge.",
+    ],
+  },
+  {
     slug: "how-mexican-veterinarians-practice-in-the-us",
     title: "How Mexican veterinarians can practice in the United States",
     excerpt:

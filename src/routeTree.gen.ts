@@ -15,10 +15,10 @@ import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as GraciasRouteImport } from './routes/gracias'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClinicsRouteImport } from './routes/clinics'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as DashboardVetRouteImport } from './routes/dashboard.vet'
 import { Route as DashboardClinicRouteImport } from './routes/dashboard.clinic'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -53,11 +53,6 @@ const ClinicsRoute = ClinicsRouteImport.update({
   path: '/clinics',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -73,6 +68,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardVetRoute = DashboardVetRouteImport.update({
   id: '/dashboard/vet',
   path: '/dashboard/vet',
@@ -84,16 +84,15 @@ const DashboardClinicRoute = DashboardClinicRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/clinics': typeof ClinicsRoute
   '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
@@ -103,12 +102,12 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/clinics': typeof ClinicsRoute
   '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
@@ -118,13 +117,13 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
+  '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/clinics': typeof ClinicsRoute
   '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
@@ -134,6 +133,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,7 +141,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/blog'
     | '/clinics'
     | '/contact'
     | '/gracias'
@@ -151,12 +150,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/auth'
-    | '/blog'
     | '/clinics'
     | '/contact'
     | '/gracias'
@@ -166,12 +165,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
+    | '/blog'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/auth'
-    | '/blog'
     | '/clinics'
     | '/contact'
     | '/gracias'
@@ -181,21 +180,23 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
-  BlogRoute: typeof BlogRouteWithChildren
   ClinicsRoute: typeof ClinicsRoute
   ContactRoute: typeof ContactRoute
   GraciasRoute: typeof GraciasRoute
   PrivacidadRoute: typeof PrivacidadRoute
   TerminosRoute: typeof TerminosRoute
   VeterinariosRoute: typeof VeterinariosRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   DashboardClinicRoute: typeof DashboardClinicRoute
   DashboardVetRoute: typeof DashboardVetRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -242,13 +243,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClinicsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -270,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/vet': {
       id: '/dashboard/vet'
       path: '/dashboard/vet'
@@ -286,37 +287,28 @@ declare module '@tanstack/react-router' {
     }
     '/blog/$slug': {
       id: '/blog/$slug'
-      path: '/$slug'
+      path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface BlogRouteChildren {
-  BlogSlugRoute: typeof BlogSlugRoute
-}
-
-const BlogRouteChildren: BlogRouteChildren = {
-  BlogSlugRoute: BlogSlugRoute,
-}
-
-const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
-  BlogRoute: BlogRouteWithChildren,
   ClinicsRoute: ClinicsRoute,
   ContactRoute: ContactRoute,
   GraciasRoute: GraciasRoute,
   PrivacidadRoute: PrivacidadRoute,
   TerminosRoute: TerminosRoute,
   VeterinariosRoute: VeterinariosRoute,
+  BlogSlugRoute: BlogSlugRoute,
   DashboardClinicRoute: DashboardClinicRoute,
   DashboardVetRoute: DashboardVetRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
