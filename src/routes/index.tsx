@@ -12,6 +12,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
+import { PositioningBand } from "@/components/positioning-band";
 import { CandidateDeck } from "@/components/candidate-deck";
 
 export const Route = createFileRoute("/")({
@@ -43,6 +44,11 @@ function Home() {
       <SiteHeader />
       <Hero />
       <Problem />
+      <PositioningBand
+        before="The shortage isn't a shortage. "
+        highlight="It's a border."
+        body="Licensed veterinarians in Mexico and Canada, understaffed clinics across the U.S. We bridge them, handling licensing, the TN visa, and relocation end to end."
+      />
       <SolutionSplit />
       <Guarantee />
       <MidCta />

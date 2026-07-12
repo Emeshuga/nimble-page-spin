@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Stethoscope, ShieldCheck, Globe2, HeartHandshake, ArrowRight } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
+import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/about")({
@@ -88,6 +89,12 @@ function About() {
         PLACEHOLDER, TEAM / FOUNDERS SECTION (to fill in later).
         Add founder names, photos, and credentials here once finalized.
       */}
+
+      <PositioningBand
+        before="The talent was never the problem. "
+        highlight="The paperwork was."
+        body="VetBridge exists to remove the licensing, visa, and relocation barriers between qualified veterinarians and the U.S. clinics that need them."
+      />
 
       <section className="border-t border-border">
         <div className="mx-auto max-w-3xl px-4 py-20 text-center">

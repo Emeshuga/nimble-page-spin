@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
 import { submitLeadToHubSpot } from "@/lib/hubspot";
 import {
@@ -60,6 +61,11 @@ function Index() {
       <Header />
       <Hero />
       <ValueProps />
+      <PositioningBand
+        before="¿Y si lo único entre tú y ejercer en EE. UU. fuera "
+        highlight="el papeleo?"
+        body="Nosotros nos encargamos de la licencia, el NAVLE y la visa TN. Tú te concentras en tu carrera y en tu nueva vida."
+      />
       <SalaryComparison />
       <Lifestyle />
       <PoolAlert />

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, MessageCircle, CheckCircle2 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
+import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
 import { submitContactToHubSpot } from "@/lib/hubspot";
 
@@ -155,6 +156,12 @@ function Contact() {
           </div>
         </div>
       </section>
+
+      <PositioningBand
+        before="The right veterinarian is out there. "
+        highlight="Let's bring them in."
+        body="Whether you're filling a role or building your career in the U.S., we handle the licensing, the visa, and the move."
+      />
       <SiteFooter />
     </div>
   );
