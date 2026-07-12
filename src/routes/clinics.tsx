@@ -52,6 +52,7 @@ function ClinicsPage() {
       <NewYork />
       <GuaranteeBand />
       <MidCta />
+      <PositioningBand />
       <Handles />
       <HowItWorks />
       <RequestForm />
@@ -347,6 +348,29 @@ function MidCta() {
       >
         Request Candidates <ArrowRight className="h-4 w-4" />
       </a>
+    </section>
+  );
+}
+
+function PositioningBand() {
+  return (
+    <section
+      className="relative"
+      style={{
+        background:
+          "linear-gradient(180deg, transparent 0%, oklch(0.9 0.055 264) 24%, oklch(0.9 0.055 264) 76%, transparent 100%)",
+      }}
+    >
+      <div className="mx-auto max-w-3xl px-4 py-28 text-center sm:py-32">
+        <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl lg:text-5xl">
+          What if the shortage isn't a shortage,{" "}
+          <span className="text-accent">just a border?</span>
+        </h2>
+        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-primary/70">
+          Licensed veterinarians in Mexico and Canada are ready to relocate right now. We handle the
+          credentialing and TN visa; you just interview and choose.
+        </p>
+      </div>
     </section>
   );
 }
