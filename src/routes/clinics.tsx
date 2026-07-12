@@ -11,6 +11,9 @@ import {
   Minus,
   Users,
   Zap,
+  GraduationCap,
+  Globe,
+  Plane,
 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,6 +47,7 @@ function ClinicsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader primaryCta={{ label: "Request Candidates", to: "/clinics#request" }} />
       <Hero />
+      <TrustBar />
       <Speed />
       <NewYork />
       <GuaranteeBand />
@@ -66,38 +70,126 @@ function Hero() {
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(1000px 500px at 80% -10%, oklch(0.72 0.15 55 / 0.15), transparent 60%), radial-gradient(900px 500px at -10% 10%, oklch(0.38 0.14 250 / 0.18), transparent 60%)",
+            "radial-gradient(1100px 560px at 88% -8%, oklch(0.72 0.15 55 / 0.14), transparent 60%), radial-gradient(1000px 560px at -8% 8%, oklch(0.38 0.14 250 / 0.14), transparent 60%)",
         }}
       />
-      <div className="mx-auto max-w-6xl px-4 py-24 sm:py-28">
-        <div className="max-w-3xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Building2 className="h-3.5 w-3.5 text-accent" /> For U.S. veterinary clinics
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Left: message */}
+          <div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+              <Building2 className="h-3.5 w-3.5 text-accent" /> For U.S. veterinary clinics
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              Your next veterinarian is already{" "}
+              <span className="text-primary">licensed and visa-ready</span>.
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
+              Every week a DVM role sits open is turned-away patients, burned-out staff, and lost
+              revenue. We source licensed international veterinarians from Mexico and Canada and place
+              them into U.S. clinics, backed by a 3-year replacement guarantee.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#request"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+              >
+                Request Candidates <ArrowRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#how"
+                className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
+              >
+                How it works
+              </a>
+            </div>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> No lottery TN visa
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> AVMA-accredited schools
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> You interview and choose
+              </span>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            Your next veterinarian is already{" "}
-            <span className="text-primary">licensed and visa-ready</span>.
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            Every week a DVM role sits open is a week of turned-away patients, burned-out staff, and
-            lost revenue. We source licensed international veterinarians, Mexico and Canada, and
-            place them into U.S. clinics with a 3-year replacement guarantee.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#request"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
-            >
-              Request Candidates <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#how"
-              className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
-            >
-              How it works
-            </a>
+
+          {/* Right: photo with floating cards */}
+          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+            <div className="relative overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-black/5">
+              <img
+                src="/clinic-hero.jpg"
+                alt="A licensed veterinarian examining a small dog in a clinic"
+                width={1000}
+                height={1200}
+                className="aspect-[4/5] w-full object-cover"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent"
+              />
+            </div>
+
+            {/* Floating candidate card */}
+            <div className="absolute -bottom-5 -left-3 w-64 rounded-2xl border border-border bg-card/95 p-4 shadow-xl backdrop-blur sm:-left-6">
+              <div className="flex items-center gap-3">
+                <img
+                  src="/candidates/c1.jpg"
+                  alt=""
+                  className="h-11 w-11 shrink-0 rounded-full object-cover"
+                />
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-semibold text-foreground">
+                    Dra. María R. 🇲🇽
+                  </div>
+                  <div className="truncate text-xs text-muted-foreground">FMVZ-UNAM · Small animal</div>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                  NAVLE in prep
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
+                  <Plane className="h-3 w-3" /> TN visa ready
+                </span>
+              </div>
+            </div>
+
+            {/* Floating guarantee chip */}
+            <div className="absolute -right-2 -top-4 flex items-center gap-2 rounded-full border border-border bg-card/95 px-3.5 py-2 shadow-xl backdrop-blur sm:-right-5">
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              <span className="text-xs font-semibold text-foreground">3-year guarantee</span>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function TrustBar() {
+  const items = [
+    { icon: Plane, label: "TN visa profession", sub: "No lottery, no annual cap" },
+    { icon: GraduationCap, label: "AVMA-accredited", sub: "Credential-verified schools" },
+    { icon: ShieldCheck, label: "3-year guarantee", sub: "Free replacement if they leave" },
+    { icon: Globe, label: "Mexico + Canada", sub: "Two licensed talent pools" },
+  ];
+  return (
+    <section className="border-y border-border bg-card">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-8 px-4 py-10 lg:grid-cols-4">
+        {items.map(({ icon: Icon, label, sub }) => (
+          <div key={label} className="flex items-start gap-3">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <Icon className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">{label}</div>
+              <div className="text-xs text-muted-foreground">{sub}</div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -677,20 +769,40 @@ function FAQ() {
 
 function FinalCta() {
   return (
-    <section className="mx-auto max-w-4xl px-4 py-24 text-center">
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-        Stop losing revenue to open shifts.
-      </h2>
-      <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-        Request candidates now. A coordinator responds within 24 hours.
-      </p>
-      <div className="mt-8">
-        <a
-          href="#request"
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
-        >
-          Request Candidates <ArrowRight className="h-4 w-4" />
-        </a>
+    <section className="relative overflow-hidden bg-primary text-primary-foreground">
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-0"
+        style={{
+          background:
+            "radial-gradient(900px 500px at 78% 120%, oklch(0.72 0.15 55 / 0.18), transparent 60%)",
+        }}
+      />
+      <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:py-24">
+        <div className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
+          Ready when you are
+        </div>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+          Stop losing revenue to open shifts.
+        </h2>
+        <p className="mx-auto mt-5 max-w-xl text-lg text-primary-foreground/80">
+          Request candidates now and a placement coordinator responds within 24 hours with licensed,
+          visa-ready veterinarians who fit your clinic.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <a
+            href="#request"
+            className="inline-flex items-center gap-2 rounded-md bg-primary-foreground px-6 py-3 text-base font-semibold text-primary shadow-sm transition hover:opacity-90"
+          >
+            Request Candidates <ArrowRight className="h-4 w-4" />
+          </a>
+          <a
+            href="#how"
+            className="inline-flex items-center rounded-md border border-primary-foreground/30 px-6 py-3 text-base font-medium text-primary-foreground transition hover:bg-primary-foreground/10"
+          >
+            How it works
+          </a>
+        </div>
       </div>
     </section>
   );

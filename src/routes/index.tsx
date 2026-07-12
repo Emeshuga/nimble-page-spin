@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "VetBridge USA bridges licensed international veterinarians from Mexico and Canada with understaffed U.S. clinics. Visa-ready candidates. 3-year placement guarantee.",
+          "VetBridge USA bridges licensed veterinarians from Mexico and Canada with understaffed U.S. clinics. Visa-ready candidates. 3-year placement guarantee.",
       },
       {
         property: "og:title",
