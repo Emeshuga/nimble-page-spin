@@ -12,6 +12,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
+import { CandidateDeck } from "@/components/candidate-deck";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,77 +55,60 @@ function Home() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden border-b border-border/60">
       <div
         aria-hidden
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(1000px 500px at 80% -10%, oklch(0.72 0.15 55 / 0.15), transparent 60%), radial-gradient(900px 500px at -10% 10%, oklch(0.38 0.14 250 / 0.18), transparent 60%)",
+            "radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.10), transparent 62%), radial-gradient(760px 420px at -6% 0%, oklch(0.38 0.14 250 / 0.10), transparent 60%)",
         }}
       />
-      <svg
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-full w-full max-w-[1600px] opacity-40"
-        viewBox="0 0 1600 700"
-        fill="none"
-      >
-        <path
-          d="M0 480 C 380 300, 780 220, 1600 200"
-          stroke="oklch(0.38 0.14 250 / 0.3)"
-          strokeWidth="1.5"
-          strokeDasharray="6 8"
-          fill="none"
-        />
-        <path
-          d="M0 560 C 420 380, 820 320, 1600 300"
-          stroke="oklch(0.72 0.15 55 / 0.35)"
-          strokeWidth="1.5"
-          strokeDasharray="4 10"
-          fill="none"
-        />
-      </svg>
-      <div className="relative mx-auto max-w-6xl px-4 py-24 sm:py-32">
-        <div className="max-w-3xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
-            <Globe2 className="h-3.5 w-3.5 text-accent" />
-            Mexico &amp; Canada → United States
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+          <div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-secondary px-3.5 py-1.5 text-[13px] font-medium text-primary">
+              <Globe2 className="h-3.5 w-3.5 text-accent" />
+              Mexico &amp; Canada &nbsp;→&nbsp; United States
+            </div>
+            <h1 className="text-[2.7rem] font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-6xl">
+              Meet your next
+              <br />
+              veterinarian.
+            </h1>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
+              Licensed DVMs from Mexico and Canada — credentialed, visa-eligible, and ready. Browse
+              the pipeline; we handle licensing, TN visa, and relocation end-to-end.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                to="/veterinarios"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-md shadow-primary/25 transition hover:opacity-90"
+              >
+                <Stethoscope className="h-4 w-4" /> I'm a Veterinarian
+              </Link>
+              <Link
+                to="/clinics"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-base font-semibold text-foreground transition hover:bg-secondary"
+              >
+                <Building2 className="h-4 w-4" /> I'm Hiring
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-accent" /> TN visa pathway
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-accent" /> AVMA-accredited
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-accent" /> 3-year guarantee
+              </div>
+            </div>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-            The bridge between{" "}
-            <span className="text-primary">licensed international DVMs</span> and understaffed
-            U.S. clinics.
-          </h1>
-          <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            We source, license, and place veterinarians from Mexico and Canada — with visa,
-            relocation, and post-placement support handled end-to-end.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              to="/veterinarios"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
-            >
-              <Stethoscope className="h-4 w-4" /> I'm a Veterinarian
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/clinics"
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-6 py-3 text-base font-semibold text-foreground shadow-sm transition hover:bg-secondary"
-            >
-              <Building2 className="h-4 w-4" /> I'm Hiring
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> TN visa pathway
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> AVMA-accredited candidates
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> 3-year placement guarantee
-            </div>
+          <div className="flex justify-center lg:justify-end">
+            <CandidateDeck />
           </div>
         </div>
       </div>
@@ -144,9 +128,9 @@ function Problem() {
             Thousands of DVM roles sit unfilled. Vacancies stretch into months.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Every unfilled shift means turned-away patients, overworked staff, and lost revenue.
-            The talent exists — it's just on the other side of a licensing and visa process most
-            clinics can't navigate alone.
+            Every unfilled shift means turned-away patients, overworked staff, and lost revenue. The
+            talent exists — it's just on the other side of a licensing and visa process most clinics
+            can't navigate alone.
           </p>
         </div>
       </div>
@@ -253,8 +237,8 @@ function Guarantee() {
             3-Year Placement Guarantee
           </div>
           <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-            If your veterinarian leaves within 36 months, we replace them at no additional
-            placement fee.
+            If your veterinarian leaves within 36 months, we replace them at no additional placement
+            fee.
           </h2>
           <p className="mt-3 text-primary-foreground/80">
             The longest replacement guarantee in the international veterinary staffing space —
@@ -273,8 +257,8 @@ function MidCta() {
         <div>
           <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Ready to move?</h3>
           <p className="mt-2 text-muted-foreground">
-            Whether you're a veterinarian building a career in the U.S., or a clinic that needs
-            to fill a role — start here.
+            Whether you're a veterinarian building a career in the U.S., or a clinic that needs to
+            fill a role — start here.
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-start gap-3 sm:justify-end">
@@ -298,10 +282,26 @@ function MidCta() {
 
 function HowItWorks() {
   const items = [
-    { icon: Users, title: "Global sourcing", body: "Networks in Mexico and Canada surface only candidates who are already licensed to practice." },
-    { icon: Sparkles, title: "Credential + license", body: "We manage NAVLE prep and state board applications alongside veterinarian mentors." },
-    { icon: MapPin, title: "Visa + relocation", body: "TN visa work via independent immigration attorneys, plus relocation logistics." },
-    { icon: ShieldCheck, title: "3-year guarantee", body: "If the placement doesn't stick, we replace — no additional placement fee." },
+    {
+      icon: Users,
+      title: "Global sourcing",
+      body: "Networks in Mexico and Canada surface only candidates who are already licensed to practice.",
+    },
+    {
+      icon: Sparkles,
+      title: "Credential + license",
+      body: "We manage NAVLE prep and state board applications alongside veterinarian mentors.",
+    },
+    {
+      icon: MapPin,
+      title: "Visa + relocation",
+      body: "TN visa work via independent immigration attorneys, plus relocation logistics.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "3-year guarantee",
+      body: "If the placement doesn't stick, we replace — no additional placement fee.",
+    },
   ];
   return (
     <section className="border-y border-border bg-secondary/40">

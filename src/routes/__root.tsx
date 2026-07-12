@@ -174,7 +174,7 @@ function RootComponent() {
         return;
       }
       trackPixel("PageView");
-      ga4PageView(window.location.pathname);
+      ga4PageView();
     });
   }, [router]);
 
