@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
@@ -24,6 +24,7 @@ import {
   Wallet,
   Building2,
   HeartHandshake,
+  Globe,
 } from "lucide-react";
 import { HeroFlight, MonumentsBand } from "@/components/journey-art";
 
@@ -55,32 +56,417 @@ const EMPTY: FormState = {
   navle_status: "",
 };
 
+// ————————————————————————————————————————————————————————————
+// Bilingual copy. Spanish is the default (primary MX audience); a header
+// toggle flips the whole page to English. IMPORTANT: form <option> VALUES stay
+// the canonical Spanish strings (the DB / RLS validate them and the submit
+// logic compares them) — only the labels shown to the user are translated.
+// ————————————————————————————————————————————————————————————
+type Lang = "es" | "en";
+
+const LangCtx = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({
+  lang: "es",
+  setLang: () => {},
+});
+const useLang = () => useContext(LangCtx);
+
+const COPY = {
+  es: {
+    header: { profile: "Evalúa tu Perfil", switchTo: "EN" },
+    hero: {
+      badge: "Programa para veterinarios de México y Canadá",
+      titlePre: "Trabaja como Médico Veterinario en ",
+      titleHi: "Estados Unidos",
+      titlePost: ". Gestionamos tu licencia y tu visa con abogados migratorios especializados.",
+      subA: "Multiplica tu salario ejerciendo tu pasión. Si eres egresado de la ",
+      subStrong: "FMVZ-UNAM (2011-2025)",
+      subB: ", tienes un proceso acelerado para comenzar este mismo año.",
+      ctaPrimary: "Evalúa tu Perfil Gratis",
+      ctaSecondary: "Conoce el programa",
+      chips: ["Sin lotería H-1B", "Colocación en clínica", "Prep NAVLE incluido"],
+    },
+    band: {
+      before: "¿Y si lo único entre tú y ejercer en EE. UU. fuera ",
+      highlight: "el papeleo?",
+      body: "Nosotros nos encargamos de la licencia, el NAVLE y la visa TN. Tú te concentras en tu carrera y en tu nueva vida.",
+    },
+    valueProps: {
+      heading: "Todo lo que necesitas para ejercer en EE.UU.",
+      sub: "Un programa completo diseñado por veterinarios y abogados migratorios.",
+      items: [
+        {
+          title: "Ofertas negociadas para ti",
+          body: "Ingresos de $100,000 a $140,000 USD al año. Entrevistamos clínicas y negociamos el mejor salario y prestaciones en tu nombre.",
+        },
+        {
+          title: "Visa TN Directa",
+          body: "Aprovecha el tratado T-MEC: visa profesional directa, sin lotería H-1B ni esperas de años.",
+        },
+        {
+          title: "Contigo en cada paso",
+          body: "Preparación NAVLE, licencia estatal, visa y colocación, y acompañamiento continuo incluso ya trabajando en la clínica.",
+        },
+      ],
+    },
+    salary: {
+      heading: "Misma profesión, ingresos muy distintos",
+      sub: "Compara lo que gana un veterinario en México vs. en Estados Unidos.",
+      mxLabel: "México",
+      mxValue: "$250,000 - $450,000 MXN",
+      perYear: "al año",
+      mxNote: "Promedio nacional MVZ.",
+      usBadge: "Con VetBridge",
+      usLabel: "Estados Unidos",
+      usValue: "$100,000 - $140,000 USD",
+      usNote: "Veterinario asociado.",
+      footPre: "Hasta ",
+      footHi: "8 veces más ingresos",
+      footPost: " ejerciendo la misma profesión.",
+    },
+    lifestyle: {
+      heading: "Más que un trabajo: una nueva vida",
+      sub: "Ejercer en Estados Unidos abre puertas que van mucho más allá del salario.",
+      items: [
+        {
+          title: "Ahorra en dólares",
+          body: "Con un salario en dólares, cada mes construyes un patrimonio que en casa tomaría años.",
+        },
+        {
+          title: "Cerca de casa",
+          body: "Muchas clínicas están a un vuelo corto de casa: visita a tu familia los fines de semana.",
+        },
+        {
+          title: "Tu propia práctica",
+          body: "Gana experiencia, reputación y capital para algún día abrir tu propia clínica en EE.UU.",
+        },
+        {
+          title: "Nunca solo",
+          body: "Te acompañamos antes, durante y después de tu llegada. Tu éxito es nuestro trabajo.",
+        },
+      ],
+    },
+    pool: {
+      badge: "Pool A, Fast Track UNAM",
+      heading: "¿Eres egresado de la UNAM (2011 - 2025)?",
+      bodyPre: "Tienes una ventaja única. Puedes ",
+      bodyStrong: "saltarte el proceso ECFVG",
+      bodyPost: ". Estás a un solo examen de distancia de ejercer en EE.UU.",
+      cta: "Reserva tu evaluación prioritaria",
+    },
+    process: {
+      heading: "Tu camino a ejercer en EE.UU.",
+      steps: [
+        { t: "Evaluación de perfil", d: "Analizamos tu universidad, año y nivel de inglés." },
+        {
+          t: "Preparación NAVLE",
+          d: "Preparación inmersiva con tutores que acompañan tu avance, no solo un curso.",
+        },
+        { t: "Licencia estatal", d: "Gestionamos toda la documentación con la junta veterinaria." },
+        {
+          t: "Visa TN + Clínica",
+          d: "Entrevistas con clínicas patrocinadoras y apoyo con tu reubicación.",
+        },
+      ],
+    },
+    form: {
+      heading: "Evalúa tu Perfil",
+      sub: "Toma menos de 2 minutos. Un coordinador te contactará en 24 horas.",
+      name: "Nombre Completo",
+      email: "Correo Electrónico",
+      phone: "Teléfono con WhatsApp",
+      phonePlaceholder: "+52 55 1234 5678",
+      university: "Universidad de Egreso",
+      selectPlaceholder: "Selecciona…",
+      otherUni: "Otra Universidad",
+      gradYear: "Año de Graduación",
+      englishLevel: "Nivel de Inglés",
+      eng: { basic: "Básico", inter: "Intermedio", adv: "Avanzado", fluent: "Fluido/Nativo" },
+      licenseQ: "¿Cuentas con licencia veterinaria vigente?",
+      yes: "Sí",
+      no: "No",
+      navleQ: "¿Has presentado o estudiado para el NAVLE?",
+      navle: { passed: "Aprobado", studying: "Estudiando", no: "No" },
+      error:
+        "Hubo un error al enviar tu perfil. Intenta de nuevo o escríbenos directamente por WhatsApp (botón verde).",
+      submit: "Enviar mi Perfil",
+      sending: "Enviando…",
+      consent: "Al enviar aceptas ser contactado por WhatsApp o correo.",
+    },
+    footer: {
+      desc: "Conectamos veterinarios de México y Canadá con clínicas en Estados Unidos. Coordinamos examen NAVLE, licencia estatal y visa TN junto con abogados migratorios especializados.",
+      contact: "Contacto",
+      profileLink: "Evalúa tu perfil",
+      legal: "Legal",
+      privacy: "Aviso de Privacidad",
+      terms: "Términos y Condiciones",
+      rights: "Todos los derechos reservados.",
+      madeWith: "Hecho con cuidado para veterinarios internacionales",
+      disclaimer:
+        "VetBridge USA es un servicio de coordinación y reclutamiento. No es un despacho jurídico ni ofrece asesoría legal migratoria; los trámites de visa los realizan abogados migratorios independientes. No garantizamos la obtención de una visa, licencia o empleo; los resultados dependen del perfil de cada candidato y de las autoridades correspondientes.",
+    },
+    faq: {
+      heading: "Preguntas frecuentes",
+      sub: "Resolvemos las dudas más comunes.",
+      items: [
+        {
+          q: "¿Cuánto cuesta el programa?",
+          a: "La evaluación de tu perfil es 100% gratuita. Existen opciones para que las clínicas patrocinadoras cubran gran parte de los costos, según tu perfil. Un coordinador te explicará tu caso específico sin ningún compromiso.",
+        },
+        {
+          q: "¿Necesito hablar inglés perfecto?",
+          a: "No perfecto, pero sí funcional. El examen NAVLE y la comunicación con clientes son en inglés. Si tu nivel es intermedio, te orientamos con un plan para alcanzar el nivel necesario.",
+        },
+        {
+          q: "¿Cuánto tarda el proceso?",
+          a: "Egresados de la FMVZ-UNAM (2011-2025): desde 9-15 meses. Egresados de otras universidades: de 2 a 4 años por el proceso de equivalencia (ECFVG/PAVE). En tu evaluación gratuita te damos un cronograma personalizado.",
+        },
+        {
+          q: "¿Qué es la visa TN?",
+          a: "Es una visa de trabajo del tratado T-MEC exclusiva para profesionistas mexicanos y canadienses. La profesión de veterinario está incluida. No tiene lotería ni cupo anual como la H-1B y se renueva indefinidamente en periodos de 3 años. Los mexicanos la tramitan en el consulado de EE.UU.; los canadienses la reciben en la frontera.",
+        },
+        {
+          q: "¿Puedo llevar a mi familia?",
+          a: "Sí. Tu cónyuge e hijos pueden acompañarte con la visa TD, derivada de tu visa TN.",
+        },
+      ],
+    },
+    about: {
+      heading: "Quiénes somos",
+      p1: "VetBridge USA conecta veterinarios de México y Canadá con clínicas en Estados Unidos que necesitan talento. Los trámites migratorios los realizan abogados especializados en visas TN; nosotros coordinamos todo el proceso junto con mentores veterinarios que ya aprobaron el NAVLE. No somos una bolsa de trabajo: te acompañamos en cada paso, examen, licencia estatal, visa y colocación.",
+      p2a: "El proceso acelerado para egresados UNAM 2011-2025 se basa en la acreditación ",
+      p2b: " que la FMVZ-UNAM mantuvo de 2011 a 2025 y en los requisitos oficiales del NAVLE publicados por el ",
+      p2c: ".",
+    },
+    whatsapp: {
+      aria: "Contactar por WhatsApp",
+      text: "Hola, soy veterinario/a y quiero información sobre el programa VetBridge USA",
+    },
+  },
+  en: {
+    header: { profile: "Check Your Profile", switchTo: "ES" },
+    hero: {
+      badge: "A program for veterinarians from Mexico and Canada",
+      titlePre: "Practice as a veterinarian in ",
+      titleHi: "the United States",
+      titlePost: ". We manage your license and visa with specialized immigration attorneys.",
+      subA: "Multiply your income doing what you love. If you graduated from ",
+      subStrong: "FMVZ-UNAM (2011-2025)",
+      subB: ", you qualify for an accelerated path to start this year.",
+      ctaPrimary: "Check Your Profile, Free",
+      ctaSecondary: "Explore the program",
+      chips: ["No H-1B lottery", "Clinic placement", "NAVLE prep included"],
+    },
+    band: {
+      before: "What if the only thing between you and practicing in the U.S. was ",
+      highlight: "the paperwork?",
+      body: "We handle the license, the NAVLE, and the TN visa. You focus on your career and your new life.",
+    },
+    valueProps: {
+      heading: "Everything you need to practice in the U.S.",
+      sub: "A complete program designed by veterinarians and immigration attorneys.",
+      items: [
+        {
+          title: "Offers negotiated for you",
+          body: "Earn $100,000 to $140,000 USD a year. We interview clinics and negotiate the best salary and benefits on your behalf.",
+        },
+        {
+          title: "Direct TN Visa",
+          body: "Use the USMCA (T-MEC) treaty: a direct professional visa, with no H-1B lottery and no multi-year waits.",
+        },
+        {
+          title: "With you every step",
+          body: "NAVLE prep, state licensing, visa, and placement, plus ongoing support even once you're working at the clinic.",
+        },
+      ],
+    },
+    salary: {
+      heading: "Same profession, very different income",
+      sub: "Compare what a veterinarian earns at home vs. in the United States.",
+      mxLabel: "Mexico",
+      mxValue: "$250,000 - $450,000 MXN",
+      perYear: "per year",
+      mxNote: "National average for a vet.",
+      usBadge: "With VetBridge",
+      usLabel: "United States",
+      usValue: "$100,000 - $140,000 USD",
+      usNote: "Associate veterinarian.",
+      footPre: "Up to ",
+      footHi: "8x the income",
+      footPost: " for the same profession.",
+    },
+    lifestyle: {
+      heading: "More than a job: a new life",
+      sub: "Practicing in the United States opens doors that go far beyond salary.",
+      items: [
+        {
+          title: "Save in dollars",
+          body: "With a salary in dollars, every month you build wealth that would take years back home.",
+        },
+        {
+          title: "Close to home",
+          body: "Many clinics are a short flight from home, visit your family on weekends.",
+        },
+        {
+          title: "Your own practice",
+          body: "Build the experience, reputation, and capital to one day open your own clinic in the U.S.",
+        },
+        {
+          title: "Never on your own",
+          body: "We support you before, during, and after your arrival. Your success is our job.",
+        },
+      ],
+    },
+    pool: {
+      badge: "Pool A, UNAM Fast Track",
+      heading: "Did you graduate from UNAM (2011-2025)?",
+      bodyPre: "You have a unique advantage. You can ",
+      bodyStrong: "skip the ECFVG process",
+      bodyPost: ". You're just one exam away from practicing in the U.S.",
+      cta: "Book your priority evaluation",
+    },
+    process: {
+      heading: "Your path to practicing in the U.S.",
+      steps: [
+        {
+          t: "Profile evaluation",
+          d: "We review your university, graduation year, and English level.",
+        },
+        {
+          t: "NAVLE prep",
+          d: "Immersive prep with tutors who guide your progress, not just a course.",
+        },
+        { t: "State license", d: "We handle all the paperwork with the veterinary board." },
+        {
+          t: "TN visa + Clinic",
+          d: "Interviews with sponsoring clinics and support with your relocation.",
+        },
+      ],
+    },
+    form: {
+      heading: "Check Your Profile",
+      sub: "Takes under 2 minutes. A coordinator will contact you within 24 hours.",
+      name: "Full Name",
+      email: "Email",
+      phone: "Phone with WhatsApp",
+      phonePlaceholder: "+1 555 123 4567",
+      university: "University",
+      selectPlaceholder: "Select…",
+      otherUni: "Other university",
+      gradYear: "Graduation Year",
+      englishLevel: "English Level",
+      eng: { basic: "Basic", inter: "Intermediate", adv: "Advanced", fluent: "Fluent/Native" },
+      licenseQ: "Do you hold a current veterinary license?",
+      yes: "Yes",
+      no: "No",
+      navleQ: "Have you taken or studied for the NAVLE?",
+      navle: { passed: "Passed", studying: "Studying", no: "No" },
+      error:
+        "There was an error submitting your profile. Please try again or message us directly on WhatsApp (green button).",
+      submit: "Submit my Profile",
+      sending: "Sending…",
+      consent: "By submitting, you agree to be contacted by WhatsApp or email.",
+    },
+    footer: {
+      desc: "We connect veterinarians from Mexico and Canada with clinics in the United States. We coordinate the NAVLE exam, state license, and TN visa alongside specialized immigration attorneys.",
+      contact: "Contact",
+      profileLink: "Check your profile",
+      legal: "Legal",
+      privacy: "Privacy Policy",
+      terms: "Terms & Conditions",
+      rights: "All rights reserved.",
+      madeWith: "Made with care for international veterinarians",
+      disclaimer:
+        "VetBridge USA is a coordination and recruiting service. It is not a law firm and does not provide legal immigration advice; visa filings are handled by independent immigration attorneys. We do not guarantee any visa, license, or job; outcomes depend on each candidate's profile and the relevant authorities.",
+    },
+    faq: {
+      heading: "Frequently asked questions",
+      sub: "Answers to the most common questions.",
+      items: [
+        {
+          q: "How much does the program cost?",
+          a: "Evaluating your profile is 100% free. There are options for sponsoring clinics to cover much of the cost, depending on your profile. A coordinator will explain your specific case with no obligation.",
+        },
+        {
+          q: "Do I need perfect English?",
+          a: "Not perfect, but functional. The NAVLE exam and client communication are in English. If your level is intermediate, we help you with a plan to reach the level you need.",
+        },
+        {
+          q: "How long does the process take?",
+          a: "FMVZ-UNAM graduates (2011-2025): from 9-15 months. Graduates from other universities: 2 to 4 years due to the equivalency process (ECFVG/PAVE). In your free evaluation we give you a personalized timeline.",
+        },
+        {
+          q: "What is the TN visa?",
+          a: "It's a USMCA (T-MEC) work visa exclusive to Mexican and Canadian professionals. Veterinarian is a listed profession. There's no lottery or annual cap like the H-1B, and it renews indefinitely in 3-year periods. Mexican nationals apply at a U.S. consulate; Canadians receive it at the border.",
+        },
+        {
+          q: "Can I bring my family?",
+          a: "Yes. Your spouse and children can join you on the TD visa, derived from your TN visa.",
+        },
+      ],
+    },
+    about: {
+      heading: "Who we are",
+      p1: "VetBridge USA connects veterinarians from Mexico and Canada with U.S. clinics that need talent. Immigration filings are handled by attorneys who specialize in TN visas; we coordinate the entire process alongside veterinarian mentors who have already passed the NAVLE. We're not a job board, we're with you at every step: exam, state license, visa, and placement.",
+      p2a: "The accelerated path for UNAM graduates 2011-2025 is based on the ",
+      p2b: " accreditation FMVZ-UNAM held from 2011 to 2025 and on the official NAVLE requirements published by the ",
+      p2c: ".",
+    },
+    whatsapp: {
+      aria: "Contact on WhatsApp",
+      text: "Hi, I'm a veterinarian and I'd like information about the VetBridge USA program",
+    },
+  },
+} as const;
+
 function Index() {
+  const [lang, setLang] = useState<Lang>("es");
+
+  // Keep the document language in sync so screen readers / SEO reflect the toggle.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  const c = COPY[lang];
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <Hero />
-      <ValueProps />
-      <PositioningBand
-        before="¿Y si lo único entre tú y ejercer en EE. UU. fuera "
-        highlight="el papeleo?"
-        body="Nosotros nos encargamos de la licencia, el NAVLE y la visa TN. Tú te concentras en tu carrera y en tu nueva vida."
-      />
-      <SalaryComparison />
-      <Lifestyle />
-      <PoolAlert />
-      <Process />
-      <LandmarksDivider />
-      <FAQ />
-      <FormSection />
-      <About />
-      <Footer />
-      <WhatsAppFloat />
-    </div>
+    <LangCtx.Provider value={{ lang, setLang }}>
+      <div className="min-h-screen bg-background text-foreground">
+        <Header />
+        <Hero />
+        <ValueProps />
+        <PositioningBand before={c.band.before} highlight={c.band.highlight} body={c.band.body} />
+        <SalaryComparison />
+        <Lifestyle />
+        <PoolAlert />
+        <Process />
+        <LandmarksDivider />
+        <FAQ />
+        <FormSection />
+        <About />
+        <Footer />
+        <WhatsAppFloat />
+      </div>
+    </LangCtx.Provider>
+  );
+}
+
+function LangToggle({ className = "" }: { className?: string }) {
+  const { lang, setLang } = useLang();
+  return (
+    <button
+      type="button"
+      onClick={() => setLang(lang === "es" ? "en" : "es")}
+      aria-label={lang === "es" ? "Switch to English" : "Cambiar a Español"}
+      className={`inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-secondary ${className}`}
+    >
+      <Globe className="h-4 w-4 text-primary" />
+      {COPY[lang].header.switchTo}
+    </button>
   );
 }
 
 function Header() {
+  const c = COPY[useLang().lang];
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
@@ -90,18 +476,22 @@ function Header() {
           </div>
           <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
         </Link>
-        <a
-          href="#formulario"
-          className="hidden rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90 sm:inline-flex"
-        >
-          Evalúa tu Perfil
-        </a>
+        <div className="flex items-center gap-2">
+          <LangToggle />
+          <a
+            href="#formulario"
+            className="hidden rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90 sm:inline-flex"
+          >
+            {c.header.profile}
+          </a>
+        </div>
       </div>
     </header>
   );
 }
 
 function Hero() {
+  const c = COPY[useLang().lang].hero;
   return (
     <section className="relative overflow-hidden">
       <div
@@ -122,42 +512,39 @@ function Hero() {
         <div className="max-w-3xl">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
             <Zap className="h-3.5 w-3.5 text-accent" />
-            Programa especializado para MVZs mexicanos
+            {c.badge}
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-            Trabaja como Médico Veterinario en <span className="text-primary">Estados Unidos</span>.
-            Gestionamos tu licencia y tu visa con abogados migratorios especializados.
+            {c.titlePre}
+            <span className="text-primary">{c.titleHi}</span>
+            {c.titlePost}
           </h1>
           <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
-            Multiplica tu salario ejerciendo tu pasión. Si eres egresado de la{" "}
-            <strong className="text-foreground">FMVZ-UNAM (2011-2025)</strong>, tienes un proceso
-            acelerado para comenzar este mismo año.
+            {c.subA}
+            <strong className="text-foreground">{c.subStrong}</strong>
+            {c.subB}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="#formulario"
               className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
             >
-              Evalúa tu Perfil Gratis
+              {c.ctaPrimary}
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="#beneficios"
               className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
             >
-              Conoce el programa
+              {c.ctaSecondary}
             </a>
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> Sin lotería H-1B
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> Colocación en clínica
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-primary" /> Prep NAVLE incluido
-            </div>
+            {c.chips.map((chip) => (
+              <div key={chip} className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary" /> {chip}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -176,47 +563,31 @@ function LandmarksDivider() {
 }
 
 function ValueProps() {
-  const items = [
-    {
-      icon: DollarSign,
-      title: "Ofertas negociadas para ti",
-      body: "Ingresos de $100,000 a $140,000 USD al año. Entrevistamos clínicas y negociamos el mejor salario y prestaciones en tu nombre.",
-    },
-    {
-      icon: Plane,
-      title: "Visa TN Directa",
-      body: "Aprovecha el tratado T-MEC: visa profesional directa, sin lotería H-1B ni esperas de años.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Contigo en cada paso",
-      body: "Preparación NAVLE, licencia estatal, visa y colocación, y acompañamiento continuo incluso ya trabajando en la clínica.",
-    },
-  ];
+  const c = COPY[useLang().lang].valueProps;
+  const icons = [DollarSign, Plane, ShieldCheck];
   return (
     <section id="beneficios" className="border-y border-border bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Todo lo que necesitas para ejercer en EE.UU.
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Un programa completo diseñado por veterinarios y abogados migratorios.
-          </p>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+          <p className="mt-4 text-muted-foreground">{c.sub}</p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {items.map(({ icon: Icon, title, body }) => (
-            <div
-              key={title}
-              className="rounded-2xl border border-border bg-card p-8 shadow-sm transition hover:shadow-md"
-            >
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary">
-                <Icon className="h-6 w-6" />
+          {c.items.map(({ title, body }, i) => {
+            const Icon = icons[i];
+            return (
+              <div
+                key={title}
+                className="rounded-2xl border border-border bg-card p-8 shadow-sm transition hover:shadow-md"
+              >
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
               </div>
-              <h3 className="mt-5 text-xl font-semibold">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -224,49 +595,28 @@ function ValueProps() {
 }
 
 function Lifestyle() {
-  const items = [
-    {
-      icon: Wallet,
-      title: "Ahorra en dólares",
-      body: "Con un salario en dólares, cada mes construyes un patrimonio que en México tomaría años.",
-    },
-    {
-      icon: Home,
-      title: "Cerca de casa",
-      body: "Muchas clínicas están a un vuelo corto de México: visita a tu familia los fines de semana.",
-    },
-    {
-      icon: Building2,
-      title: "Tu propia práctica",
-      body: "Gana experiencia, reputación y capital para algún día abrir tu propia clínica en EE.UU.",
-    },
-    {
-      icon: HeartHandshake,
-      title: "Nunca solo",
-      body: "Te acompañamos antes, durante y después de tu llegada. Tu éxito es nuestro trabajo.",
-    },
-  ];
+  const c = COPY[useLang().lang].lifestyle;
+  const icons = [Wallet, Home, Building2, HeartHandshake];
   return (
     <section className="border-y border-border bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Más que un trabajo: una nueva vida
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Ejercer en Estados Unidos abre puertas que van mucho más allá del salario.
-          </p>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+          <p className="mt-4 text-muted-foreground">{c.sub}</p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent">
-                <Icon className="h-5 w-5" />
+          {c.items.map(({ title, body }, i) => {
+            const Icon = icons[i];
+            return (
+              <div key={title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{body}</p>
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{body}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -274,6 +624,7 @@ function Lifestyle() {
 }
 
 function PoolAlert() {
+  const c = COPY[useLang().lang].pool;
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
       <div
@@ -285,20 +636,19 @@ function PoolAlert() {
       >
         <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground">
           <Zap className="h-3.5 w-3.5" />
-          Pool A, Fast Track UNAM
+          {c.badge}
         </div>
-        <h3 className="max-w-3xl text-2xl font-bold tracking-tight sm:text-3xl">
-          ¿Eres egresado de la UNAM (2011 - 2025)?
-        </h3>
+        <h3 className="max-w-3xl text-2xl font-bold tracking-tight sm:text-3xl">{c.heading}</h3>
         <p className="mt-3 max-w-3xl text-base text-foreground/80 sm:text-lg">
-          Tienes una ventaja única. Puedes <strong>saltarte el proceso ECFVG</strong>. Estás a un
-          solo examen de distancia de ejercer en EE.UU.
+          {c.bodyPre}
+          <strong>{c.bodyStrong}</strong>
+          {c.bodyPost}
         </p>
         <a
           href="#formulario"
           className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
         >
-          Reserva tu evaluación prioritaria
+          {c.cta}
           <ArrowRight className="h-4 w-4" />
         </a>
       </div>
@@ -307,30 +657,11 @@ function PoolAlert() {
 }
 
 function Process() {
-  const steps = [
-    { n: "01", t: "Evaluación de perfil", d: "Analizamos tu universidad, año y nivel de inglés." },
-    {
-      n: "02",
-      t: "Preparación NAVLE",
-      d: "Preparación inmersiva con tutores que acompañan tu avance, no solo un curso.",
-    },
-    {
-      n: "03",
-      t: "Licencia estatal",
-      d: "Gestionamos toda la documentación con la junta veterinaria.",
-    },
-    {
-      n: "04",
-      t: "Visa TN + Clínica",
-      d: "Entrevistas con clínicas patrocinadoras y apoyo con tu reubicación.",
-    },
-  ];
+  const c = COPY[useLang().lang].process;
   return (
     <section className="border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-20">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Tu camino a ejercer en EE.UU.
-        </h2>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
         <div aria-hidden className="mt-4 flex items-center gap-4 text-primary/30">
           <PawPrint className="h-4 w-4 -rotate-12" />
           <PawPrint className="h-5 w-5 rotate-6" />
@@ -339,9 +670,11 @@ function Process() {
           <PawPrint className="h-4 w-4 -rotate-12" />
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s) => (
-            <div key={s.n} className="rounded-2xl border border-border bg-card p-6">
-              <div className="text-sm font-mono font-semibold text-accent">{s.n}</div>
+          {c.steps.map((s, i) => (
+            <div key={s.t} className="rounded-2xl border border-border bg-card p-6">
+              <div className="text-sm font-mono font-semibold text-accent">
+                {String(i + 1).padStart(2, "0")}
+              </div>
               <div className="mt-2 text-lg font-semibold">{s.t}</div>
               <p className="mt-1 text-sm text-muted-foreground">{s.d}</p>
             </div>
@@ -355,6 +688,7 @@ function Process() {
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign"] as const;
 
 function FormSection() {
+  const c = COPY[useLang().lang].form;
   const navigate = useNavigate();
   const [form, setForm] = useState<FormState>(EMPTY);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -408,9 +742,7 @@ function FormSection() {
     if (err) {
       console.error("Lead submission failed:", err);
       setStatus("error");
-      setError(
-        "Hubo un error al enviar tu perfil. Intenta de nuevo o escríbenos directamente por WhatsApp (botón verde).",
-      );
+      setError(c.error);
       return;
     }
 
@@ -429,16 +761,14 @@ function FormSection() {
           <Rabbit className="h-5 w-5" />
           <Bird className="h-5 w-5" />
         </div>
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Evalúa tu Perfil</h2>
-        <p className="mt-3 text-muted-foreground">
-          Toma menos de 2 minutos. Un coordinador te contactará en 24 horas.
-        </p>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+        <p className="mt-3 text-muted-foreground">{c.sub}</p>
       </div>
       <form
         onSubmit={onSubmit}
         className="space-y-5 rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"
       >
-        <Field label="Nombre Completo">
+        <Field label={c.name}>
           <input
             name="nombre_completo"
             required
@@ -452,7 +782,7 @@ function FormSection() {
         </Field>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Correo Electrónico">
+          <Field label={c.email}>
             <input
               name="correo_electronico"
               required
@@ -463,14 +793,14 @@ function FormSection() {
               className={inputCls}
             />
           </Field>
-          <Field label="Teléfono con WhatsApp">
+          <Field label={c.phone}>
             <input
               name="telefono"
               required
               type="tel"
               minLength={7}
               maxLength={30}
-              placeholder="+52 55 1234 5678"
+              placeholder={c.phonePlaceholder}
               value={form.telefono}
               onChange={(e) => update("telefono", e.target.value)}
               className={inputCls}
@@ -479,7 +809,7 @@ function FormSection() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Universidad de Egreso">
+          <Field label={c.university}>
             <select
               name="universidad"
               required
@@ -487,12 +817,12 @@ function FormSection() {
               onChange={(e) => update("universidad", e.target.value as FormState["universidad"])}
               className={inputCls}
             >
-              <option value="">Selecciona…</option>
+              <option value="">{c.selectPlaceholder}</option>
               <option value="FMVZ-UNAM">FMVZ-UNAM</option>
-              <option value="Otra Universidad">Otra Universidad</option>
+              <option value="Otra Universidad">{c.otherUni}</option>
             </select>
           </Field>
-          <Field label="Año de Graduación">
+          <Field label={c.gradYear}>
             <select
               name="ano_graduacion"
               required
@@ -500,7 +830,7 @@ function FormSection() {
               onChange={(e) => update("ano_graduacion", e.target.value)}
               className={inputCls}
             >
-              <option value="">Selecciona…</option>
+              <option value="">{c.selectPlaceholder}</option>
               {YEARS.map((y) => (
                 <option key={y} value={y}>
                   {y}
@@ -510,7 +840,7 @@ function FormSection() {
           </Field>
         </div>
 
-        <Field label="Nivel de Inglés">
+        <Field label={c.englishLevel}>
           <select
             name="nivel_ingles"
             required
@@ -518,21 +848,24 @@ function FormSection() {
             onChange={(e) => update("nivel_ingles", e.target.value as FormState["nivel_ingles"])}
             className={inputCls}
           >
-            <option value="">Selecciona…</option>
-            <option value="Básico">Básico</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-            <option value="Fluido/Nativo">Fluido/Nativo</option>
+            <option value="">{c.selectPlaceholder}</option>
+            <option value="Básico">{c.eng.basic}</option>
+            <option value="Intermedio">{c.eng.inter}</option>
+            <option value="Avanzado">{c.eng.adv}</option>
+            <option value="Fluido/Nativo">{c.eng.fluent}</option>
           </select>
         </Field>
 
-        <Field label="¿Cuentas con licencia vigente en México?">
+        <Field label={c.licenseQ}>
           <div className="flex gap-3">
-            {(["Sí", "No"] as const).map((opt) => (
+            {([
+              { value: "Sí" as const, label: c.yes },
+              { value: "No" as const, label: c.no },
+            ]).map((opt) => (
               <label
-                key={opt}
+                key={opt.value}
                 className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition ${
-                  form.licencia_mexico === opt
+                  form.licencia_mexico === opt.value
                     ? "border-primary bg-primary/5 text-primary"
                     : "border-border bg-background text-foreground hover:bg-secondary"
                 }`}
@@ -541,17 +874,17 @@ function FormSection() {
                   type="radio"
                   name="licencia"
                   className="sr-only"
-                  checked={form.licencia_mexico === opt}
-                  onChange={() => update("licencia_mexico", opt)}
+                  checked={form.licencia_mexico === opt.value}
+                  onChange={() => update("licencia_mexico", opt.value)}
                   required
                 />
-                {opt}
+                {opt.label}
               </label>
             ))}
           </div>
         </Field>
 
-        <Field label="¿Has presentado o estudiado para el NAVLE?">
+        <Field label={c.navleQ}>
           <select
             name="navle_status"
             required
@@ -559,10 +892,10 @@ function FormSection() {
             onChange={(e) => update("navle_status", e.target.value as FormState["navle_status"])}
             className={inputCls}
           >
-            <option value="">Selecciona…</option>
-            <option value="Aprobado">Aprobado</option>
-            <option value="Estudiando">Estudiando</option>
-            <option value="No">No</option>
+            <option value="">{c.selectPlaceholder}</option>
+            <option value="Aprobado">{c.navle.passed}</option>
+            <option value="Estudiando">{c.navle.studying}</option>
+            <option value="No">{c.navle.no}</option>
           </select>
         </Field>
 
@@ -577,12 +910,10 @@ function FormSection() {
           disabled={status === "loading"}
           className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
         >
-          {status === "loading" ? "Enviando…" : "Enviar mi Perfil"}
+          {status === "loading" ? c.sending : c.submit}
           <ArrowRight className="h-4 w-4" />
         </button>
-        <p className="text-center text-xs text-muted-foreground">
-          Al enviar aceptas ser contactado por WhatsApp o correo.
-        </p>
+        <p className="text-center text-xs text-muted-foreground">{c.consent}</p>
       </form>
     </section>
   );
@@ -601,6 +932,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function Footer() {
+  const c = COPY[useLang().lang].footer;
   return (
     <footer className="border-t border-border bg-card">
       <div className="mx-auto max-w-6xl px-4 py-12">
@@ -612,14 +944,11 @@ function Footer() {
               </div>
               <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
             </div>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Conectamos veterinarios mexicanos con clínicas en Estados Unidos. Coordinamos examen
-              NAVLE, licencia estatal y visa TN junto con abogados migratorios especializados.
-            </p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Contacto</h3>
+            <h3 className="text-sm font-semibold text-foreground">{c.contact}</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
                 <a href={`mailto:${SITE.email}`} className="hover:text-foreground">
@@ -638,23 +967,23 @@ function Footer() {
               </li>
               <li>
                 <a href="#formulario" className="hover:text-foreground">
-                  Evalúa tu perfil
+                  {c.profileLink}
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Legal</h3>
+            <h3 className="text-sm font-semibold text-foreground">{c.legal}</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/privacidad" className="hover:text-foreground">
-                  Aviso de Privacidad
+                  {c.privacy}
                 </Link>
               </li>
               <li>
                 <Link to="/terminos" className="hover:text-foreground">
-                  Términos y Condiciones
+                  {c.terms}
                 </Link>
               </li>
             </ul>
@@ -663,99 +992,70 @@ function Footer() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
           <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} {SITE.name}. Todos los derechos reservados.
+            © {new Date().getFullYear()} {SITE.name}. {c.rights}
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            Hecho con cuidado para MVZs mexicanos
+            {c.madeWith}
             <PawPrint className="h-3.5 w-3.5 text-primary/50" />
           </div>
         </div>
-        <p className="mt-6 text-xs leading-relaxed text-muted-foreground/80">
-          VetBridge USA es un servicio de coordinación y reclutamiento. No es un despacho jurídico
-          ni ofrece asesoría legal migratoria; los trámites de visa los realizan abogados
-          migratorios independientes. No garantizamos la obtención de una visa, licencia o empleo;
-          los resultados dependen del perfil de cada candidato y de las autoridades
-          correspondientes.
-        </p>
+        <p className="mt-6 text-xs leading-relaxed text-muted-foreground/80">{c.disclaimer}</p>
       </div>
     </footer>
   );
 }
 
 function SalaryComparison() {
+  const c = COPY[useLang().lang].salary;
   return (
     <section className="mx-auto max-w-6xl px-4 py-20">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Misma profesión, ingresos muy distintos
-        </h2>
-        <p className="mt-4 text-muted-foreground">
-          Compara lo que gana un MVZ en México vs. en Estados Unidos.
-        </p>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+        <p className="mt-4 text-muted-foreground">{c.sub}</p>
       </div>
       <div className="mt-10 grid gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            México
+            {c.mxLabel}
           </div>
-          <div className="mt-3 text-3xl font-bold text-foreground">$250,000 - $450,000 MXN</div>
-          <div className="mt-1 text-sm text-muted-foreground">al año</div>
-          <p className="mt-4 text-sm text-muted-foreground">Promedio nacional MVZ.</p>
+          <div className="mt-3 text-3xl font-bold text-foreground">{c.mxValue}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{c.perYear}</div>
+          <p className="mt-4 text-sm text-muted-foreground">{c.mxNote}</p>
         </div>
         <div className="relative rounded-2xl border-2 border-primary bg-card p-8 shadow-md">
           <div className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
-            <Zap className="h-3.5 w-3.5" /> Con VetBridge
+            <Zap className="h-3.5 w-3.5" /> {c.usBadge}
           </div>
           <div className="text-xs font-semibold uppercase tracking-wide text-primary">
-            Estados Unidos
+            {c.usLabel}
           </div>
-          <div className="mt-3 text-3xl font-bold text-foreground">$100,000 - $140,000 USD</div>
-          <div className="mt-1 text-sm text-muted-foreground">al año</div>
-          <p className="mt-4 text-sm text-muted-foreground">Veterinario asociado.</p>
+          <div className="mt-3 text-3xl font-bold text-foreground">{c.usValue}</div>
+          <div className="mt-1 text-sm text-muted-foreground">{c.perYear}</div>
+          <p className="mt-4 text-sm text-muted-foreground">{c.usNote}</p>
         </div>
       </div>
       <p className="mt-8 text-center text-lg font-semibold text-foreground">
-        Hasta <span className="text-primary">8 veces más ingresos</span> ejerciendo la misma
-        profesión.
+        {c.footPre}
+        <span className="text-primary">{c.footHi}</span>
+        {c.footPost}
       </p>
     </section>
   );
 }
 
 function FAQ() {
-  const items = [
-    {
-      q: "¿Cuánto cuesta el programa?",
-      a: "La evaluación de tu perfil es 100% gratuita. Existen opciones para que las clínicas patrocinadoras cubran gran parte de los costos, según tu perfil. Un coordinador te explicará tu caso específico sin ningún compromiso.",
-    },
-    {
-      q: "¿Necesito hablar inglés perfecto?",
-      a: "No perfecto, pero sí funcional. El examen NAVLE y la comunicación con clientes son en inglés. Si tu nivel es intermedio, te orientamos con un plan para alcanzar el nivel necesario.",
-    },
-    {
-      q: "¿Cuánto tarda el proceso?",
-      a: "Egresados de la FMVZ-UNAM (2011-2025): desde 9-15 meses. Egresados de otras universidades: de 2 a 4 años por el proceso de equivalencia (ECFVG/PAVE). En tu evaluación gratuita te damos un cronograma personalizado.",
-    },
-    {
-      q: "¿Qué es la visa TN?",
-      a: "Es una visa de trabajo del tratado T-MEC exclusiva para profesionistas mexicanos y canadienses. La profesión de veterinario está incluida. No tiene lotería ni cupo anual como la H-1B, se renueva indefinidamente en periodos de 3 años, y se tramita directamente en el consulado de EE.UU. en México.",
-    },
-    {
-      q: "¿Puedo llevar a mi familia?",
-      a: "Sí. Tu cónyuge e hijos pueden acompañarte con la visa TD, derivada de tu visa TN.",
-    },
-  ];
+  const c = COPY[useLang().lang].faq;
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section className="border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-3xl px-4 py-20">
         <div className="text-center">
           <Cat aria-hidden className="mx-auto mb-3 h-6 w-6 text-primary/40" />
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Preguntas frecuentes</h2>
-          <p className="mt-3 text-muted-foreground">Resolvemos las dudas más comunes.</p>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+          <p className="mt-3 text-muted-foreground">{c.sub}</p>
         </div>
         <div className="mt-10 space-y-3">
-          {items.map((it, i) => {
+          {c.items.map((it, i) => {
             const isOpen = open === i;
             return (
               <div key={i} className="rounded-xl border border-border bg-card">
@@ -787,19 +1087,14 @@ function FAQ() {
 }
 
 function About() {
+  const c = COPY[useLang().lang].about;
   return (
     <section className="border-t border-border">
       <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Quiénes somos</h2>
-        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-          VetBridge USA conecta veterinarios mexicanos con clínicas en Estados Unidos que necesitan
-          talento. Los trámites migratorios los realizan abogados especializados en visas TN;
-          nosotros coordinamos todo el proceso junto con mentores veterinarios que ya aprobaron el
-          NAVLE. No somos una bolsa de trabajo: te acompañamos en cada paso, examen, licencia
-          estatal, visa y colocación.
-        </p>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{c.p1}</p>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-          El proceso acelerado para egresados UNAM 2011-2025 se basa en la acreditación{" "}
+          {c.p2a}
           <a
             href="https://www.avma.org"
             target="_blank"
@@ -807,9 +1102,8 @@ function About() {
             className="underline hover:text-foreground"
           >
             AVMA
-          </a>{" "}
-          que la FMVZ-UNAM mantuvo de 2011 a 2025 y en los requisitos oficiales del NAVLE publicados
-          por el{" "}
+          </a>
+          {c.p2b}
           <a
             href="https://www.icva.net"
             target="_blank"
@@ -818,29 +1112,22 @@ function About() {
           >
             ICVA
           </a>
-          .
+          {c.p2c}
         </p>
-        {/*
-          PLACEHOLDER, ABOGADO MIGRATORIO ALIADO (pendiente de convenio firmado).
-          Cuando se firme el convenio, descomentar y completar:
-
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Asesoría migratoria a cargo de [NOMBRE DEL ABOGADO/DESPACHO],
-            [CREDENCIALES, p.ej. miembro de AILA, admitido en la barra de X].
-          </p>
-        */}
       </div>
     </section>
   );
 }
 
 function WhatsAppFloat() {
+  const c = COPY[useLang().lang].whatsapp;
+  const href = `https://wa.me/13232503726?text=${encodeURIComponent(c.text)}`;
   return (
     <a
-      href="https://wa.me/13232503726?text=Hola%2C%20soy%20veterinario%2Fa%20y%20quiero%20información%20sobre%20el%20programa%20VetBridge%20USA"
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Contactar por WhatsApp"
+      aria-label={c.aria}
       className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition hover:scale-105"
       style={{ backgroundColor: "#25D366" }}
     >

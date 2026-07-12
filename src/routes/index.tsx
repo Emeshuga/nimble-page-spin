@@ -44,15 +44,15 @@ function Home() {
       <SiteHeader />
       <Hero />
       <Problem />
+      <SolutionSplit />
+      <Guarantee />
+      <MidCta />
+      <HowItWorks />
       <PositioningBand
         before="The shortage isn't a shortage. "
         highlight="It's a border."
         body="Licensed veterinarians in Mexico and Canada, understaffed clinics across the U.S. We bridge them, handling licensing, the TN visa, and relocation end to end."
       />
-      <SolutionSplit />
-      <Guarantee />
-      <MidCta />
-      <HowItWorks />
       <FinalCta />
       <SiteFooter />
     </div>
