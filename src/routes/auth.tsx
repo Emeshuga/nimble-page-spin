@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Log in — VetBridge USA" },
+      { title: "Log in | VetBridge USA" },
       { name: "description", content: "Log in or create an account: veterinarian or clinic." },
       { name: "robots", content: "noindex" },
     ],

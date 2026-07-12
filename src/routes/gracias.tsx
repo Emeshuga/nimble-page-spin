@@ -12,7 +12,7 @@ export const Route = createFileRoute("/gracias")({
   head: () => ({
     meta: [
       { name: "robots", content: "noindex, nofollow" },
-      { title: "¡Recibimos tu perfil! — VetBridge USA" },
+      { title: "¡Recibimos tu perfil! | VetBridge USA" },
     ],
   }),
   component: Gracias,

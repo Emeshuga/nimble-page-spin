@@ -6,7 +6,7 @@ import { POSTS, formatDate } from "@/lib/blog";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "VetBridge USA Blog — Working as a veterinarian in the U.S." },
+      { title: "VetBridge USA Blog | Working as a Veterinarian in the U.S." },
       {
         name: "description",
         content:

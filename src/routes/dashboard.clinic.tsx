@@ -5,7 +5,7 @@ import { Stethoscope, LogOut, ArrowRight, MapPin, Info } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/clinic")({
   head: () => ({
-    meta: [{ title: "Clinic Dashboard — VetBridge USA" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Clinic Dashboard | VetBridge USA" }, { name: "robots", content: "noindex" }],
   }),
   component: ClinicDashboard,
 });
@@ -165,7 +165,7 @@ function ClinicDashboard() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-xl font-semibold">Sample candidate profiles</h2>
             <div className="inline-flex items-center gap-1.5 rounded-full bg-accent/15 px-2.5 py-1 text-xs font-medium text-accent">
-              <Info className="h-3.5 w-3.5" /> Illustrative — request candidates to see current
+              <Info className="h-3.5 w-3.5" /> Illustrative, request candidates to see current
               availability
             </div>
           </div>
@@ -180,7 +180,7 @@ function ClinicDashboard() {
             ))}
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Sample profiles — no real names or contact details are ever shown here. Submit a request
+            Sample profiles, no real names or contact details are ever shown here. Submit a request
             to review current, matched candidates.
           </p>
         </section>

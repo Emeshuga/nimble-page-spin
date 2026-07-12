@@ -19,15 +19,15 @@ import { submitClinicToHubSpot } from "@/lib/hubspot";
 export const Route = createFileRoute("/clinics")({
   head: () => ({
     meta: [
-      { title: "VetBridge USA for Clinics — Licensed, visa-ready veterinarians" },
+      { title: "VetBridge USA for Clinics | Licensed, Visa-Ready Veterinarians" },
       {
         name: "description",
         content:
-          "Fill vacant DVM roles with licensed international veterinarians. Canadian DVMs placeable in weeks, UNAM-accredited on 9–15 months, NY limited permits let ECFVG vets start immediately. 3-year placement guarantee.",
+          "Fill vacant DVM roles with licensed international veterinarians. Canadian DVMs placeable in weeks, UNAM-accredited on 9-15 months, NY limited permits let ECFVG vets start immediately. 3-year placement guarantee.",
       },
       {
         property: "og:title",
-        content: "VetBridge USA for Clinics — Your next DVM is already licensed and visa-ready",
+        content: "VetBridge USA for Clinics, Your next DVM is already licensed and visa-ready",
       },
       {
         property: "og:description",
@@ -80,7 +80,7 @@ function Hero() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
             Every week a DVM role sits open is a week of turned-away patients, burned-out staff, and
-            lost revenue. We source licensed international veterinarians — Mexico and Canada — and
+            lost revenue. We source licensed international veterinarians, Mexico and Canada, and
             place them into U.S. clinics with a 3-year replacement guarantee.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -114,8 +114,8 @@ function Speed() {
     {
       icon: Clock,
       flag: "🇲🇽 Mexico",
-      title: "Accelerated 9–15 month path",
-      body: "UNAM-accredited Mexican DVMs (FMVZ-UNAM 2011–2025) work under AVMA accreditation — they skip ECFVG and go directly to state licensing and TN visa.",
+      title: "Accelerated 9-15 month path",
+      body: "UNAM-accredited Mexican DVMs (FMVZ-UNAM 2011-2025) work under AVMA accreditation, they skip ECFVG and go directly to state licensing and TN visa.",
     },
   ];
   return (
@@ -170,7 +170,7 @@ function NewYork() {
         </h2>
         <p className="mt-5 max-w-3xl text-base leading-relaxed text-foreground/85 sm:text-lg">
           ECFVG-certified international veterinarians qualify for a New York State{" "}
-          <strong className="text-foreground">limited permit</strong> — allowing them to practice
+          <strong className="text-foreground">limited permit</strong>, allowing them to practice
           immediately under the supervision of a NY-licensed veterinarian while they complete the
           NAVLE. The permit is valid for up to two years.
         </p>
@@ -184,7 +184,7 @@ function NewYork() {
             {
               icon: Users,
               title: "Experienced candidates",
-              body: "Many ECFVG-pathway DVMs bring 7–15 years of experience — including running entire hospitals — with strong English.",
+              body: "Many ECFVG-pathway DVMs bring 7-15 years of experience, including running entire hospitals, with strong English.",
             },
             {
               icon: Zap,
@@ -518,7 +518,7 @@ function RequestForm() {
                 onChange={(e) => set("urgency", e.target.value)}
               >
                 <option value="">Select…</option>
-                <option>ASAP — role open now</option>
+                <option>ASAP, role open now</option>
                 <option>Within 3 months</option>
                 <option>Within 6 months</option>
                 <option>Planning ahead (6+ months)</option>
@@ -617,7 +617,7 @@ function FAQ() {
   const items = [
     {
       q: "How fast can you place a candidate?",
-      a: "Canadian DVMs already NAVLE-passed can be placed in weeks (TN visa is issued at the border). UNAM-accredited Mexican DVMs typically 9–15 months on the accelerated path. NY limited permit candidates can begin practicing immediately under supervision.",
+      a: "Canadian DVMs already NAVLE-passed can be placed in weeks (TN visa is issued at the border). UNAM-accredited Mexican DVMs typically 9-15 months on the accelerated path. NY limited permit candidates can begin practicing immediately under supervision.",
     },
     {
       q: "How does the 3-year placement guarantee work?",

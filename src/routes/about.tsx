@@ -6,11 +6,11 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About VetBridge USA — Bridging veterinary talent and U.S. clinics" },
+      { title: "About VetBridge USA | Bridging Veterinary Talent and U.S. Clinics" },
       {
         name: "description",
         content:
-          "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. clinics — coordinating licensing, TN visa, and relocation end-to-end.",
+          "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. clinics, coordinating licensing, TN visa, and relocation end-to-end.",
       },
     ],
   }),
@@ -32,7 +32,7 @@ function About() {
     {
       icon: HeartHandshake,
       title: "End-to-end support",
-      body: "From evaluation to first shift and beyond — exam prep, licensing, visa (via independent attorneys), relocation, and post-placement support.",
+      body: "From evaluation to first shift and beyond, exam prep, licensing, visa (via independent attorneys), relocation, and post-placement support.",
     },
   ];
   return (
@@ -47,10 +47,10 @@ function About() {
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
           VetBridge USA connects experienced veterinarians from Mexico and Canada with veterinary
-          clinics and hospitals across the United States. We coordinate the entire journey —
+          clinics and hospitals across the United States. We coordinate the entire journey -
           credential evaluation, NAVLE preparation, state licensing, the TN visa (handled by
-          independent immigration attorneys — we are not a law firm), relocation, and ongoing
-          support once our veterinarians are working.
+          independent immigration attorneys, we are not a law firm), relocation, and ongoing support
+          once our veterinarians are working.
         </p>
       </section>
 
@@ -76,7 +76,7 @@ function About() {
         </h2>
         <p className="mt-4 leading-relaxed text-muted-foreground">
           Canadian veterinary schools are accredited by the AVMA Council on Education, and graduates
-          of the FMVZ-UNAM during its AVMA accreditation period (2011–2025) are recognized as
+          of the FMVZ-UNAM during its AVMA accreditation period (2011-2025) are recognized as
           graduates of an accredited school. Combined with the NAVLE (administered by the ICVA) and
           the USMCA TN visa category for veterinarians, this creates legitimate, well-defined
           pathways for international DVMs to practice in the United States. Eligibility is always
@@ -85,14 +85,14 @@ function About() {
       </section>
 
       {/*
-        PLACEHOLDER — TEAM / FOUNDERS SECTION (to fill in later).
+        PLACEHOLDER, TEAM / FOUNDERS SECTION (to fill in later).
         Add founder names, photos, and credentials here once finalized.
       */}
 
       <section className="border-t border-border">
         <div className="mx-auto max-w-3xl px-4 py-20 text-center">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Whether you're hiring or looking to practice in the U.S. — start here.
+            Whether you're hiring or looking to practice in the U.S., start here.
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link

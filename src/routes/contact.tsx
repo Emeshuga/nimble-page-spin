@@ -12,7 +12,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Get in touch with VetBridge USA — veterinarians looking to practice in the U.S. and clinics looking to hire licensed international DVMs.",
+          "Get in touch with VetBridge USA, veterinarians looking to practice in the U.S. and clinics looking to hire licensed international DVMs.",
       },
     ],
   }),
@@ -99,7 +99,7 @@ function Contact() {
                 <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/10 text-primary">
                   <CheckCircle2 className="h-8 w-8" />
                 </div>
-                <h2 className="mt-6 text-2xl font-bold">Thanks — message received.</h2>
+                <h2 className="mt-6 text-2xl font-bold">Thanks, message received.</h2>
                 <p className="mt-3 text-muted-foreground">
                   We'll get back to you within one business day.
                 </p>

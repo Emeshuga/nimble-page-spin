@@ -5,7 +5,7 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/terminos")({
   head: () => ({
     meta: [
-      { title: "Términos y Condiciones — VetBridge USA" },
+      { title: "Términos y Condiciones | VetBridge USA" },
       {
         name: "description",
         content:
@@ -62,7 +62,7 @@ function Terminos() {
       <LegalSection heading="5. Elegibilidad de la ruta acelerada">
         <p>
           La ruta acelerada mencionada aplica a egresados de la FMVZ-UNAM durante el periodo en que
-          dicha facultad mantuvo la acreditación de la AVMA (2011–2025). La elegibilidad de cada
+          dicha facultad mantuvo la acreditación de la AVMA (2011-2025). La elegibilidad de cada
           persona se confirma de forma individual conforme a los requisitos oficiales vigentes.
         </p>
       </LegalSection>

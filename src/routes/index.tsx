@@ -17,7 +17,7 @@ import { CandidateDeck } from "@/components/candidate-deck";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VetBridge USA — Licensed international DVMs for U.S. clinics" },
+      { title: "VetBridge USA | Licensed International DVMs for U.S. Clinics" },
       {
         name: "description",
         content:
@@ -25,12 +25,12 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "VetBridge USA — Licensed international DVMs for U.S. clinics",
+        content: "VetBridge USA | Licensed International DVMs for U.S. Clinics",
       },
       {
         property: "og:description",
         content:
-          "Bridging Mexican and Canadian veterinary talent with U.S. clinics. Licensing, TN visa, relocation — end-to-end. 3-year placement guarantee.",
+          "Bridging Mexican and Canadian veterinary talent with U.S. clinics. Licensing, TN visa, relocation, end-to-end. 3-year placement guarantee.",
       },
     ],
   }),
@@ -77,7 +77,7 @@ function Hero() {
               veterinarian.
             </h1>
             <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
-              Licensed DVMs from Mexico and Canada — credentialed, visa-eligible, and ready. Browse
+              Licensed DVMs from Mexico and Canada, credentialed, visa-eligible, and ready. Browse
               the pipeline; we handle licensing, TN visa, and relocation end-to-end.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -129,7 +129,7 @@ function Problem() {
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Every unfilled shift means turned-away patients, overworked staff, and lost revenue. The
-            talent exists — it's just on the other side of a licensing and visa process most clinics
+            talent exists, it's just on the other side of a licensing and visa process most clinics
             can't navigate alone.
           </p>
         </div>
@@ -152,9 +152,9 @@ function SolutionSplit() {
           title="Practice in the U.S. Multiply your income."
           body="If you're a licensed DVM in Mexico or Canada, we handle NAVLE prep, state licensing, TN visa, and placement in a sponsoring U.S. clinic."
           bullets={[
-            "Salaries of $100K–$140K USD",
-            "TN visa — no H-1B lottery",
-            "Fast track for FMVZ-UNAM graduates 2011–2025",
+            "Salaries of $100K-$140K USD",
+            "TN visa, no H-1B lottery",
+            "Fast track for FMVZ-UNAM graduates 2011-2025",
           ]}
           cta={{ to: "/veterinarios", label: "See the veterinarian program" }}
         />
@@ -165,7 +165,7 @@ function SolutionSplit() {
           body="We source, credential, and place international veterinarians so you can fill roles that have sat vacant for months."
           bullets={[
             "Canadian DVMs often placeable in weeks",
-            "UNAM-accredited candidates on a 9–15 month path",
+            "UNAM-accredited candidates on a 9-15 month path",
             "New York clinics: candidates available to start immediately.",
           ]}
           cta={{ to: "/clinics", label: "Request candidates" }}
@@ -241,7 +241,7 @@ function Guarantee() {
             fee.
           </h2>
           <p className="mt-3 text-primary-foreground/80">
-            A three-year replacement guarantee — because we only place people we'd bet three years
+            A three-year replacement guarantee, because we only place people we'd bet three years
             on.
           </p>
         </div>
@@ -258,7 +258,7 @@ function MidCta() {
           <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">Ready to move?</h3>
           <p className="mt-2 text-muted-foreground">
             Whether you're a veterinarian building a career in the U.S., or a clinic that needs to
-            fill a role — start here.
+            fill a role, start here.
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-start gap-3 sm:justify-end">
@@ -300,7 +300,7 @@ function HowItWorks() {
     {
       icon: ShieldCheck,
       title: "3-year guarantee",
-      body: "If the placement doesn't stick, we replace — no additional placement fee.",
+      body: "If the placement doesn't stick, we replace, no additional placement fee.",
     },
   ];
   return (
@@ -309,7 +309,7 @@ function HowItWorks() {
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">What we handle</h2>
           <p className="mt-4 text-muted-foreground">
-            End-to-end — so your clinic gets a productive DVM, and our veterinarian gets a career.
+            End-to-end, so your clinic gets a productive DVM, and our veterinarian gets a career.
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -336,7 +336,7 @@ function FinalCta() {
       </h2>
       <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
         Whether you're a veterinarian building a career in the U.S., or a clinic that needs to fill
-        a role — start here.
+        a role, start here.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link

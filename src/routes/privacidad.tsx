@@ -5,7 +5,7 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/privacidad")({
   head: () => ({
     meta: [
-      { title: "Aviso de Privacidad — VetBridge USA" },
+      { title: "Aviso de Privacidad | VetBridge USA" },
       {
         name: "description",
         content:

@@ -124,7 +124,7 @@ function Hero() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
             Multiplica tu salario ejerciendo tu pasión. Si eres egresado de la{" "}
-            <strong className="text-foreground">FMVZ-UNAM (2011–2025)</strong>, tienes un proceso
+            <strong className="text-foreground">FMVZ-UNAM (2011-2025)</strong>, tienes un proceso
             acelerado para comenzar este mismo año.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -184,7 +184,7 @@ function ValueProps() {
     {
       icon: ShieldCheck,
       title: "Contigo en cada paso",
-      body: "Preparación NAVLE, licencia estatal, visa y colocación — y acompañamiento continuo incluso ya trabajando en la clínica.",
+      body: "Preparación NAVLE, licencia estatal, visa y colocación, y acompañamiento continuo incluso ya trabajando en la clínica.",
     },
   ];
   return (
@@ -279,10 +279,10 @@ function PoolAlert() {
       >
         <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground">
           <Zap className="h-3.5 w-3.5" />
-          Pool A — Fast Track UNAM
+          Pool A, Fast Track UNAM
         </div>
         <h3 className="max-w-3xl text-2xl font-bold tracking-tight sm:text-3xl">
-          ¿Eres egresado de la UNAM (2011 – 2025)?
+          ¿Eres egresado de la UNAM (2011 - 2025)?
         </h3>
         <p className="mt-3 max-w-3xl text-base text-foreground/80 sm:text-lg">
           Tienes una ventaja única. Puedes <strong>saltarte el proceso ECFVG</strong>. Estás a un
@@ -389,7 +389,7 @@ function FormSection() {
     let { error: err } = await (supabase as any).from("candidates").insert({ ...payload, ...utm });
 
     // Until the utm_* columns exist in the DB, an insert that includes them is
-    // rejected with "column not found" — retry without UTM rather than losing the lead.
+    // rejected with "column not found", retry without UTM rather than losing the lead.
     if (
       err &&
       Object.keys(utm).length > 0 &&
@@ -692,7 +692,7 @@ function SalaryComparison() {
           <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             México
           </div>
-          <div className="mt-3 text-3xl font-bold text-foreground">$250,000 – $450,000 MXN</div>
+          <div className="mt-3 text-3xl font-bold text-foreground">$250,000 - $450,000 MXN</div>
           <div className="mt-1 text-sm text-muted-foreground">al año</div>
           <p className="mt-4 text-sm text-muted-foreground">Promedio nacional MVZ.</p>
         </div>
@@ -703,7 +703,7 @@ function SalaryComparison() {
           <div className="text-xs font-semibold uppercase tracking-wide text-primary">
             Estados Unidos
           </div>
-          <div className="mt-3 text-3xl font-bold text-foreground">$100,000 – $140,000 USD</div>
+          <div className="mt-3 text-3xl font-bold text-foreground">$100,000 - $140,000 USD</div>
           <div className="mt-1 text-sm text-muted-foreground">al año</div>
           <p className="mt-4 text-sm text-muted-foreground">Veterinario asociado.</p>
         </div>
@@ -728,7 +728,7 @@ function FAQ() {
     },
     {
       q: "¿Cuánto tarda el proceso?",
-      a: "Egresados de la FMVZ-UNAM (2011–2025): desde 9–15 meses. Egresados de otras universidades: de 2 a 4 años por el proceso de equivalencia (ECFVG/PAVE). En tu evaluación gratuita te damos un cronograma personalizado.",
+      a: "Egresados de la FMVZ-UNAM (2011-2025): desde 9-15 meses. Egresados de otras universidades: de 2 a 4 años por el proceso de equivalencia (ECFVG/PAVE). En tu evaluación gratuita te damos un cronograma personalizado.",
     },
     {
       q: "¿Qué es la visa TN?",
@@ -789,11 +789,11 @@ function About() {
           VetBridge USA conecta veterinarios mexicanos con clínicas en Estados Unidos que necesitan
           talento. Los trámites migratorios los realizan abogados especializados en visas TN;
           nosotros coordinamos todo el proceso junto con mentores veterinarios que ya aprobaron el
-          NAVLE. No somos una bolsa de trabajo: te acompañamos en cada paso — examen, licencia
+          NAVLE. No somos una bolsa de trabajo: te acompañamos en cada paso, examen, licencia
           estatal, visa y colocación.
         </p>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-          El proceso acelerado para egresados UNAM 2011–2025 se basa en la acreditación{" "}
+          El proceso acelerado para egresados UNAM 2011-2025 se basa en la acreditación{" "}
           <a
             href="https://www.avma.org"
             target="_blank"
@@ -815,12 +815,12 @@ function About() {
           .
         </p>
         {/*
-          PLACEHOLDER — ABOGADO MIGRATORIO ALIADO (pendiente de convenio firmado).
+          PLACEHOLDER, ABOGADO MIGRATORIO ALIADO (pendiente de convenio firmado).
           Cuando se firme el convenio, descomentar y completar:
 
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             Asesoría migratoria a cargo de [NOMBRE DEL ABOGADO/DESPACHO],
-            [CREDENCIALES — p.ej. miembro de AILA, admitido en la barra de X].
+            [CREDENCIALES, p.ej. miembro de AILA, admitido en la barra de X].
           </p>
         */}
       </div>

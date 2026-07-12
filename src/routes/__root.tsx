@@ -32,7 +32,7 @@ const ORGANIZATION_JSONLD = JSON.stringify({
   logo: `${SITE_URL}/apple-touch-icon.png`,
   email: "hello@vetbridgeusa.com",
   description:
-    "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. veterinary clinics — coordinating licensing, TN visa, and relocation.",
+    "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. veterinary clinics, coordinating licensing, TN visa, and relocation.",
 });
 
 function NotFoundComponent() {
@@ -100,7 +100,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "VetBridge USA — Licensed international DVMs for U.S. clinics" },
+      { title: "VetBridge USA | Licensed International DVMs for U.S. Clinics" },
       {
         name: "description",
         content:

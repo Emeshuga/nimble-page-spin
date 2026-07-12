@@ -1,6 +1,6 @@
 /**
  * Illustrative sample candidate profiles for the homepage deck. These are
- * representative examples, not real people — the deck carries a "sample
+ * representative examples, not real people, the deck carries a "sample
  * profiles" note. Later this can be fed anonymized rows from the database.
  */
 export type Candidate = {

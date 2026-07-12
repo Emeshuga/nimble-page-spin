@@ -6,7 +6,7 @@ import { Stethoscope, LogOut, MessageCircle, CheckCircle2, Circle } from "lucide
 export const Route = createFileRoute("/dashboard/vet")({
   head: () => ({
     meta: [
-      { title: "Panel del Veterinario — VetBridge USA" },
+      { title: "Panel del Veterinario | VetBridge USA" },
       { name: "robots", content: "noindex" },
     ],
   }),
