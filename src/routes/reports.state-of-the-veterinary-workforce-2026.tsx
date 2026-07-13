@@ -97,13 +97,20 @@ function DownloadGate() {
 
   if (!open) {
     return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-      >
-        <FileDown className="h-4 w-4" /> Download the report (PDF)
-      </button>
+      <div className="max-w-md">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+        >
+          <FileDown className="h-4 w-4" /> Download the PDF + hiring toolkit
+        </button>
+        <p className="mt-3 text-sm text-muted-foreground">
+          The PDF edition adds three tools not published on this page: the TN-visa hiring
+          checklist with timelines, a cost-of-vacancy worksheet, and a shareable key-stats sheet
+          with state salary data.
+        </p>
+      </div>
     );
   }
 
@@ -112,7 +119,13 @@ function DownloadGate() {
       onSubmit={handleSubmit}
       className="max-w-md rounded-2xl border border-border bg-card p-6 shadow-sm"
     >
-      <p className="text-sm font-semibold text-foreground">Get the PDF</p>
+      <p className="text-sm font-semibold text-foreground">Get the PDF + hiring toolkit</p>
+      <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
+        <li>· The full report, formatted for printing and sharing</li>
+        <li>· TN-visa hiring checklist with typical timelines</li>
+        <li>· Cost-of-vacancy worksheet for your own numbers</li>
+        <li>· Key-stats sheet with the highest-paying states</li>
+      </ul>
       <div className="mt-4 grid gap-3">
         <input
           type="text"
@@ -276,6 +289,128 @@ function BarChart({
         );
       })}
     </svg>
+  );
+}
+
+/* ---------- PDF-only toolkit appendices ---------- */
+
+function AppendixShell({
+  label,
+  title,
+  children,
+}: {
+  label: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      className="mx-auto hidden max-w-4xl px-4 py-10 print:block"
+      style={{ breakBefore: "page" }}
+    >
+      <div className="text-sm font-semibold uppercase tracking-wide text-accent">{label}</div>
+      <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground">{title}</h2>
+      <div className="mt-6 space-y-4 leading-relaxed text-muted-foreground">{children}</div>
+    </section>
+  );
+}
+
+function ChecklistItem({ n, title, body }: { n: number; title: string; body: string }) {
+  return (
+    <div className="flex gap-3 rounded-lg border border-border p-3">
+      <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+        {n}
+      </div>
+      <div>
+        <div className="text-sm font-semibold text-foreground">{title}</div>
+        <div className="mt-0.5 text-sm">{body}</div>
+      </div>
+    </div>
+  );
+}
+
+function WorksheetLine({ label, unit }: { label: string; unit?: string }) {
+  return (
+    <div className="flex items-baseline justify-between gap-4 border-b border-dashed border-border py-2.5 text-sm">
+      <span>{label}</span>
+      <span className="shrink-0 font-mono text-muted-foreground">{unit ?? ""} ______________</span>
+    </div>
+  );
+}
+
+/** Rendered only in print — this content is the PDF's exclusive value. */
+function PrintAppendices() {
+  return (
+    <>
+      <AppendixShell
+        label="Toolkit · Appendix A"
+        title="The TN-visa hiring checklist for clinics"
+      >
+        <p>
+          The end-to-end sequence for hiring a licensed veterinarian from Mexico or Canada.
+          Typical timelines: a licensed Canadian veterinarian who has already passed the NAVLE is
+          often placeable in weeks to a few months; a UNAM graduate from the 2011-2025
+          accreditation window runs roughly 9 to 15 months; other internationally trained
+          veterinarians first complete an equivalency program (ECFVG or PAVE), which typically
+          takes 2 to 4 years.
+        </p>
+        <div className="grid gap-2">
+          <ChecklistItem n={1} title="Define the role" body="Duties, species focus, salary band, state, and start-date flexibility. The offer must be for a professional veterinarian role to qualify for TN status." />
+          <ChecklistItem n={2} title="Identify the candidate's pathway" body="Licensed Canadian DVM with NAVLE passed (fastest) · UNAM 2011-2025 graduate (accelerated) · other international graduate (ECFVG/PAVE first)." />
+          <ChecklistItem n={3} title="Verify credentials" body="Degree, NAVLE status, English proficiency, and any existing licenses. Ask for documentation up front." />
+          <ChecklistItem n={4} title="Plan state licensing" body="Requirements and processing times vary by state. Some states offer limited or provisional permits that allow supervised practice while the full license is processed." />
+          <ChecklistItem n={5} title="Extend a TN-compliant job offer" body="Written offer letter stating the professional role, duration (up to three years), and compensation." />
+          <ChecklistItem n={6} title="Engage an immigration attorney" body="The TN application should be prepared by an independent immigration attorney, not the recruiter. VetBridge USA is not a law firm; visa work is performed by independent immigration attorneys." />
+          <ChecklistItem n={7} title="Visa adjudication" body="Mexican citizens apply at a U.S. consulate in Mexico. Canadian citizens can be adjudicated directly at the border or airport preclearance." />
+          <ChecklistItem n={8} title="Relocation" body="Housing, transportation, banking, and DEA registration where applicable. A structured relocation plan protects the start date." />
+          <ChecklistItem n={9} title="Onboard for retention" body="Mentorship, gradual caseload ramp, and community connection. Retention is where the placement pays for itself." />
+          <ChecklistItem n={10} title="Calendar the renewal" body="TN status is issued in up-to-three-year increments and is renewable. Track the expiry date from day one." />
+        </div>
+      </AppendixShell>
+
+      <AppendixShell label="Toolkit · Appendix B" title="Cost-of-vacancy worksheet">
+        <p>
+          Fill in your own numbers to estimate what an open DVM seat costs your practice each
+          month. There are no industry-average placeholders here on purpose: your appointment
+          volume and revenue per visit are the numbers that matter.
+        </p>
+        <div>
+          <WorksheetLine label="A. Appointments one veterinarian handles per week" />
+          <WorksheetLine label="B. Average revenue per appointment" unit="$" />
+          <WorksheetLine label="C. Weekly revenue capacity of the open role (A × B)" unit="$" />
+          <WorksheetLine label="D. Weeks the role has been (or will be) open" />
+          <WorksheetLine label="E. Revenue not captured while vacant (C × D)" unit="$" />
+          <WorksheetLine label="F. Recruiter fees paid or quoted to date" unit="$" />
+          <WorksheetLine label="G. Relief / locum coverage spend" unit="$" />
+          <WorksheetLine label="H. Total cost of the vacancy (E + F + G)" unit="$" />
+        </div>
+        <p className="text-sm">
+          Line H understates the true cost: it excludes the burnout load on your remaining
+          doctors, which the Merck Animal Health Wellbeing Study estimates costs the profession
+          about $1.93 billion per year, and the clients who quietly move to a practice that can
+          see them sooner.
+        </p>
+      </AppendixShell>
+
+      <AppendixShell label="Toolkit · Appendix C" title="Key stats — shareable summary">
+        <p>Every figure below is cited to its primary source in the report's methodology section.</p>
+        <ul className="list-disc space-y-2 pl-5 text-sm">
+          <li>133,475 U.S. veterinarians in 2025; roughly 69% are women. (AVMA)</li>
+          <li>Median veterinarian pay: $125,510 as of May 2024; employment projected to grow 10% from 2024 to 2034. (BLS)</li>
+          <li>Highest-paying states, mean annual wage: Massachusetts $162,030, California $158,610, Hawaii $157,770. (BLS OES, May 2024)</li>
+          <li>95 million U.S. households own a pet; industry spending hit $158 billion in 2025, projected at $165 billion in 2026. (APPA)</li>
+          <li>Veterinary care takes 32.4% of household pet spending; average household pet spend was about $1,700 in 2025. (AVMA)</li>
+          <li>Projected shortfall of 14,000-24,000 companion-animal veterinarians by 2030 (Mars Veterinary Health); a 2024 AVMA-commissioned study projects supply keeping pace through 2035 — the forecast is contested, the current market tightness is not.</li>
+          <li>NAVLE pass rate: 95% in 2020, 86% in 2023, 88% in 2024. (ICVA)</li>
+          <li>About half of veterinarians report burnout; estimated cost to the profession: $1.93 billion per year. (Merck Animal Health)</li>
+          <li>An average of just 282 foreign-trained veterinarians pass the NAVLE each year. (AAVMC)</li>
+        </ul>
+        <p className="text-sm">
+          Cite freely with attribution: VetBridge USA, 2026 State of the Veterinary Workforce ·
+          www.vetbridgeusa.com/reports/state-of-the-veterinary-workforce-2026
+        </p>
+      </AppendixShell>
+    </>
   );
 }
 
@@ -585,6 +720,10 @@ function Report() {
           </div>
         </div>
       </section>
+
+      {/* PDF-only toolkit appendices: these render in print (the downloadable
+          PDF) but never on screen — they are the download's added value. */}
+      <PrintAppendices />
 
       <div className="print:hidden">
         <SiteFooter />
