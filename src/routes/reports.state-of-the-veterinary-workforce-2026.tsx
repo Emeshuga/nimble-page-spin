@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent, ReactNode } from "react";
+import { ArrowRight, FileDown } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { PositioningBand } from "@/components/positioning-band";
+import { submitReportDownloadToHubSpot } from "@/lib/hubspot";
 
 const TITLE = "2026 State of the Veterinary Workforce Report";
 const DESCRIPTION =
@@ -44,6 +46,117 @@ export const Route = createFileRoute("/reports/state-of-the-veterinary-workforce
 });
 
 /* ---------- building blocks ---------- */
+
+const PDF_PATH = "/vetbridge-2026-state-of-the-veterinary-workforce.pdf";
+
+/**
+ * Soft email gate on the PDF download. The web report stays fully open; the
+ * PDF captures the lead. HubSpot submission is fire-and-forget and the
+ * download always starts on submit, so a CRM hiccup never blocks the user.
+ */
+function DownloadGate() {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("Hiring clinic");
+  const [done, setDone] = useState(false);
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    void submitReportDownloadToHubSpot({
+      name,
+      email,
+      role,
+      report: "2026 State of the Veterinary Workforce",
+    });
+    setDone(true);
+    // Anchor-click download keeps the page alive (unlike a location change),
+    // so the CRM request above is never cut short.
+    const a = document.createElement("a");
+    a.href = PDF_PATH;
+    a.download = "";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  if (done) {
+    return (
+      <div className="max-w-md rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <p className="text-sm font-semibold text-foreground">Your download has started.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          If it didn't,{" "}
+          <a href={PDF_PATH} download className="font-medium text-primary underline underline-offset-2">
+            download the PDF directly
+          </a>
+          .
+        </p>
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+      >
+        <FileDown className="h-4 w-4" /> Download the report (PDF)
+      </button>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md rounded-2xl border border-border bg-card p-6 shadow-sm"
+    >
+      <p className="text-sm font-semibold text-foreground">Get the PDF</p>
+      <div className="mt-4 grid gap-3">
+        <input
+          type="text"
+          name="name"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Your name"
+          className="rounded-md border border-border bg-background px-3 py-2.5 text-sm outline-none ring-ring focus:ring-2"
+        />
+        <input
+          type="email"
+          name="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Work email"
+          className="rounded-md border border-border bg-background px-3 py-2.5 text-sm outline-none ring-ring focus:ring-2"
+        />
+        <select
+          name="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="rounded-md border border-border bg-background px-3 py-2.5 text-sm outline-none ring-ring focus:ring-2"
+        >
+          <option>Hiring clinic</option>
+          <option>Veterinarian</option>
+          <option>Student</option>
+          <option>Press / researcher</option>
+          <option>Other</option>
+        </select>
+        <button
+          type="submit"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+        >
+          <FileDown className="h-4 w-4" /> Download now
+        </button>
+      </div>
+      <p className="mt-3 text-xs text-muted-foreground">
+        We'll email you next year's edition. No spam, unsubscribe anytime.
+      </p>
+    </form>
+  );
+}
 
 function StatTile({ value, label, source }: { value: string; label: string; source: string }) {
   return (
@@ -194,14 +307,8 @@ function Report() {
             Published July 2026 · Every figure cited to its primary source · Free to reference
             with attribution and a link
           </p>
-          <div className="mt-7 flex flex-wrap gap-3 print:hidden">
-            <a
-              href="/vetbridge-2026-state-of-the-veterinary-workforce.pdf"
-              download
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-            >
-              Download the report (PDF)
-            </a>
+          <div className="mt-7 print:hidden">
+            <DownloadGate />
           </div>
         </div>
       </section>

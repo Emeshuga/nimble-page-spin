@@ -77,6 +77,53 @@ export async function submitContactToHubSpot(msg: {
   }
 }
 
+/**
+ * Push a report-download lead into HubSpot, tagged so downloads can be
+ * segmented (and clinic-side downloads spotted) in the CRM. Same form/portal
+ * as the other site forms. Fire-and-forget; never throws.
+ */
+export async function submitReportDownloadToHubSpot(dl: {
+  name: string;
+  email: string;
+  role: string;
+  report: string;
+}): Promise<boolean> {
+  try {
+    const [firstName, ...rest] = dl.name.trim().split(/\s+/);
+    const body = {
+      fields: [
+        { name: "email", value: dl.email },
+        { name: "firstname", value: firstName || dl.name },
+        { name: "lastname", value: rest.join(" ") },
+        { name: "brand", value: "VetBridge USA" },
+        {
+          name: "details",
+          value: `📊 REPORT DOWNLOAD\nReport: ${dl.report}\nRole: ${dl.role}`,
+        },
+      ],
+      context: {
+        pageUri: typeof window !== "undefined" ? window.location.href : "",
+        pageName: `VetBridge USA — ${dl.report}`,
+      },
+    };
+    // keepalive so the request survives if the browser navigates to the PDF.
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      keepalive: true,
+    });
+    if (!res.ok) {
+      console.error("HubSpot report download submission failed:", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("HubSpot report download submission error:", err);
+    return false;
+  }
+}
+
 export type ClinicRequestForHubSpot = {
   clinic_name: string;
   state: string;
