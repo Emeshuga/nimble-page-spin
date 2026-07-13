@@ -10,9 +10,32 @@ export type BlogPost = {
   date: string; // ISO
   readMinutes: number;
   body: string[];
+  /** Optional in-article CTA rendered as a button after the body. */
+  cta?: { href: string; label: string };
 };
 
 export const POSTS: BlogPost[] = [
+  {
+    slug: "2026-state-of-the-veterinary-workforce-report",
+    title: "Announcing the 2026 State of the Veterinary Workforce Report",
+    excerpt:
+      "Our first annual report compiles the latest BLS, AVMA, AAVMC, ICVA, APPA, Mars, and Merck data on veterinary demand, pay, burnout, the education pipeline, and the overlooked cross-border talent supply.",
+    date: "2026-07-13",
+    readMinutes: 3,
+    cta: {
+      href: "/reports/state-of-the-veterinary-workforce-2026",
+      label: "Read the full report",
+    },
+    body: [
+      "Today we're publishing VetBridge USA's first annual research report: the 2026 State of the Veterinary Workforce. It pulls together the most current public data on the profession into one cited, linkable page, so clinic owners, veterinarians, and journalists don't have to reconcile a dozen sources themselves.",
+      "## Three findings stand out",
+      "First, demand keeps compounding. 95 million U.S. households now own a pet, industry spending reached $158 billion in 2025, and veterinary care takes 32.4% of the pet-owner wallet. Demand for pet healthcare services has been growing about 6.1% per year, roughly four times faster than the number of pet-owning households.",
+      "Second, whether there is a long-term shortage is genuinely contested, and we cover both sides. The Mars Veterinary Health analysis projects a shortfall of 14,000 to 24,000 companion-animal veterinarians by 2030, while a newer AVMA-commissioned study projects supply keeping pace through 2035. What is not contested: the 2026 hiring market is severely supply-constrained today.",
+      "Third, the international pipeline is running at a rounding error. An average of just 282 foreign-trained veterinarians pass the NAVLE each year, against a projected gap measured in the tens of thousands, even though the TN visa gives licensed veterinarians from Mexico and Canada a direct, uncapped path to U.S. practice.",
+      "## Why we built it",
+      "Every number in the report is cited to its primary source: the Bureau of Labor Statistics, the AVMA, the AAVMC, the ICVA, the APPA, Mars Veterinary Health, and Merck Animal Health. Where sources disagree, both positions are presented. You're welcome to cite the report with attribution and a link, and we'll update it annually with VetBridge USA's own placement data as our marketplace grows.",
+    ],
+  },
   {
     slug: "cant-find-a-veterinarian-to-hire",
     title: "Can't find a veterinarian to hire? Look across the border",

@@ -171,7 +171,9 @@ function BarChart({
 function Report() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
+      <div className="print:hidden">
+        <SiteHeader />
+      </div>
 
       {/* Hero */}
       <section className="border-b border-border bg-secondary/40">
@@ -192,6 +194,15 @@ function Report() {
             Published July 2026 · Every figure cited to its primary source · Free to reference
             with attribution and a link
           </p>
+          <div className="mt-7 flex flex-wrap gap-3 print:hidden">
+            <a
+              href="/vetbridge-2026-state-of-the-veterinary-workforce.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+            >
+              Download the report (PDF)
+            </a>
+          </div>
         </div>
       </section>
 
@@ -441,7 +452,7 @@ function Report() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border bg-secondary/40">
+      <section className="border-t border-border bg-secondary/40 print:hidden">
         <div className="mx-auto max-w-4xl px-4 py-16 text-center">
           <h2 className="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
             Hiring in this market?
@@ -468,7 +479,13 @@ function Report() {
         </div>
       </section>
 
-      <SiteFooter />
+      <div className="print:hidden">
+        <SiteFooter />
+      </div>
+      <div className="hidden border-t border-border px-4 py-6 text-center text-xs text-muted-foreground print:block">
+        2026 State of the Veterinary Workforce · VetBridge USA · www.vetbridgeusa.com · Cite with
+        attribution and a link
+      </div>
     </div>
   );
 }

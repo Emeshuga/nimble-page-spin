@@ -78,6 +78,15 @@ function Post() {
           )}
         </div>
 
+        {post.cta ? (
+          <Link
+            to={post.cta.href}
+            className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+          >
+            {post.cta.label} <ArrowRight className="h-4 w-4" />
+          </Link>
+        ) : null}
+
         <div className="mt-12 rounded-2xl border border-border bg-secondary/40 p-8 text-center">
           <h3 className="text-lg font-semibold">Ready to take the next step?</h3>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
