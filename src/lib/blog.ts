@@ -3,12 +3,16 @@
  * the /blog/$slug route render from this array. `body` is an array of
  * paragraphs (and optional H2 headings prefixed with "## ").
  */
+export const CATEGORIES = ["Research", "For clinics", "For veterinarians"] as const;
+export type BlogCategory = (typeof CATEGORIES)[number];
+
 export type BlogPost = {
   slug: string;
   title: string;
   excerpt: string;
   date: string; // ISO
   readMinutes: number;
+  category: BlogCategory;
   body: string[];
   /** Optional in-article CTA rendered as a button after the body. */
   cta?: { href: string; label: string };
@@ -22,6 +26,7 @@ export const POSTS: BlogPost[] = [
       "Our first annual report compiles the latest BLS, AVMA, AAVMC, ICVA, APPA, Mars, and Merck data on veterinary demand, pay, burnout, the education pipeline, and the overlooked cross-border talent supply.",
     date: "2026-07-13",
     readMinutes: 3,
+    category: "Research",
     cta: {
       href: "/reports/state-of-the-veterinary-workforce-2026",
       label: "Read the full report",
@@ -43,6 +48,7 @@ export const POSTS: BlogPost[] = [
       "Your job posting has been up for months and the few applicants you get are fielding multiple offers. Here's the hiring channel most US clinics haven't tried: licensed DVMs from Mexico and Canada on TN visas.",
     date: "2026-07-12",
     readMinutes: 6,
+    category: "For clinics",
     body: [
       "If you run a veterinary practice, you already know the problem. The job posting has been up for months. The recruiters keep calling with the same short list of candidates, and every one of them is fielding multiple offers. Meanwhile appointments back up, your existing doctors absorb the overflow, and burnout compounds the very shortage you're trying to hire your way out of.",
       "Most practices respond by bidding higher on the same small pool: bigger signing bonuses, higher salaries, more recruiter fees. That can work, but it's expensive, and it doesn't change the underlying math. There simply aren't enough US-trained veterinarians entering the workforce to fill the open roles.",
@@ -67,6 +73,7 @@ export const POSTS: BlogPost[] = [
       "A clear overview of the pathway from a Mexican veterinary degree to practicing as a licensed DVM in the U.S., including the UNAM accelerated route.",
     date: "2026-07-10",
     readMinutes: 5,
+    category: "For veterinarians",
     body: [
       "The United States is facing a significant shortage of veterinarians, and skilled DVMs trained in Mexico are increasingly part of the solution. But moving from a Mexican veterinary degree to practicing legally in the U.S. requires following a specific, well-defined pathway.",
       "## The two starting points",
@@ -87,6 +94,7 @@ export const POSTS: BlogPost[] = [
       "The TN visa is one of the most direct ways for Mexican and Canadian veterinarians to work in the U.S. Here's how it works and why it's different from the H-1B.",
     date: "2026-07-10",
     readMinutes: 4,
+    category: "For veterinarians",
     body: [
       "For veterinarians from Mexico and Canada, the TN visa is often the most direct route to working legally in the United States, and it's very different from the more familiar H-1B.",
       "## What the TN visa is",

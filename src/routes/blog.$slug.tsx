@@ -60,8 +60,13 @@ function Post() {
         >
           <ArrowLeft className="h-4 w-4" /> All articles
         </Link>
-        <div className="mt-6 text-sm font-medium text-muted-foreground">
-          {formatDate(post.date)} · {post.readMinutes} min read
+        <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-medium text-muted-foreground">
+          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-primary">
+            {post.category}
+          </span>
+          <span>
+            {formatDate(post.date)} · {post.readMinutes} min read
+          </span>
         </div>
         <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{post.title}</h1>
         <div className="mt-8 space-y-5">
