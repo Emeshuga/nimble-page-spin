@@ -43,6 +43,7 @@ function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
       <Hero />
+      <StatBand />
       <Problem />
       <SolutionSplit />
       <Guarantee />
@@ -81,10 +82,14 @@ function Hero() {
               Meet your next
               <br />
               veterinarian.
+              <span className="mt-3 block text-[1.6rem] leading-tight text-primary sm:text-4xl">
+                Licensed. Vetted. <span className="text-accent">Visa&#8209;ready.</span>
+              </span>
             </h1>
             <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
-              Licensed DVMs from Mexico and Canada, credentialed, visa-eligible, and ready. Browse
-              the pipeline; we handle licensing, TN visa, and relocation end-to-end.
+              U.S. clinics can't fill DVM roles while Mexico and Canada graduate more
+              veterinarians than they can hire. We bridge the two, handling licensing, the TN
+              visa, and relocation end to end.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -114,8 +119,47 @@ function Hero() {
             </div>
           </div>
           <div className="flex justify-center lg:justify-end">
-            <CandidateDeck />
+            <div className="relative">
+              <CandidateDeck />
+              <div className="pointer-events-none absolute -top-4 right-3 z-[60] inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-md">
+                <ShieldCheck className="h-4 w-4 text-accent" /> 3-year guarantee
+              </div>
+              <div className="pointer-events-none absolute bottom-12 -left-3 z-[60] inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-md sm:-left-6">
+                <Globe2 className="h-4 w-4 text-accent" /> TN visa · no lottery
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StatBand() {
+  const stats = [
+    { value: "95M", label: "U.S. households own a pet, an all-time high" },
+    { value: "282/yr", label: "foreign-trained vets pass the NAVLE, on average" },
+    { value: "12,500+", label: "companion-animal vets expected to retire by 2030" },
+  ];
+  return (
+    <section className="border-b border-border bg-card">
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="grid gap-8 sm:grid-cols-3">
+          {stats.map((s) => (
+            <div key={s.value} className="text-center sm:text-left">
+              <div className="text-3xl font-extrabold tracking-tight text-primary">{s.value}</div>
+              <div className="mt-1 text-sm leading-snug text-muted-foreground">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 text-center sm:text-left">
+          <Link
+            to="/reports/state-of-the-veterinary-workforce-2026"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+          >
+            From our 2026 State of the Veterinary Workforce Report{" "}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>
