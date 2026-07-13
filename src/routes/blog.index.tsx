@@ -105,12 +105,21 @@ function Blog() {
                     params={{ slug: post.slug }}
                     className="group flex gap-5 rounded-2xl border border-border bg-card p-4 shadow-sm transition hover:shadow-md sm:gap-6 sm:p-5"
                   >
-                    <div
-                      className="grid h-24 w-24 shrink-0 place-items-center rounded-xl sm:h-28 sm:w-28"
-                      style={{ background: t.bg }}
-                    >
-                      <Icon className="h-9 w-9 text-white/90" strokeWidth={1.75} />
-                    </div>
+                    {post.thumb ? (
+                      <img
+                        src={post.thumb}
+                        alt=""
+                        loading="lazy"
+                        className="h-24 w-24 shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
+                      />
+                    ) : (
+                      <div
+                        className="grid h-24 w-24 shrink-0 place-items-center rounded-xl sm:h-28 sm:w-28"
+                        style={{ background: t.bg }}
+                      >
+                        <Icon className="h-9 w-9 text-white/90" strokeWidth={1.75} />
+                      </div>
+                    )}
                     <div className="min-w-0 py-1">
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-muted-foreground">
                         <span>{formatDate(post.date)}</span>

@@ -13,6 +13,8 @@ export type BlogPost = {
   date: string; // ISO
   readMinutes: number;
   category: BlogCategory;
+  /** Optional thumbnail image path (public/). Falls back to a branded gradient tile. */
+  thumb?: string;
   body: string[];
   /** Optional in-article CTA rendered as a button after the body. */
   cta?: { href: string; label: string };
@@ -27,6 +29,7 @@ export const POSTS: BlogPost[] = [
     date: "2026-07-13",
     readMinutes: 3,
     category: "Research",
+    thumb: "/blog/2026-state-of-the-veterinary-workforce-report.jpg",
     cta: {
       href: "/reports/state-of-the-veterinary-workforce-2026",
       label: "Read the full report",
@@ -49,6 +52,7 @@ export const POSTS: BlogPost[] = [
     date: "2026-07-12",
     readMinutes: 6,
     category: "For clinics",
+    thumb: "/blog/cant-find-a-veterinarian-to-hire.jpg",
     body: [
       "If you run a veterinary practice, you already know the problem. The job posting has been up for months. The recruiters keep calling with the same short list of candidates, and every one of them is fielding multiple offers. Meanwhile appointments back up, your existing doctors absorb the overflow, and burnout compounds the very shortage you're trying to hire your way out of.",
       "Most practices respond by bidding higher on the same small pool: bigger signing bonuses, higher salaries, more recruiter fees. That can work, but it's expensive, and it doesn't change the underlying math. There simply aren't enough US-trained veterinarians entering the workforce to fill the open roles.",
@@ -74,6 +78,7 @@ export const POSTS: BlogPost[] = [
     date: "2026-07-10",
     readMinutes: 5,
     category: "For veterinarians",
+    thumb: "/blog/how-mexican-veterinarians-practice-in-the-us.jpg",
     body: [
       "The United States is facing a significant shortage of veterinarians, and skilled DVMs trained in Mexico are increasingly part of the solution. But moving from a Mexican veterinary degree to practicing legally in the U.S. requires following a specific, well-defined pathway.",
       "## The two starting points",
@@ -95,6 +100,7 @@ export const POSTS: BlogPost[] = [
     date: "2026-07-10",
     readMinutes: 4,
     category: "For veterinarians",
+    thumb: "/blog/what-is-a-tn-visa-for-veterinarians.jpg",
     body: [
       "For veterinarians from Mexico and Canada, the TN visa is often the most direct route to working legally in the United States, and it's very different from the more familiar H-1B.",
       "## What the TN visa is",
