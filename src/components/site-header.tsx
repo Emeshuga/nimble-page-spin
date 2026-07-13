@@ -88,6 +88,14 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link
+                  to="/reports/state-of-the-veterinary-workforce-2026"
+                  className="hover:text-foreground"
+                >
+                  2026 Workforce Report
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="hover:text-foreground">
                   Contact
                 </Link>

@@ -19,6 +19,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as ReportsStateOfTheVeterinaryWorkforce2026RouteImport } from './routes/reports.state-of-the-veterinary-workforce-2026'
 import { Route as DashboardVetRouteImport } from './routes/dashboard.vet'
 import { Route as DashboardClinicRouteImport } from './routes/dashboard.clinic'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -73,6 +74,12 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReportsStateOfTheVeterinaryWorkforce2026Route =
+  ReportsStateOfTheVeterinaryWorkforce2026RouteImport.update({
+    id: '/reports/state-of-the-veterinary-workforce-2026',
+    path: '/reports/state-of-the-veterinary-workforce-2026',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DashboardVetRoute = DashboardVetRouteImport.update({
   id: '/dashboard/vet',
   path: '/dashboard/vet',
@@ -102,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
+  '/reports/state-of-the-veterinary-workforce-2026': typeof ReportsStateOfTheVeterinaryWorkforce2026Route
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
@@ -117,6 +125,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
+  '/reports/state-of-the-veterinary-workforce-2026': typeof ReportsStateOfTheVeterinaryWorkforce2026Route
   '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
@@ -133,6 +142,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/dashboard/clinic': typeof DashboardClinicRoute
   '/dashboard/vet': typeof DashboardVetRoute
+  '/reports/state-of-the-veterinary-workforce-2026': typeof ReportsStateOfTheVeterinaryWorkforce2026Route
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
+    | '/reports/state-of-the-veterinary-workforce-2026'
     | '/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
+    | '/reports/state-of-the-veterinary-workforce-2026'
     | '/blog'
   id:
     | '__root__'
@@ -180,6 +192,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dashboard/clinic'
     | '/dashboard/vet'
+    | '/reports/state-of-the-veterinary-workforce-2026'
     | '/blog/'
   fileRoutesById: FileRoutesById
 }
@@ -196,6 +209,7 @@ export interface RootRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
   DashboardClinicRoute: typeof DashboardClinicRoute
   DashboardVetRoute: typeof DashboardVetRoute
+  ReportsStateOfTheVeterinaryWorkforce2026Route: typeof ReportsStateOfTheVeterinaryWorkforce2026Route
   BlogIndexRoute: typeof BlogIndexRoute
 }
 
@@ -271,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reports/state-of-the-veterinary-workforce-2026': {
+      id: '/reports/state-of-the-veterinary-workforce-2026'
+      path: '/reports/state-of-the-veterinary-workforce-2026'
+      fullPath: '/reports/state-of-the-veterinary-workforce-2026'
+      preLoaderRoute: typeof ReportsStateOfTheVeterinaryWorkforce2026RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/vet': {
       id: '/dashboard/vet'
       path: '/dashboard/vet'
@@ -308,6 +329,8 @@ const rootRouteChildren: RootRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
   DashboardClinicRoute: DashboardClinicRoute,
   DashboardVetRoute: DashboardVetRoute,
+  ReportsStateOfTheVeterinaryWorkforce2026Route:
+    ReportsStateOfTheVeterinaryWorkforce2026Route,
   BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport

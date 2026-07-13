@@ -27,7 +27,28 @@ function Blog() {
           Guides and answers on licensing, the NAVLE, the TN visa, and building a veterinary career
           in the United States.
         </p>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <Link
+          to="/reports/state-of-the-veterinary-workforce-2026"
+          className="group mt-10 flex flex-col rounded-2xl border border-primary/20 bg-secondary/50 p-7 shadow-sm transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-accent">
+              Featured research
+            </div>
+            <h2 className="mt-2 text-xl font-semibold leading-snug text-primary group-hover:underline">
+              2026 State of the Veterinary Workforce Report
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The demand, pay, burnout, pipeline, and cross-border supply data behind the
+              veterinarian shortage, compiled from BLS, AVMA, AAVMC, ICVA, Mars, and Merck
+              sources.
+            </p>
+          </div>
+          <span className="mt-4 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-primary sm:mt-0 sm:pl-6">
+            Read the report <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
           {POSTS.map((post) => (
             <Link
               key={post.slug}
