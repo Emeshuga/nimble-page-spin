@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { CheckCircle2, MessageCircle, Zap, Stethoscope } from "lucide-react";
+import { CheckCircle2, MessageCircle, Zap } from "lucide-react";
 import { trackPixel } from "@/lib/meta-pixel";
 
 const WHATSAPP_URL =
@@ -31,9 +31,7 @@ function Gracias() {
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <Stethoscope className="h-5 w-5" />
-            </div>
+            <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
             <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
           </Link>
         </div>

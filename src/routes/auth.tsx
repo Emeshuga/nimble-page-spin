@@ -99,9 +99,7 @@ function AuthPage() {
       <header className="border-b border-border/60">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <Stethoscope className="h-5 w-5" />
-            </div>
+            <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
             <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
           </Link>
         </div>

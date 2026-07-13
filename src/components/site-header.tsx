@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Stethoscope } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 export function SiteHeader({ primaryCta }: { primaryCta?: { label: string; to: string } }) {
@@ -7,10 +6,8 @@ export function SiteHeader({ primaryCta }: { primaryCta?: { label: string; to: s
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <Stethoscope className="h-5 w-5" />
-          </div>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
           <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex">
@@ -46,10 +43,8 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-                <Stethoscope className="h-5 w-5" />
-              </div>
+            <div className="flex items-center gap-2.5">
+              <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
               <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">

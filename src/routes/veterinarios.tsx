@@ -5,7 +5,6 @@ import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
 import { submitLeadToHubSpot } from "@/lib/hubspot";
 import {
-  Stethoscope,
   DollarSign,
   Plane,
   ShieldCheck,
@@ -471,9 +470,7 @@ function Header() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <Link to="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <Stethoscope className="h-5 w-5" />
-          </div>
+          <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
           <span className="text-lg font-semibold tracking-tight">VetBridge USA</span>
         </Link>
         <div className="flex items-center gap-2">
@@ -939,9 +936,7 @@ function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-                <Stethoscope className="h-5 w-5" />
-              </div>
+              <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
               <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">{c.desc}</p>

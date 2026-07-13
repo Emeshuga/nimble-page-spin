@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Stethoscope, LogOut, ArrowRight, MapPin, Info } from "lucide-react";
+import { LogOut, ArrowRight, MapPin, Info } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/clinic")({
   head: () => ({
@@ -96,9 +96,7 @@ function ClinicDashboard() {
       <header className="border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <Stethoscope className="h-5 w-5" />
-            </div>
+            <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
             <span className="text-sm font-semibold tracking-tight text-muted-foreground">
               VetBridge USA · <span className="text-foreground">Clinic Dashboard</span>
             </span>

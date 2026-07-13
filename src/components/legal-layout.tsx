@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Stethoscope } from "lucide-react";
 import type { ReactNode } from "react";
 import { SITE } from "@/lib/site";
 
@@ -10,9 +9,7 @@ export function LegalLayout({ title, children }: { title: string; children: Reac
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <Stethoscope className="h-5 w-5" />
-            </div>
+            <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
             <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
           </Link>
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
