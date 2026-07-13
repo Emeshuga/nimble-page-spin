@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { META_PIXEL_ID, pixelHeadScript, trackPixel } from "../lib/meta-pixel";
 import { GA4_ID, ga4ConfigScript, ga4PageView } from "../lib/analytics";
+import { ReportPromoBar } from "../components/report-promo-bar";
 
 const SITE_URL = "https://www.vetbridgeusa.com";
 
@@ -188,6 +189,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <ReportPromoBar />
     </QueryClientProvider>
   );
 }
