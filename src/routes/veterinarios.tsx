@@ -28,6 +28,22 @@ import {
 import { HeroFlight, MonumentsBand } from "@/components/journey-art";
 
 export const Route = createFileRoute("/veterinarios")({
+  head: () => ({
+    meta: [
+      { title: "Trabaja como Veterinario en Estados Unidos | VetBridge USA" },
+      {
+        name: "description",
+        content:
+          "Ejerce como médico veterinario en EE.UU. Te acompañamos con la licencia, el examen NAVLE, la visa TN y la colocación en una clínica. Evalúa tu perfil en 2 minutos.",
+      },
+      { property: "og:title", content: "Trabaja como Veterinario en Estados Unidos" },
+      {
+        property: "og:description",
+        content:
+          "Licencia, examen NAVLE, visa TN y colocación en clínicas de EE.UU. Salarios de $100,000 a $140,000 USD. Evalúa tu perfil en 2 minutos.",
+      },
+    ],
+  }),
   component: Index,
 });
 
