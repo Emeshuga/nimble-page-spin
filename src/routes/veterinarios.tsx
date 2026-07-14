@@ -42,6 +42,7 @@ type FormState = {
   nivel_ingles: "" | "Básico" | "Intermedio" | "Avanzado" | "Fluido/Nativo";
   licencia_mexico: "" | "Sí" | "No";
   navle_status: "" | "Aprobado" | "Estudiando" | "No";
+  interes_ny: "" | "Sí" | "Tal vez" | "No";
 };
 
 const EMPTY: FormState = {
@@ -53,6 +54,7 @@ const EMPTY: FormState = {
   nivel_ingles: "",
   licencia_mexico: "",
   navle_status: "",
+  interes_ny: "",
 };
 
 // ————————————————————————————————————————————————————————————
@@ -185,6 +187,8 @@ const COPY = {
       no: "No",
       navleQ: "¿Has presentado o estudiado para el NAVLE?",
       navle: { passed: "Aprobado", studying: "Estudiando", no: "No" },
+      nyQ: "¿Te interesa trabajar en Nueva York? Es el camino más rápido.",
+      maybe: "Tal vez",
       error:
         "Hubo un error al enviar tu perfil. Intenta de nuevo o escríbenos directamente por WhatsApp (botón verde).",
       submit: "Enviar mi Perfil",
@@ -359,6 +363,8 @@ const COPY = {
       no: "No",
       navleQ: "Have you taken or studied for the NAVLE?",
       navle: { passed: "Passed", studying: "Studying", no: "No" },
+      nyQ: "Interested in working in New York? It's the fastest path.",
+      maybe: "Maybe",
       error:
         "There was an error submitting your profile. Please try again or message us directly on WhatsApp (green button).",
       submit: "Submit my Profile",
@@ -745,7 +751,9 @@ function FormSection() {
 
     // Push into HubSpot CRM alongside Supabase. Fire-and-forget: a HubSpot
     // failure must not block the lead (Supabase already has it) or the redirect.
-    void submitLeadToHubSpot(payload, utm);
+    // NY interest rides only in the HubSpot details blob — the candidates
+    // table has no column for it (avoids a schema migration).
+    void submitLeadToHubSpot({ ...payload, interes_ny: form.interes_ny }, utm);
     navigate({ to: "/gracias", search: vip ? { vip: 1 } : {} });
   }
 
@@ -894,6 +902,35 @@ function FormSection() {
             <option value="Estudiando">{c.navle.studying}</option>
             <option value="No">{c.navle.no}</option>
           </select>
+        </Field>
+
+        <Field label={c.nyQ}>
+          <div className="flex gap-3">
+            {([
+              { value: "Sí" as const, label: c.yes },
+              { value: "Tal vez" as const, label: c.maybe },
+              { value: "No" as const, label: c.no },
+            ]).map((opt) => (
+              <label
+                key={opt.value}
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition ${
+                  form.interes_ny === opt.value
+                    ? "border-primary bg-primary/5 text-primary"
+                    : "border-border bg-background text-foreground hover:bg-secondary"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="interes_ny"
+                  className="sr-only"
+                  checked={form.interes_ny === opt.value}
+                  onChange={() => update("interes_ny", opt.value)}
+                  required
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
         </Field>
 
         {error && (

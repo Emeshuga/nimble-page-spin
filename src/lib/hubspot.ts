@@ -20,12 +20,17 @@ export type LeadForHubSpot = {
   licencia_mexico: boolean;
   navle_status: string;
   vip_fast_track: boolean;
+  /** "Sí" | "Tal vez" | "No" — NY fast-track interest (HubSpot-only, no DB column). */
+  interes_ny?: string;
 };
 
 /** Human-readable profile packed into the single "details" property in HubSpot. */
 function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string {
   const lines = [
+    // A-lead = accredited-school advantage + open to the fastest state.
+    ...(lead.vip_fast_track && lead.interes_ny === "Sí" ? ["🔥 A-LEAD: VIP UNAM + NUEVA YORK"] : []),
     lead.vip_fast_track ? "⭐ VIP — FAST TRACK UNAM (2011–2025)" : "Ruta estándar (ECFVG/PAVE)",
+    ...(lead.interes_ny ? [`🗽 Interés en Nueva York: ${lead.interes_ny}`] : []),
     `Universidad: ${lead.universidad}`,
     `Año de graduación: ${lead.ano_graduacion}`,
     `Nivel de inglés: ${lead.nivel_ingles}`,

@@ -35,3 +35,7 @@ dist-ssr
 .vercel/
 .vercel
 .env*
+
+# Lead exports — never commit (PII, public repo)
+apollo-*.csv
+*.csv
