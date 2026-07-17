@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { META_PIXEL_ID, pixelHeadScript, trackPixel } from "../lib/meta-pixel";
 import { GA4_ID, ga4ConfigScript, ga4PageView } from "../lib/analytics";
 import { ReportPromoBar } from "../components/report-promo-bar";
+import { SITE } from "../lib/site";
 
 const SITE_URL = "https://www.vetbridgeusa.com";
 
@@ -32,6 +33,7 @@ const ORGANIZATION_JSONLD = JSON.stringify({
   url: SITE_URL,
   logo: `${SITE_URL}/apple-touch-icon.png`,
   email: "hello@vetbridgeusa.com",
+  sameAs: [SITE.facebook, SITE.linkedin],
   description:
     "VetBridge USA connects licensed international veterinarians from Mexico and Canada with understaffed U.S. veterinary clinics, coordinating licensing, TN visa, and relocation.",
 });

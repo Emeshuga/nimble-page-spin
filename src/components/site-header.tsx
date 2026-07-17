@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Facebook, Linkedin } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 export function SiteHeader({ primaryCta }: { primaryCta?: { label: string; to: string } }) {
@@ -58,6 +59,26 @@ export function SiteFooter() {
             >
               {SITE.emailGeneral}
             </a>
+            <div className="mt-4 flex items-center gap-3">
+              <a
+                href={SITE.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="VetBridge USA on Facebook"
+                className="text-muted-foreground transition hover:text-foreground"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a
+                href={SITE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="VetBridge USA on LinkedIn"
+                className="text-muted-foreground transition hover:text-foreground"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </div>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Company</h3>
