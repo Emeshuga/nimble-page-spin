@@ -59,6 +59,7 @@ type FormState = {
   licencia_mexico: "" | "Sí" | "No";
   navle_status: "" | "Aprobado" | "Estudiando" | "No";
   interes_ny: "" | "Sí" | "Tal vez" | "No";
+  nacionalidad: "" | "Mexicana" | "Canadiense" | "Otra";
 };
 
 const EMPTY: FormState = {
@@ -71,6 +72,7 @@ const EMPTY: FormState = {
   licencia_mexico: "",
   navle_status: "",
   interes_ny: "",
+  nacionalidad: "",
 };
 
 // ————————————————————————————————————————————————————————————
@@ -199,6 +201,8 @@ const COPY = {
       gradYear: "Año de Graduación",
       englishLevel: "Nivel de Inglés",
       eng: { basic: "Básico", inter: "Intermedio", adv: "Avanzado", fluent: "Fluido/Nativo" },
+      natQ: "¿Cuál es tu nacionalidad?",
+      nat: { mx: "Mexicana", ca: "Canadiense", other: "Otra" },
       licenseQ: "¿Cuentas con licencia veterinaria vigente?",
       yes: "Sí",
       no: "No",
@@ -376,6 +380,8 @@ const COPY = {
       gradYear: "Graduation Year",
       englishLevel: "English Level",
       eng: { basic: "Basic", inter: "Intermediate", adv: "Advanced", fluent: "Fluent/Native" },
+      natQ: "What is your nationality?",
+      nat: { mx: "Mexican", ca: "Canadian", other: "Other" },
       licenseQ: "Do you hold a current veterinary license?",
       yes: "Yes",
       no: "No",
@@ -726,7 +732,8 @@ function FormSection() {
     setError(null);
 
     const year = Number(form.ano_graduacion);
-    const vip = form.universidad === "FMVZ-UNAM" && year >= 2011 && year <= 2025;
+    const vip =
+      form.universidad === "FMVZ-UNAM" && year >= 2011 && year <= 2025 && form.nacionalidad !== "Otra";
 
     const payload = {
       nombre_completo: form.nombre_completo.trim(),
@@ -772,7 +779,10 @@ function FormSection() {
     // failure must not block the lead (Supabase already has it) or the redirect.
     // NY interest rides only in the HubSpot details blob — the candidates
     // table has no column for it (avoids a schema migration).
-    void submitLeadToHubSpot({ ...payload, interes_ny: form.interes_ny }, utm);
+    void submitLeadToHubSpot(
+      { ...payload, interes_ny: form.interes_ny, nacionalidad: form.nacionalidad },
+      utm,
+    );
     navigate({ to: "/gracias", search: vip ? { vip: 1 } : {} });
   }
 
@@ -832,6 +842,35 @@ function FormSection() {
           </Field>
         </div>
 
+        <Field label={c.natQ}>
+          <div className="flex gap-3">
+            {([
+              { value: "Mexicana" as const, label: c.nat.mx },
+              { value: "Canadiense" as const, label: c.nat.ca },
+              { value: "Otra" as const, label: c.nat.other },
+            ]).map((opt) => (
+              <label
+                key={opt.value}
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition ${
+                  form.nacionalidad === opt.value
+                    ? "border-primary bg-primary/5 text-primary"
+                    : "border-border bg-background text-foreground hover:bg-secondary"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="nacionalidad"
+                  className="sr-only"
+                  checked={form.nacionalidad === opt.value}
+                  onChange={() => update("nacionalidad", opt.value)}
+                  required
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+        </Field>
+
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label={c.university}>
             <select
@@ -842,7 +881,7 @@ function FormSection() {
               className={inputCls}
             >
               <option value="">{c.selectPlaceholder}</option>
-              <option value="FMVZ-UNAM">FMVZ-UNAM</option>
+              <option value="FMVZ-UNAM">FMVZ-UNAM (Ciudad Universitaria)</option>
               <option value="Otra Universidad">{c.otherUni}</option>
             </select>
           </Field>
