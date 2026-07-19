@@ -29,6 +29,7 @@ export const POSTS: BlogPost[] = [
     date: "2026-07-19",
     readMinutes: 5,
     category: "Research",
+    thumb: "/blog/doj-antitrust-veterinary-shortage.jpg",
     cta: {
       href: "/clinics",
       label: "See how clinics hire across the border",
