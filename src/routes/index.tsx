@@ -62,15 +62,13 @@ function Home() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-border/60">
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, oklch(0.93 0.042 264 / 0.85), transparent 78%), radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.10), transparent 62%), radial-gradient(760px 420px at -6% 0%, oklch(0.38 0.14 250 / 0.10), transparent 60%)",
-        }}
-      />
+    <section
+      className="relative overflow-hidden border-b border-border/60"
+      style={{
+        background:
+          "radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.12), transparent 62%), oklch(0.93 0.042 264)",
+      }}
+    >
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
           <div>

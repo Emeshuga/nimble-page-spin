@@ -70,15 +70,13 @@ function ClinicsPage() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, oklch(0.93 0.042 264 / 0.85), transparent 78%), radial-gradient(1100px 560px at 88% -8%, oklch(0.72 0.15 55 / 0.14), transparent 60%), radial-gradient(1000px 560px at -8% 8%, oklch(0.38 0.14 250 / 0.14), transparent 60%)",
-        }}
-      />
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(1100px 560px at 88% -8%, oklch(0.72 0.15 55 / 0.12), transparent 62%), oklch(0.93 0.042 264)",
+      }}
+    >
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left: message */}

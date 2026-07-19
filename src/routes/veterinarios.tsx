@@ -520,15 +520,13 @@ function Header() {
 function Hero() {
   const c = COPY[useLang().lang].hero;
   return (
-    <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, oklch(0.93 0.042 264 / 0.85), transparent 78%), radial-gradient(1000px 500px at 80% -10%, oklch(0.72 0.15 55 / 0.15), transparent 60%), radial-gradient(900px 500px at -10% 10%, oklch(0.38 0.14 250 / 0.18), transparent 60%)",
-        }}
-      />
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(1000px 500px at 80% -10%, oklch(0.72 0.15 55 / 0.12), transparent 62%), oklch(0.93 0.042 264)",
+      }}
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto hidden max-w-[1600px] lg:block"
