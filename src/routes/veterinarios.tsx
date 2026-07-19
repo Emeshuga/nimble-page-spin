@@ -171,6 +171,7 @@ const COPY = {
       cta: "Reserva tu evaluación prioritaria",
     },
     process: {
+      eyebrow: "El Camino VetBridge\u2122",
       heading: "Tu camino a ejercer en EE.UU.",
       steps: [
         { t: "Evaluación de perfil", d: "Analizamos tu universidad, año y nivel de inglés." },
@@ -344,6 +345,7 @@ const COPY = {
       cta: "Book your priority evaluation",
     },
     process: {
+      eyebrow: "The VetBridge Path\u2122",
       heading: "Your path to practicing in the U.S.",
       steps: [
         {
@@ -478,7 +480,7 @@ function LangToggle({ className = "" }: { className?: string }) {
       type="button"
       onClick={() => setLang(lang === "es" ? "en" : "es")}
       aria-label={lang === "es" ? "Switch to English" : "Cambiar a Español"}
-      className={`inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-secondary ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-secondary ${className}`}
     >
       <Globe className="h-4 w-4 text-primary" />
       {COPY[lang].header.switchTo}
@@ -499,7 +501,7 @@ function Header() {
           <LangToggle />
           <a
             href="#formulario"
-            className="hidden rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90 sm:inline-flex"
+            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90 sm:inline-flex"
           >
             {c.header.profile}
           </a>
@@ -518,7 +520,7 @@ function Hero() {
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(1000px 500px at 80% -10%, oklch(0.72 0.15 55 / 0.15), transparent 60%), radial-gradient(900px 500px at -10% 10%, oklch(0.38 0.14 250 / 0.18), transparent 60%)",
+            "linear-gradient(180deg, oklch(0.93 0.042 264 / 0.85), transparent 78%), radial-gradient(1000px 500px at 80% -10%, oklch(0.72 0.15 55 / 0.15), transparent 60%), radial-gradient(900px 500px at -10% 10%, oklch(0.38 0.14 250 / 0.18), transparent 60%)",
         }}
       />
       <div
@@ -546,14 +548,14 @@ function Hero() {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="#formulario"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
             >
               {c.ctaPrimary}
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="#beneficios"
-              className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
+              className="inline-flex items-center rounded-full border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
             >
               {c.ctaSecondary}
             </a>
@@ -665,7 +667,7 @@ function PoolAlert() {
         </p>
         <a
           href="#formulario"
-          className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
         >
           {c.cta}
           <ArrowRight className="h-4 w-4" />
@@ -680,7 +682,8 @@ function Process() {
   return (
     <section className="border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-20">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
+        <div className="text-xs font-bold uppercase tracking-widest text-accent">{c.eyebrow}</div>
+        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{c.heading}</h2>
         <div aria-hidden className="mt-4 flex items-center gap-4 text-primary/30">
           <PawPrint className="h-4 w-4 -rotate-12" />
           <PawPrint className="h-5 w-5 rotate-6" />
@@ -958,7 +961,7 @@ function FormSection() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
         >
           {status === "loading" ? c.sending : c.submit}
           <ArrowRight className="h-4 w-4" />

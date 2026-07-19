@@ -22,13 +22,13 @@ export function SiteHeader({ primaryCta }: { primaryCta?: { label: string; to: s
         <div className="flex items-center gap-2">
           <Link
             to="/auth"
-            className="rounded-md px-3 py-2 text-sm font-medium text-foreground transition hover:bg-secondary"
+            className="rounded-full px-3 py-2 text-sm font-medium text-foreground transition hover:bg-secondary"
           >
             Log in
           </Link>
           <Link
             to={cta.to}
-            className="hidden rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90 sm:inline-flex"
+            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90 sm:inline-flex"
           >
             {cta.label}
           </Link>

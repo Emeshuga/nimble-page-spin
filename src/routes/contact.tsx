@@ -147,7 +147,7 @@ function Contact() {
                 <button
                   type="submit"
                   disabled={status === "loading"}
-                  className="inline-flex w-full items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
                 >
                   {status === "loading" ? "Sending…" : "Send message"}
                 </button>

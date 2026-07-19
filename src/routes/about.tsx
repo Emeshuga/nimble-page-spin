@@ -104,13 +104,13 @@ function About() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               to="/veterinarios"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
             >
               I'm a Veterinarian <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/clinics"
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
             >
               I'm Hiring
             </Link>

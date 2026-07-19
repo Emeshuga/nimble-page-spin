@@ -68,7 +68,7 @@ function Hero() {
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.10), transparent 62%), radial-gradient(760px 420px at -6% 0%, oklch(0.38 0.14 250 / 0.10), transparent 60%)",
+            "linear-gradient(180deg, oklch(0.93 0.042 264 / 0.85), transparent 78%), radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.10), transparent 62%), radial-gradient(760px 420px at -6% 0%, oklch(0.38 0.14 250 / 0.10), transparent 60%)",
         }}
       />
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
@@ -202,9 +202,9 @@ function SolutionSplit() {
           title="Practice in the U.S. Multiply your income."
           body="If you're a licensed DVM in Mexico or Canada, we handle NAVLE prep, state licensing, TN visa, and placement in a sponsoring U.S. clinic."
           bullets={[
-            "Salaries of $100K-$140K USD",
-            "TN visa, no H-1B lottery",
-            "Fast track for FMVZ-UNAM graduates 2011-2025",
+            { lead: "Earn more:", rest: "salaries of $100K-$140K USD, negotiated for you." },
+            { lead: "No lottery:", rest: "the TN visa is direct for Mexican and Canadian DVMs." },
+            { lead: "Fast track:", rest: "FMVZ-UNAM graduates 2011-2025 skip the ECFVG." },
           ]}
           cta={{ to: "/veterinarios", label: "See the veterinarian program" }}
         />
@@ -214,9 +214,9 @@ function SolutionSplit() {
           title="Licensed, visa-ready DVMs. Guaranteed."
           body="We source, credential, and place international veterinarians so you can fill roles that have sat vacant for months."
           bullets={[
-            "Canadian DVMs often placeable in weeks",
-            "UNAM-accredited candidates on a 9-15 month path",
-            "New York clinics: candidates available to start immediately.",
+            { lead: "Fast to place:", rest: "Canadian DVMs, often NAVLE-passed, in weeks." },
+            { lead: "Deep pipeline:", rest: "UNAM-accredited candidates on a 9-15 month path." },
+            { lead: "New York:", rest: "limited-permit candidates able to start immediately." },
           ]}
           cta={{ to: "/clinics", label: "Request candidates" }}
           highlight
@@ -239,7 +239,7 @@ function PathCard({
   eyebrow: string;
   title: string;
   body: string;
-  bullets: string[];
+  bullets: { lead: string; rest: string }[];
   cta: { to: string; label: string };
   highlight?: boolean;
 }) {
@@ -259,15 +259,17 @@ function PathCard({
       <p className="mt-3 text-muted-foreground">{body}</p>
       <ul className="mt-5 space-y-2 text-sm text-foreground">
         {bullets.map((b) => (
-          <li key={b} className="flex items-start gap-2">
+          <li key={b.lead} className="flex items-start gap-2">
             <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            <span>{b}</span>
+            <span>
+              <strong className="font-semibold text-foreground">{b.lead}</strong> {b.rest}
+            </span>
           </li>
         ))}
       </ul>
       <Link
         to={cta.to}
-        className="mt-8 inline-flex items-center gap-2 self-start rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+        className="mt-8 inline-flex items-center gap-2 self-start rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
       >
         {cta.label} <ArrowRight className="h-4 w-4" />
       </Link>
@@ -314,13 +316,13 @@ function MidCta() {
         <div className="flex flex-wrap items-center justify-start gap-3 sm:justify-end">
           <Link
             to="/veterinarios"
-            className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary"
           >
             I'm a Veterinarian <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             to="/clinics"
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
           >
             I'm Hiring <ArrowRight className="h-4 w-4" />
           </Link>
@@ -357,16 +359,27 @@ function HowItWorks() {
     <section className="border-y border-border bg-secondary/40">
       <div className="mx-auto max-w-6xl px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">What we handle</h2>
+          <div className="text-xs font-bold uppercase tracking-widest text-accent">
+            One managed pipeline
+          </div>
+          <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            The VetBridge Path&trade;
+          </h2>
           <p className="mt-4 text-muted-foreground">
-            End-to-end, so your clinic gets a productive DVM, and our veterinarian gets a career.
+            From licensed abroad to productive in your clinic, every candidate moves through the
+            same four stages.
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map(({ icon: Icon, title, body }) => (
+          {items.map(({ icon: Icon, title, body }, i) => (
             <div key={title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent">
-                <Icon className="h-5 w-5" />
+              <div className="flex items-center justify-between">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent/15 text-accent">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <span className="font-mono text-sm font-semibold text-muted-foreground/60">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </div>
               <h3 className="mt-4 text-lg font-semibold">{title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{body}</p>
@@ -391,13 +404,13 @@ function FinalCta() {
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link
           to="/veterinarios"
-          className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-6 py-3 text-base font-semibold text-foreground transition hover:bg-secondary"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-base font-semibold text-foreground transition hover:bg-secondary"
         >
           <Stethoscope className="h-4 w-4" /> I'm a Veterinarian
         </Link>
         <Link
           to="/clinics"
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
         >
           <Building2 className="h-4 w-4" /> I'm Hiring
         </Link>

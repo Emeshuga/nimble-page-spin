@@ -197,7 +197,7 @@ function AuthPage() {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {status === "loading" ? "Please wait…" : mode === "login" ? "Log in" : "Sign up"}
             <ArrowRight className="h-4 w-4" />

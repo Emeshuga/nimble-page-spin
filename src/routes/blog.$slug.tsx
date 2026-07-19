@@ -86,7 +86,7 @@ function Post() {
         {post.cta ? (
           <Link
             to={post.cta.href}
-            className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
           >
             {post.cta.label} <ArrowRight className="h-4 w-4" />
           </Link>
@@ -97,13 +97,13 @@ function Post() {
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
               to="/veterinarios"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
             >
               Evalúa tu Perfil <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/clinics"
-              className="inline-flex items-center rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium transition hover:bg-secondary"
+              className="inline-flex items-center rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition hover:bg-secondary"
             >
               I'm hiring
             </Link>

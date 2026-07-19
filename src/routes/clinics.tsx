@@ -76,7 +76,7 @@ function Hero() {
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(1100px 560px at 88% -8%, oklch(0.72 0.15 55 / 0.14), transparent 60%), radial-gradient(1000px 560px at -8% 8%, oklch(0.38 0.14 250 / 0.14), transparent 60%)",
+            "linear-gradient(180deg, oklch(0.93 0.042 264 / 0.85), transparent 78%), radial-gradient(1100px 560px at 88% -8%, oklch(0.72 0.15 55 / 0.14), transparent 60%), radial-gradient(1000px 560px at -8% 8%, oklch(0.38 0.14 250 / 0.14), transparent 60%)",
         }}
       />
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-24">
@@ -98,13 +98,13 @@ function Hero() {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#request"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
               >
                 Request Candidates <ArrowRight className="h-4 w-4" />
               </a>
               <a
                 href="#how"
-                className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
+                className="inline-flex items-center rounded-full border border-border bg-card px-6 py-3 text-base font-medium text-foreground transition hover:bg-secondary"
               >
                 How it works
               </a>
@@ -304,7 +304,7 @@ function NewYork() {
         </div>
         <a
           href="#request"
-          className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
         >
           Request NY candidates <ArrowRight className="h-4 w-4" />
         </a>
@@ -335,7 +335,7 @@ function GuaranteeBand() {
         </div>
         <a
           href="#request"
-          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary-foreground px-5 py-3 text-sm font-semibold text-primary transition hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary-foreground px-5 py-3 text-sm font-semibold text-primary transition hover:opacity-90"
         >
           Request Candidates <ArrowRight className="h-4 w-4" />
         </a>
@@ -349,7 +349,7 @@ function MidCta() {
     <section className="mx-auto max-w-6xl px-4 py-16 text-center">
       <a
         href="#request"
-        className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+        className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
       >
         Request Candidates <ArrowRight className="h-4 w-4" />
       </a>
@@ -406,7 +406,10 @@ function HowItWorks() {
   ];
   return (
     <section id="how" className="mx-auto max-w-6xl px-4 py-20">
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How it works</h2>
+      <div className="text-xs font-bold uppercase tracking-widest text-accent">
+        The VetBridge Path&trade;
+      </div>
+      <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">How it works</h2>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((s) => (
           <div key={s.n} className="rounded-2xl border border-border bg-card p-6">
@@ -572,7 +575,7 @@ function RequestForm() {
                 type="button"
                 disabled={!canNext1}
                 onClick={() => setStep(2)}
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
               >
                 Continue <ArrowRight className="h-4 w-4" />
               </button>
@@ -626,7 +629,7 @@ function RequestForm() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                className="rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
               >
                 Back
               </button>
@@ -634,7 +637,7 @@ function RequestForm() {
                 type="button"
                 disabled={!canNext2}
                 onClick={() => setStep(3)}
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
               >
                 Continue <ArrowRight className="h-4 w-4" />
               </button>
@@ -680,14 +683,14 @@ function RequestForm() {
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                className="rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary"
               >
                 Back
               </button>
               <button
                 type="submit"
                 disabled={!canSubmit || status === "loading"}
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:opacity-60"
               >
                 {status === "loading" ? "Sending…" : "Submit request"}
                 <ArrowRight className="h-4 w-4" />
@@ -798,13 +801,13 @@ function FinalCta() {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a
             href="#request"
-            className="inline-flex items-center gap-2 rounded-md bg-primary-foreground px-6 py-3 text-base font-semibold text-primary shadow-sm transition hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-base font-semibold text-primary shadow-sm transition hover:opacity-90"
           >
             Request Candidates <ArrowRight className="h-4 w-4" />
           </a>
           <a
             href="#how"
-            className="inline-flex items-center rounded-md border border-primary-foreground/30 px-6 py-3 text-base font-medium text-primary-foreground transition hover:bg-primary-foreground/10"
+            className="inline-flex items-center rounded-full border border-primary-foreground/30 px-6 py-3 text-base font-medium text-primary-foreground transition hover:bg-primary-foreground/10"
           >
             How it works
           </a>

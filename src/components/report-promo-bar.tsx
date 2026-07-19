@@ -58,7 +58,7 @@ export function ReportPromoBar() {
         </p>
         <Link
           to="/reports/state-of-the-veterinary-workforce-2026"
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
         >
           <span className="sm:hidden">Read it</span>
           <span className="hidden sm:inline">Read the report</span>

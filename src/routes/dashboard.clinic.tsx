@@ -103,7 +103,7 @@ function ClinicDashboard() {
           </Link>
           <button
             onClick={signOut}
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm hover:bg-secondary"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-sm hover:bg-secondary"
           >
             <LogOut className="h-4 w-4" /> Log out
           </button>
@@ -123,7 +123,7 @@ function ClinicDashboard() {
           <Link
             to="/clinics"
             hash="request"
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
           >
             Request Candidates <ArrowRight className="h-4 w-4" />
           </Link>
