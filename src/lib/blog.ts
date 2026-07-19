@@ -22,6 +22,33 @@ export type BlogPost = {
 
 export const POSTS: BlogPost[] = [
   {
+    slug: "doj-antitrust-veterinary-shortage",
+    title: "The DOJ just weighed in on veterinary gatekeeping. Clinic owners should pay attention",
+    excerpt:
+      "In a rare move, the Justice Department told a federal court that veterinary accreditation is subject to antitrust law, and pointed at the numbers behind the profession's supply problem. Here's what it means for clinics that can't hire.",
+    date: "2026-07-19",
+    readMinutes: 5,
+    category: "Research",
+    cta: {
+      href: "/clinics",
+      label: "See how clinics hire across the border",
+    },
+    body: [
+      "On December 15, 2025, the Department of Justice did something it almost never does in veterinary medicine: its Antitrust Division filed a statement of interest in a private federal lawsuit against the American Veterinary Medical Association, the body that accredits every veterinary school in the United States.",
+      "The suit was brought by an AVMA-accredited veterinary school, Lincoln Memorial University, which alleges that the AVMA effectively reinterpreted its research accreditation standard in a way that forces schools into a high-cost model with an on-site teaching hospital. According to the complaint, that policy threatens the school's accreditation, discourages new veterinary colleges from opening, and drives up the cost of veterinary education.",
+      "## What the DOJ actually said",
+      "The Justice Department took no position on who should win the case. What it told the court is broader, and arguably more important: professional accreditation bodies are not exempt from antitrust law. In the DOJ's words, accreditors \"cannot erect anticompetitive hurdles that reduce competition by restricting the number of veterinary providers entering the profession.\"",
+      "The filing also put numbers on the problem. Despite decades of population growth and surging pet ownership, the United States has had only around 34 accredited veterinary colleges, all accredited by a single organization. The DOJ tied that bottleneck directly to the rising cost of veterinary care for pet owners and livestock farmers.",
+      "## Why this matters if you're trying to hire",
+      "If your clinic has had a DVM posting open for months, this filing names the structural cause. The shortage most owners experience as a hiring problem is, upstream, a supply problem. US schools graduate roughly 3,200 to 4,000 veterinarians a year, and seat growth has come nowhere close to matching demand for care.",
+      "The bottleneck is even tighter for veterinarians trained outside the accredited system. More than 2,000 foreign-trained veterinarians are currently enrolled in the AVMA's equivalency program, the ECFVG. Its final hurdle, the hands-on Clinical Proficiency Examination, is offered at exactly two sites in the world, with about 250 full-exam seats a year. Waits run past a year, and most candidates fail at least one section and must requeue for a retake. The net result: on average, only 282 foreign-trained veterinarians pass the NAVLE licensing exam each year, in a market where the projected shortfall is measured in the thousands.",
+      "Whether the lawsuit succeeds or not, litigation moves slowly. No court ruling will put a doctor in your exam room this year.",
+      "## The pathway that already exists",
+      "Here's what most clinic owners don't realize: for veterinarians from Mexico and Canada, a faster lane already exists, and it doesn't depend on this case. Veterinarian is a covered profession under the USMCA trade agreement, so licensed candidates qualify for the TN visa, which has no lottery and no annual cap. Graduates of UNAM's veterinary school from its AVMA accreditation window, along with Canada's AVMA-accredited graduates, can skip the equivalency backlog entirely and go straight to the NAVLE. Some states go further: New York, for example, issues a limited permit that lets qualified international veterinarians practice under supervision while they complete licensure.",
+      "The DOJ filing matters because it says, in effect, that the scarcity was never inevitable. Clinics don't have to wait for the courts to catch up. The doctors exist today, on the other side of a border, and the legal pathway to hire them is already open.",
+    ],
+  },
+  {
     slug: "2026-state-of-the-veterinary-workforce-report",
     title: "Announcing the 2026 State of the Veterinary Workforce Report",
     excerpt:
