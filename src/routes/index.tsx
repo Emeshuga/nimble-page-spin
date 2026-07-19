@@ -66,7 +66,7 @@ function Hero() {
       className="relative overflow-hidden border-b border-border/60"
       style={{
         background:
-          "radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.12), transparent 62%), oklch(0.93 0.042 264)",
+          "radial-gradient(900px 460px at 88% 8%, oklch(0.72 0.15 55 / 0.12), transparent 62%), linear-gradient(180deg, oklch(0.93 0.042 264) 0%, oklch(0.93 0.042 264) 40%, oklch(0.995 0.003 240) 100%)",
       }}
     >
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
