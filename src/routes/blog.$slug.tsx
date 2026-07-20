@@ -17,6 +17,14 @@ export const Route = createFileRoute("/blog/$slug")({
           { property: "og:title", content: loaderData.title },
           { property: "og:description", content: loaderData.excerpt },
           { property: "og:type", content: "article" },
+          ...(loaderData.thumb
+            ? [
+                {
+                  property: "og:image",
+                  content: `https://www.vetbridgeusa.com${loaderData.thumb}`,
+                },
+              ]
+            : []),
         ]
       : [{ title: "VetBridge USA Blog" }],
     scripts: loaderData
