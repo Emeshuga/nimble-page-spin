@@ -15,6 +15,9 @@ export function SiteHeader({ primaryCta }: { primaryCta?: { label: string; to: s
           <Link to="/veterinarios" className="transition hover:text-foreground">
             For Veterinarians
           </Link>
+          <Link to="/canada" className="transition hover:text-foreground">
+            Canada
+          </Link>
           <Link to="/clinics" className="transition hover:text-foreground">
             For Clinics
           </Link>
@@ -86,6 +89,11 @@ export function SiteFooter() {
               <li>
                 <Link to="/veterinarios" className="hover:text-foreground">
                   For Veterinarians
+                </Link>
+              </li>
+              <li>
+                <Link to="/canada" className="hover:text-foreground">
+                  For Canadian Vets
                 </Link>
               </li>
               <li>

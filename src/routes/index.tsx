@@ -198,13 +198,14 @@ function SolutionSplit() {
           icon={Stethoscope}
           eyebrow="For Veterinarians"
           title="Practice in the U.S. Multiply your income."
-          body="If you're a licensed DVM in Mexico or Canada, we handle NAVLE prep, state licensing, TN visa, and placement in a sponsoring U.S. clinic."
+          body="If you're a licensed DVM in Canada or Mexico, we handle NAVLE prep, state licensing, TN visa, and placement in a sponsoring U.S. clinic. Pick your path below."
           bullets={[
             { lead: "Earn more:", rest: "salaries of $100K-$140K USD, negotiated for you." },
-            { lead: "No lottery:", rest: "the TN visa is direct for Mexican and Canadian DVMs." },
-            { lead: "Fast track:", rest: "FMVZ-UNAM graduates 2011-2025 skip the ECFVG." },
+            { lead: "No lottery:", rest: "the TN visa is direct for Canadian and Mexican DVMs." },
+            { lead: "Canadians:", rest: "no ECFVG, NAVLE already done, placeable in weeks." },
           ]}
-          cta={{ to: "/veterinarios", label: "See the veterinarian program" }}
+          cta={{ to: "/canada", label: "For Canadian vets" }}
+          secondary={{ to: "/veterinarios", label: "For Mexican-trained vets" }}
         />
         <PathCard
           icon={Building2}
@@ -231,6 +232,7 @@ function PathCard({
   body,
   bullets,
   cta,
+  secondary,
   highlight,
 }: {
   icon: typeof Stethoscope;
@@ -239,6 +241,7 @@ function PathCard({
   body: string;
   bullets: { lead: string; rest: string }[];
   cta: { to: string; label: string };
+  secondary?: { to: string; label: string };
   highlight?: boolean;
 }) {
   return (
@@ -265,12 +268,22 @@ function PathCard({
           </li>
         ))}
       </ul>
-      <Link
-        to={cta.to}
-        className="mt-8 inline-flex items-center gap-2 self-start rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-      >
-        {cta.label} <ArrowRight className="h-4 w-4" />
-      </Link>
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <Link
+          to={cta.to}
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+        >
+          {cta.label} <ArrowRight className="h-4 w-4" />
+        </Link>
+        {secondary && (
+          <Link
+            to={secondary.to}
+            className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-foreground transition hover:bg-secondary"
+          >
+            {secondary.label}
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
