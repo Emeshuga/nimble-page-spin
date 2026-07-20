@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { META_PIXEL_ID, pixelHeadScript, trackPixel } from "../lib/meta-pixel";
 import { GA4_ID, ga4ConfigScript, ga4PageView } from "../lib/analytics";
+import { captureFirstTouch } from "../lib/first-touch";
 import { ReportPromoBar } from "../components/report-promo-bar";
 import { SITE } from "../lib/site";
 
@@ -175,6 +176,12 @@ function RootComponent() {
 
   // The pixel's base snippet fires PageView on full page loads; this covers
   // client-side navigations (e.g. form -> /gracias) without double-counting the first load.
+  // Remember where this visitor first came from (UTM/referrer) before any
+  // navigation loses it — the forms stamp it onto HubSpot's Lead source.
+  useEffect(() => {
+    captureFirstTouch();
+  }, []);
+
   useEffect(() => {
     let firstResolve = true;
     return router.subscribe("onResolved", () => {

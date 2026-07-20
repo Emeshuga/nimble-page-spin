@@ -5,6 +5,8 @@
  * HubSpot failure must never block the user, so callers fire-and-forget.
  */
 
+import { getFirstTouch } from "./first-touch";
+
 const PORTAL_ID = "148861188";
 const FORM_ID = "15fcb15b-317f-4375-b2f3-fd4e8ce3b523";
 // EU account -> api-eu1 endpoint (see HubSpot embed code region).
@@ -26,6 +28,22 @@ export type LeadForHubSpot = {
   nacionalidad?: string;
 };
 
+/**
+ * First-touch channel as a lead_source dropdown value (SEO/PPC/Referral/
+ * Social Media/Email Campaign/Direct/WhatsApp/Job Board). Empty when the
+ * visitor's first touch couldn't be recorded (SSR, blocked storage).
+ */
+function leadSourceFields(): { name: string; value: string }[] {
+  const ft = getFirstTouch();
+  return ft ? [{ name: "lead_source", value: ft.leadSource }] : [];
+}
+
+/** Human-readable source line for the details blob, e.g. "Fuente: facebook (/veterinarios)". */
+function sourceLines(): string[] {
+  const ft = getFirstTouch();
+  return ft ? [`Fuente: ${ft.raw} (${ft.landing})`] : [];
+}
+
 /** Human-readable profile packed into the single "details" property in HubSpot. */
 function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string {
   const lines = [
@@ -41,8 +59,15 @@ function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string
     `Licencia en México: ${lead.licencia_mexico ? "Sí" : "No"}`,
     `NAVLE: ${lead.navle_status}`,
   ];
-  const utmParts = Object.entries(utm).map(([k, v]) => `${k}=${v}`);
+  // Submit-time UTMs win; fall back to the first-touch UTMs (SPA navigation
+  // strips query params, so the submit page usually no longer carries them).
+  let utmParts = Object.entries(utm).map(([k, v]) => `${k}=${v}`);
+  const ft = getFirstTouch();
+  if (!utmParts.length && ft) {
+    utmParts = Object.entries(ft.utm).map(([k, v]) => `${k}=${v}`);
+  }
   if (utmParts.length) lines.push(`Campaña: ${utmParts.join(", ")}`);
+  lines.push(...sourceLines());
   return lines.join("\n");
 }
 
@@ -64,6 +89,7 @@ export async function submitContactToHubSpot(msg: {
         { name: "lastname", value: rest.join(" ") },
         { name: "brand", value: "VetBridge USA" },
         { name: "audience_type", value: "Contact form" },
+        ...leadSourceFields(),
         { name: "details", value: `✉️ CONTACT FORM MESSAGE\n\n${msg.message}` },
       ],
       context: {
@@ -107,6 +133,7 @@ export async function submitReportDownloadToHubSpot(dl: {
         { name: "lastname", value: rest.join(" ") },
         { name: "brand", value: "VetBridge USA" },
         { name: "audience_type", value: "Report download" },
+        ...leadSourceFields(),
         {
           name: "details",
           value: `📊 REPORT DOWNLOAD\nReport: ${dl.report}\nRole: ${dl.role}`,
@@ -174,6 +201,7 @@ export async function submitClinicToHubSpot(req: ClinicRequestForHubSpot): Promi
         { name: "phone", value: req.contact_phone },
         { name: "brand", value: "VetBridge USA" },
         { name: "audience_type", value: "Clínica" },
+        ...leadSourceFields(),
         { name: "details", value: details },
       ],
       context: {
@@ -218,6 +246,7 @@ export async function submitLeadToHubSpot(
         { name: "phone", value: lead.telefono },
         { name: "brand", value: "VetBridge USA" },
         { name: "audience_type", value: "Veterinario" },
+        ...leadSourceFields(),
         { name: "details", value: buildDetails(lead, utm) },
       ],
       context: {
