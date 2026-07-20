@@ -59,7 +59,7 @@ type FormState = {
   nivel_ingles: "" | "Básico" | "Intermedio" | "Avanzado" | "Fluido/Nativo";
   licencia_mexico: "" | "Sí" | "No";
   navle_status: "" | "Aprobado" | "Estudiando" | "No";
-  interes_ny: "" | "Sí" | "Tal vez" | "No";
+  urgencia: "" | "Lo antes posible" | "Este año" | "Solo explorando";
   nacionalidad: "" | "Mexicana" | "Canadiense" | "Otra";
 };
 
@@ -72,7 +72,7 @@ const EMPTY: FormState = {
   nivel_ingles: "",
   licencia_mexico: "",
   navle_status: "",
-  interes_ny: "",
+  urgencia: "",
   nacionalidad: "",
 };
 
@@ -209,8 +209,8 @@ const COPY = {
       no: "No",
       navleQ: "¿Has presentado o estudiado para el NAVLE?",
       navle: { passed: "Aprobado", studying: "Estudiando", no: "No" },
-      nyQ: "¿Te interesa trabajar en Nueva York? Es el camino más rápido.",
-      maybe: "Tal vez",
+      urgQ: "¿En cuánto tiempo te gustaría estar ejerciendo en EE. UU.?",
+      urg: { asap: "Lo antes posible", year: "Este año", exploring: "Solo estoy explorando" },
       error:
         "Hubo un error al enviar tu perfil. Intenta de nuevo o escríbenos directamente por WhatsApp (botón verde).",
       submit: "Enviar mi Perfil",
@@ -388,8 +388,8 @@ const COPY = {
       no: "No",
       navleQ: "Have you taken or studied for the NAVLE?",
       navle: { passed: "Passed", studying: "Studying", no: "No" },
-      nyQ: "Interested in working in New York? It's the fastest path.",
-      maybe: "Maybe",
+      urgQ: "How soon would you like to be practicing in the U.S.?",
+      urg: { asap: "As soon as possible", year: "This year", exploring: "Just exploring" },
       error:
         "There was an error submitting your profile. Please try again or message us directly on WhatsApp (green button).",
       submit: "Submit my Profile",
@@ -758,7 +758,7 @@ function FormSection() {
     // DB host offline on 2026-07-20 and bounced a real lead) — HubSpot is the
     // failover so a sleeping database never loses a candidate again.
     const hubspotPromise = submitLeadToHubSpot(
-      { ...payload, interes_ny: form.interes_ny, nacionalidad: form.nacionalidad },
+      { ...payload, urgencia: form.urgencia, nacionalidad: form.nacionalidad },
       utm,
     );
 
@@ -975,27 +975,27 @@ function FormSection() {
           </select>
         </Field>
 
-        <Field label={c.nyQ}>
-          <div className="flex gap-3">
+        <Field label={c.urgQ}>
+          <div className="flex flex-col gap-3 sm:flex-row">
             {([
-              { value: "Sí" as const, label: c.yes },
-              { value: "Tal vez" as const, label: c.maybe },
-              { value: "No" as const, label: c.no },
+              { value: "Lo antes posible" as const, label: c.urg.asap },
+              { value: "Este año" as const, label: c.urg.year },
+              { value: "Solo explorando" as const, label: c.urg.exploring },
             ]).map((opt) => (
               <label
                 key={opt.value}
                 className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition ${
-                  form.interes_ny === opt.value
+                  form.urgencia === opt.value
                     ? "border-primary bg-primary/5 text-primary"
                     : "border-border bg-background text-foreground hover:bg-secondary"
                 }`}
               >
                 <input
                   type="radio"
-                  name="interes_ny"
+                  name="urgencia"
                   className="sr-only"
-                  checked={form.interes_ny === opt.value}
-                  onChange={() => update("interes_ny", opt.value)}
+                  checked={form.urgencia === opt.value}
+                  onChange={() => update("urgencia", opt.value)}
                   required
                 />
                 {opt.label}
