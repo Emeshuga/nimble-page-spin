@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
+import { whatsappLink, trackWhatsAppClick } from "@/lib/whatsapp";
 import { submitLeadToHubSpot } from "@/lib/hubspot";
 import {
   DollarSign,
@@ -263,7 +264,7 @@ const COPY = {
     },
     whatsapp: {
       aria: "Contactar por WhatsApp",
-      text: "Hola, soy veterinario/a y quiero información sobre el programa VetBridge USA",
+      text: "Hola, soy veterinario/a y quiero información sobre el programa VetBridge USA. Vi su página de veterinarios.",
     },
   },
   en: {
@@ -442,7 +443,7 @@ const COPY = {
     },
     whatsapp: {
       aria: "Contact on WhatsApp",
-      text: "Hi, I'm a veterinarian and I'd like information about the VetBridge USA program",
+      text: "Hi, I'm a veterinarian and I'd like information about the VetBridge USA program. I found your veterinarians page.",
     },
   },
 } as const;
@@ -1036,7 +1037,9 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function Footer() {
-  const c = COPY[useLang().lang].footer;
+  const { lang } = useLang();
+  const c = COPY[lang].footer;
+  const wa = COPY[lang].whatsapp;
   return (
     <footer className="border-t border-border bg-card">
       <div className="mx-auto max-w-6xl px-4 py-12">
@@ -1059,7 +1062,8 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href={SITE.whatsappHref}
+                  href={whatsappLink(wa.text)}
+                  onClick={() => trackWhatsAppClick("veterinarios_footer")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 hover:text-foreground"
@@ -1223,10 +1227,10 @@ function About() {
 
 function WhatsAppFloat() {
   const c = COPY[useLang().lang].whatsapp;
-  const href = `https://wa.me/13232503726?text=${encodeURIComponent(c.text)}`;
   return (
     <a
-      href={href}
+      href={whatsappLink(c.text)}
+      onClick={() => trackWhatsAppClick("veterinarios_float")}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={c.aria}

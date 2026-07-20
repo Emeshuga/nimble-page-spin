@@ -12,8 +12,12 @@ export function pixelHeadScript(id: string): string {
 }
 
 /** Fire a standard event. No-op when the pixel isn't configured or loaded. */
-export function trackPixel(event: string): void {
+export function trackPixel(event: string, params?: Record<string, unknown>): void {
   if (META_PIXEL_ID && typeof window !== "undefined" && window.fbq) {
-    window.fbq("track", event);
+    if (params) {
+      window.fbq("track", event, params);
+    } else {
+      window.fbq("track", event);
+    }
   }
 }

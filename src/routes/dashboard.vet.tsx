@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { whatsappLink, trackWhatsAppClick } from "@/lib/whatsapp";
 import {
   LogOut,
   MessageCircle,
@@ -516,7 +517,8 @@ function VetDashboard() {
             ¿Tienes preguntas? Escríbenos por WhatsApp.
           </p>
           <a
-            href="https://wa.me/13232503726?text=Hola%2C%20soy%20candidato%20VetBridge%20USA"
+            href={whatsappLink("Hola, soy candidato VetBridge USA")}
+            onClick={() => trackWhatsAppClick("dashboard_vet")}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"

@@ -17,14 +17,19 @@ export function ga4ConfigScript(id: string): string {
  * OFF, otherwise SPA navigations get counted twice.
  */
 export function ga4PageView(): void {
+  ga4Event("page_view", {
+    page_location: typeof window !== "undefined" ? window.location.href : undefined,
+    page_title: typeof document !== "undefined" ? document.title : undefined,
+  });
+}
+
+/** Fire an arbitrary GA4 event. No-op until GA4 is loaded. */
+export function ga4Event(name: string, params?: Record<string, unknown>): void {
   if (
     GA4_ID &&
     typeof window !== "undefined" &&
     (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag
   ) {
-    (window as unknown as { gtag: (...a: unknown[]) => void }).gtag("event", "page_view", {
-      page_location: window.location.href,
-      page_title: document.title,
-    });
+    (window as unknown as { gtag: (...a: unknown[]) => void }).gtag("event", name, params ?? {});
   }
 }

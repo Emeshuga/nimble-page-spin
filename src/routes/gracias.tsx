@@ -2,9 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { CheckCircle2, MessageCircle, Zap } from "lucide-react";
 import { trackPixel } from "@/lib/meta-pixel";
+import { whatsappLink, trackWhatsAppClick } from "@/lib/whatsapp";
 
-const WHATSAPP_URL =
-  "https://wa.me/13232503726?text=Hola%2C%20acabo%20de%20enviar%20mi%20perfil%20en%20VetBridge%20USA%20y%20quiero%20adelantar%20mi%20evaluaci%C3%B3n";
+const WHATSAPP_URL = whatsappLink(
+  "Hola, acabo de enviar mi perfil en VetBridge USA y quiero adelantar mi evaluación",
+);
 
 export const Route = createFileRoute("/gracias")({
   validateSearch: (search: Record<string, unknown>): { vip?: number } =>
@@ -57,6 +59,7 @@ function Gracias() {
           </p>
           <a
             href={WHATSAPP_URL}
+            onClick={() => trackWhatsAppClick("gracias")}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-flex items-center justify-center gap-3 rounded-md px-8 py-4 text-lg font-semibold text-white shadow-sm transition hover:opacity-90"

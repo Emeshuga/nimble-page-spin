@@ -4,6 +4,7 @@ import { Mail, MessageCircle, CheckCircle2 } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/site-header";
 import { PositioningBand } from "@/components/positioning-band";
 import { SITE } from "@/lib/site";
+import { whatsappLink, trackWhatsAppClick } from "@/lib/whatsapp";
 import { submitContactToHubSpot } from "@/lib/hubspot";
 
 export const Route = createFileRoute("/contact")({
@@ -69,7 +70,10 @@ function Contact() {
                 </div>
               </a>
               <a
-                href={SITE.whatsappHref}
+                href={whatsappLink(
+                  "Hi, I found VetBridge USA through your contact page and would like more information.",
+                )}
+                onClick={() => trackWhatsAppClick("contact")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 transition hover:shadow-sm"
