@@ -465,27 +465,10 @@ function RequestForm() {
     if (!canSubmit) return;
     setStatus("loading");
     setError(null);
-    const { data: sess } = await supabase.auth.getSession();
-    const user_id = sess.session?.user.id ?? null;
-    const { error: err } = await supabase.from("clinic_requests").insert({
-      clinic_name: form.clinic_name.trim(),
-      state: form.state.trim(),
-      role_type: form.role_type,
-      species_focus: form.species_focus || null,
-      urgency: form.urgency,
-      contact_name: form.contact_name.trim(),
-      contact_email: form.contact_email.trim(),
-      contact_phone: form.contact_phone.trim(),
-      user_id,
-    });
-    if (err) {
-      console.error(err);
-      setError("Something went wrong. Please try again or email us.");
-      setStatus("error");
-      return;
-    }
-    // Also push into HubSpot CRM (fire-and-forget; Supabase is source of truth).
-    void submitClinicToHubSpot({
+
+    // HubSpot and Supabase run in PARALLEL; the request succeeds if EITHER
+    // lands (Supabase free tier can auto-pause and take the DB host offline).
+    const hubspotPromise = submitClinicToHubSpot({
       clinic_name: form.clinic_name.trim(),
       state: form.state.trim(),
       role_type: form.role_type,
@@ -495,6 +478,39 @@ function RequestForm() {
       contact_email: form.contact_email.trim(),
       contact_phone: form.contact_phone.trim(),
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let supabaseErr: any = null;
+    try {
+      const { data: sess } = await supabase.auth.getSession();
+      const user_id = sess.session?.user.id ?? null;
+      const { error: err } = await supabase.from("clinic_requests").insert({
+        clinic_name: form.clinic_name.trim(),
+        state: form.state.trim(),
+        role_type: form.role_type,
+        species_focus: form.species_focus || null,
+        urgency: form.urgency,
+        contact_name: form.contact_name.trim(),
+        contact_email: form.contact_email.trim(),
+        contact_phone: form.contact_phone.trim(),
+        user_id,
+      });
+      supabaseErr = err;
+    } catch (e) {
+      supabaseErr = e;
+    }
+
+    const hubspotOk = await hubspotPromise;
+
+    if (supabaseErr && !hubspotOk) {
+      console.error("Clinic request failed on both channels:", supabaseErr);
+      setError("Something went wrong. Please try again or email us.");
+      setStatus("error");
+      return;
+    }
+    if (supabaseErr) {
+      console.warn("Supabase insert failed; request saved via HubSpot only:", supabaseErr);
+    }
     setStatus("done");
   }
 

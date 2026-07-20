@@ -752,35 +752,49 @@ function FormSection() {
       if (value) utm[key] = value.slice(0, 120);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let { error: err } = await (supabase as any).from("candidates").insert({ ...payload, ...utm });
+    // Supabase and HubSpot run in PARALLEL and the lead succeeds if EITHER
+    // lands. Supabase free tier auto-pauses after inactivity (took the whole
+    // DB host offline on 2026-07-20 and bounced a real lead) — HubSpot is the
+    // failover so a sleeping database never loses a candidate again.
+    const hubspotPromise = submitLeadToHubSpot(
+      { ...payload, interes_ny: form.interes_ny, nacionalidad: form.nacionalidad },
+      utm,
+    );
 
-    // Until the utm_* columns exist in the DB, an insert that includes them is
-    // rejected with "column not found", retry without UTM rather than losing the lead.
-    if (
-      err &&
-      Object.keys(utm).length > 0 &&
-      (err.code === "PGRST204" || /utm/i.test(err.message ?? ""))
-    ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let supabaseErr: any = null;
+    try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ({ error: err } = await (supabase as any).from("candidates").insert(payload));
+      let { error: err } = await (supabase as any)
+        .from("candidates")
+        .insert({ ...payload, ...utm });
+      // Until the utm_* columns exist in the DB, an insert that includes them is
+      // rejected with "column not found", retry without UTM rather than losing the lead.
+      if (
+        err &&
+        Object.keys(utm).length > 0 &&
+        (err.code === "PGRST204" || /utm/i.test(err.message ?? ""))
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ({ error: err } = await (supabase as any).from("candidates").insert(payload));
+      }
+      supabaseErr = err;
+    } catch (e) {
+      // Network-level failure (e.g. paused project's host no longer resolves).
+      supabaseErr = e;
     }
 
-    if (err) {
-      console.error("Lead submission failed:", err);
+    const hubspotOk = await hubspotPromise;
+
+    if (supabaseErr && !hubspotOk) {
+      console.error("Lead submission failed on both channels:", supabaseErr);
       setStatus("error");
       setError(c.error);
       return;
     }
-
-    // Push into HubSpot CRM alongside Supabase. Fire-and-forget: a HubSpot
-    // failure must not block the lead (Supabase already has it) or the redirect.
-    // NY interest rides only in the HubSpot details blob — the candidates
-    // table has no column for it (avoids a schema migration).
-    void submitLeadToHubSpot(
-      { ...payload, interes_ny: form.interes_ny, nacionalidad: form.nacionalidad },
-      utm,
-    );
+    if (supabaseErr) {
+      console.warn("Supabase insert failed; lead saved via HubSpot only:", supabaseErr);
+    }
     navigate({ to: "/gracias", search: vip ? { vip: 1 } : {} });
   }
 
