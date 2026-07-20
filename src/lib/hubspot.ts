@@ -226,6 +226,80 @@ export async function submitClinicToHubSpot(req: ClinicRequestForHubSpot): Promi
   }
 }
 
+export type CanadianVetForHubSpot = {
+  name: string;
+  email: string;
+  phone: string;
+  province: string;
+  /** Licensed to practice in a Canadian province (proxy for NAVLE passed). */
+  licensed: boolean;
+  /** "Passed" | "Not yet" | "Not sure" */
+  navle: string;
+  school: string;
+  /** Free-text desired U.S. location, or "Open to anywhere". */
+  us_location: string;
+  /** "ASAP" | "3-6 months" | "Just exploring" */
+  timeline: string;
+};
+
+/**
+ * Push a Canadian veterinarian candidate into HubSpot. Distinct from the Mexico
+ * funnel: Canadians are TN-at-the-border, AVMA-accredited (no ECFVG), and a
+ * Canadian license means the NAVLE is already passed — so these are the fastest
+ * (T1) candidates. Tagged 🍁 in the details blob and nationality Canadian so they
+ * segment cleanly from the UNAM pipeline. Same audience_type ("Veterinario") so
+ * they land in the candidate view. Fire-and-forget; never throws.
+ */
+export async function submitCanadianVetToHubSpot(lead: CanadianVetForHubSpot): Promise<boolean> {
+  try {
+    const [firstName, ...rest] = lead.name.trim().split(/\s+/);
+    // A-lead = licensed (NAVLE already done) + ready to move now → placeable in weeks.
+    const aLead = lead.licensed && lead.navle === "Passed" && lead.timeline === "ASAP";
+    const details = [
+      "🍁 CANADIAN VET — TN FAST TRACK (T1)",
+      ...(aLead ? ["🔥 A-LEAD: licensed + NAVLE-passed + ready now"] : []),
+      `Licensed in Canada: ${lead.licensed ? "Yes" : "Not yet"}`,
+      `NAVLE: ${lead.navle}`,
+      `Vet school: ${lead.school}`,
+      `Province: ${lead.province}`,
+      `Desired U.S. location: ${lead.us_location || "Open to anywhere"}`,
+      `Timeline: ${lead.timeline}`,
+      "Nationality: Canadian (TN-eligible at the border)",
+    ].join("\n");
+
+    const body = {
+      fields: [
+        { name: "email", value: lead.email },
+        { name: "firstname", value: firstName || lead.name },
+        { name: "lastname", value: rest.join(" ") },
+        { name: "phone", value: lead.phone },
+        { name: "brand", value: "VetBridge USA" },
+        { name: "audience_type", value: "Veterinario" },
+        ...leadSourceFields(),
+        { name: "details", value: details },
+      ],
+      context: {
+        pageUri: typeof window !== "undefined" ? window.location.href : "",
+        pageName: "VetBridge USA — Canada",
+      },
+    };
+
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      console.error("HubSpot Canadian vet submission failed:", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("HubSpot Canadian vet submission error:", err);
+    return false;
+  }
+}
+
 /**
  * Submit a lead to HubSpot. Resolves true on success, false on any failure.
  * Never throws — safe to call without awaiting.

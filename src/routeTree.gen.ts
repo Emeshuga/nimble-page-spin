@@ -15,6 +15,7 @@ import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as GraciasRouteImport } from './routes/gracias'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClinicsRouteImport } from './routes/clinics'
+import { Route as CanadaRouteImport } from './routes/canada'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -52,6 +53,11 @@ const ContactRoute = ContactRouteImport.update({
 const ClinicsRoute = ClinicsRouteImport.update({
   id: '/clinics',
   path: '/clinics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CanadaRoute = CanadaRouteImport.update({
+  id: '/canada',
+  path: '/canada',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/canada': typeof CanadaRoute
   '/clinics': typeof ClinicsRoute
   '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/canada': typeof CanadaRoute
   '/clinics': typeof ClinicsRoute
   '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/canada': typeof CanadaRoute
   '/clinics': typeof ClinicsRoute
   '/contact': typeof ContactRoute
   '/gracias': typeof GraciasRoute
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/canada'
     | '/clinics'
     | '/contact'
     | '/gracias'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/canada'
     | '/clinics'
     | '/contact'
     | '/gracias'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/canada'
     | '/clinics'
     | '/contact'
     | '/gracias'
@@ -200,6 +212,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  CanadaRoute: typeof CanadaRoute
   ClinicsRoute: typeof ClinicsRoute
   ContactRoute: typeof ContactRoute
   GraciasRoute: typeof GraciasRoute
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       path: '/clinics'
       fullPath: '/clinics'
       preLoaderRoute: typeof ClinicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canada': {
+      id: '/canada'
+      path: '/canada'
+      fullPath: '/canada'
+      preLoaderRoute: typeof CanadaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -320,6 +340,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  CanadaRoute: CanadaRoute,
   ClinicsRoute: ClinicsRoute,
   ContactRoute: ContactRoute,
   GraciasRoute: GraciasRoute,
