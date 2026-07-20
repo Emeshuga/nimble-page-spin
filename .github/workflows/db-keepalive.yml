@@ -1,0 +1,27 @@
+# Prevents Supabase free-tier auto-pause (~7 days of inactivity took the DB
+# offline on 2026-07-20 and bounced a live lead). Touches the database daily;
+# if the DB is unreachable the job fails and GitHub emails the repo owner.
+# The URL and anon key are client-side public by design (same values ship in
+# the site's JS bundle).
+name: Database keep-alive
+on:
+  schedule:
+    - cron: "0 9 * * *" # daily 09:00 UTC
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Touch database (HEAD count on candidates)
+        run: |
+          code=$(curl -s -o /tmp/body -w "%{http_code}" \
+            "https://fbvpruuzowykzlauomvy.supabase.co/rest/v1/candidates?select=id&limit=1" \
+            -H "apikey: sb_publishable_LFWy4K1Vdue3slI6c9Qwvg_mXKlbkVB" \
+            -H "Authorization: Bearer sb_publishable_LFWy4K1Vdue3slI6c9Qwvg_mXKlbkVB" \
+            -H "Prefer: count=exact" -I)
+          echo "HTTP $code"
+          cat /tmp/body || true
+          case "$code" in
+            2*|401|403) echo "Database reachable (RLS may deny anon reads, that still counts as activity)";;
+            *) echo "DATABASE UNREACHABLE"; exit 1;;
+          esac
