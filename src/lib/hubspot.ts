@@ -63,6 +63,7 @@ export async function submitContactToHubSpot(msg: {
         { name: "firstname", value: firstName || msg.name },
         { name: "lastname", value: rest.join(" ") },
         { name: "brand", value: "VetBridge USA" },
+        { name: "audience_type", value: "Contact form" },
         { name: "details", value: `✉️ CONTACT FORM MESSAGE\n\n${msg.message}` },
       ],
       context: {
@@ -105,6 +106,7 @@ export async function submitReportDownloadToHubSpot(dl: {
         { name: "firstname", value: firstName || dl.name },
         { name: "lastname", value: rest.join(" ") },
         { name: "brand", value: "VetBridge USA" },
+        { name: "audience_type", value: "Report download" },
         {
           name: "details",
           value: `📊 REPORT DOWNLOAD\nReport: ${dl.report}\nRole: ${dl.role}`,
@@ -171,6 +173,7 @@ export async function submitClinicToHubSpot(req: ClinicRequestForHubSpot): Promi
         { name: "lastname", value: rest.join(" ") },
         { name: "phone", value: req.contact_phone },
         { name: "brand", value: "VetBridge USA" },
+        { name: "audience_type", value: "Clínica" },
         { name: "details", value: details },
       ],
       context: {
@@ -214,6 +217,7 @@ export async function submitLeadToHubSpot(
         { name: "lastname", value: lastName },
         { name: "phone", value: lead.telefono },
         { name: "brand", value: "VetBridge USA" },
+        { name: "audience_type", value: "Veterinario" },
         { name: "details", value: buildDetails(lead, utm) },
       ],
       context: {
