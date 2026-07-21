@@ -38,26 +38,56 @@ function leadSourceFields(): { name: string; value: string }[] {
   return ft ? [{ name: "lead_source", value: ft.leadSource }] : [];
 }
 
-/** Human-readable source line for the details blob, e.g. "Fuente: facebook (/veterinarios)". */
+/** Human-readable source line for the details blob, e.g. "Source: facebook (/veterinarios)". */
 function sourceLines(): string[] {
   const ft = getFirstTouch();
-  return ft ? [`Fuente: ${ft.raw} (${ft.landing})`] : [];
+  return ft ? [`Source: ${ft.raw} (${ft.landing})`] : [];
 }
+
+// The /veterinarios form stores a fixed set of canonical SPANISH answers (kept
+// Spanish so Supabase RLS + the submit logic can validate them). Eran reads
+// English, so the HubSpot "Details" blob is translated to English here at write
+// time. Every lookup falls back to the raw value if an unexpected option appears.
+const EN_INGLES: Record<string, string> = {
+  "Básico": "Basic",
+  "Intermedio": "Intermediate",
+  "Avanzado": "Advanced",
+  "Fluido/Nativo": "Fluent/Native",
+};
+const EN_NAVLE: Record<string, string> = {
+  "Aprobado": "Passed",
+  "Estudiando": "Studying for it",
+  "No": "Not yet",
+};
+const EN_NACIONALIDAD: Record<string, string> = {
+  "Mexicana": "Mexican",
+  "Canadiense": "Canadian",
+  "Otra": "Other",
+};
+const EN_URGENCIA: Record<string, string> = {
+  "Lo antes posible": "As soon as possible",
+  "Este año": "This year",
+  "Solo explorando": "Just exploring",
+};
+const EN_UNIVERSIDAD: Record<string, string> = {
+  "Otra Universidad": "Other university",
+};
+const en = (map: Record<string, string>, v: string): string => map[v] ?? v;
 
 /** Human-readable profile packed into the single "details" property in HubSpot. */
 function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string {
   const lines = [
     // A-lead = accredited-school advantage + open to the fastest state.
-    ...(lead.nacionalidad === "Otra" ? ["⚠️ NO ELEGIBLE TN — nacionalidad fuera de T-MEC (ni mexicana ni canadiense)"] : []),
-    ...(lead.vip_fast_track && lead.urgencia === "Lo antes posible" ? ["🔥 A-LEAD: VIP UNAM + LISTO PARA EMPEZAR"] : []),
-    lead.vip_fast_track ? "⭐ VIP — FAST TRACK UNAM (2011–2025)" : "Ruta estándar (ECFVG/PAVE)",
-    ...(lead.urgencia ? [`⏱️ Urgencia: ${lead.urgencia}`] : []),
-    ...(lead.nacionalidad ? [`Nacionalidad: ${lead.nacionalidad}`] : []),
-    `Universidad: ${lead.universidad}`,
-    `Año de graduación: ${lead.ano_graduacion}`,
-    `Nivel de inglés: ${lead.nivel_ingles}`,
-    `Licencia en México: ${lead.licencia_mexico ? "Sí" : "No"}`,
-    `NAVLE: ${lead.navle_status}`,
+    ...(lead.nacionalidad === "Otra" ? ["⚠️ NOT TN-ELIGIBLE — nationality outside USMCA (not Mexican or Canadian)"] : []),
+    ...(lead.vip_fast_track && lead.urgencia === "Lo antes posible" ? ["🔥 A-LEAD: VIP UNAM + READY TO START"] : []),
+    lead.vip_fast_track ? "⭐ VIP — UNAM FAST TRACK (2011–2025)" : "Standard route (ECFVG/PAVE)",
+    ...(lead.urgencia ? [`⏱️ Timeline: ${en(EN_URGENCIA, lead.urgencia)}`] : []),
+    ...(lead.nacionalidad ? [`Nationality: ${en(EN_NACIONALIDAD, lead.nacionalidad)}`] : []),
+    `University: ${en(EN_UNIVERSIDAD, lead.universidad)}`,
+    `Graduation year: ${lead.ano_graduacion}`,
+    `English level: ${en(EN_INGLES, lead.nivel_ingles)}`,
+    `Licensed in Mexico: ${lead.licencia_mexico ? "Yes" : "No"}`,
+    `NAVLE: ${en(EN_NAVLE, lead.navle_status)}`,
   ];
   // Submit-time UTMs win; fall back to the first-touch UTMs (SPA navigation
   // strips query params, so the submit page usually no longer carries them).
@@ -66,7 +96,7 @@ function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string
   if (!utmParts.length && ft) {
     utmParts = Object.entries(ft.utm).map(([k, v]) => `${k}=${v}`);
   }
-  if (utmParts.length) lines.push(`Campaña: ${utmParts.join(", ")}`);
+  if (utmParts.length) lines.push(`Campaign: ${utmParts.join(", ")}`);
   lines.push(...sourceLines());
   return lines.join("\n");
 }
