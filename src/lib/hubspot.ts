@@ -83,6 +83,7 @@ function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string
     lead.vip_fast_track ? "⭐ VIP — UNAM FAST TRACK (2011–2025)" : "Standard route (ECFVG/PAVE)",
     ...(lead.urgencia ? [`⏱️ Timeline: ${en(EN_URGENCIA, lead.urgencia)}`] : []),
     ...(lead.nacionalidad ? [`Nationality: ${en(EN_NACIONALIDAD, lead.nacionalidad)}`] : []),
+    "🗣️ Language: Spanish — answers translated from the Spanish form",
     `University: ${en(EN_UNIVERSIDAD, lead.universidad)}`,
     `Graduation year: ${lead.ano_graduacion}`,
     `English level: ${en(EN_INGLES, lead.nivel_ingles)}`,
