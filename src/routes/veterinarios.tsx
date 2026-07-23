@@ -57,10 +57,10 @@ type FormState = {
   universidad: "" | "FMVZ-UNAM" | "Otra Universidad";
   ano_graduacion: string;
   nivel_ingles: "" | "Básico" | "Intermedio" | "Avanzado" | "Fluido/Nativo";
-  licencia_mexico: "" | "Sí" | "No";
   navle_status: "" | "Aprobado" | "Estudiando" | "No";
   urgencia: "" | "Lo antes posible" | "Este año" | "Solo explorando";
   nacionalidad: "" | "Mexicana" | "Canadiense" | "Otra";
+  comentarios: string;
 };
 
 const EMPTY: FormState = {
@@ -70,10 +70,10 @@ const EMPTY: FormState = {
   universidad: "",
   ano_graduacion: "",
   nivel_ingles: "",
-  licencia_mexico: "",
   navle_status: "",
   urgencia: "",
   nacionalidad: "",
+  comentarios: "",
 };
 
 // ————————————————————————————————————————————————————————————
@@ -204,13 +204,13 @@ const COPY = {
       eng: { basic: "Básico", inter: "Intermedio", adv: "Avanzado", fluent: "Fluido/Nativo" },
       natQ: "¿Cuál es tu nacionalidad?",
       nat: { mx: "Mexicana", ca: "Canadiense", other: "Otra" },
-      licenseQ: "¿Cuentas con licencia veterinaria vigente?",
-      yes: "Sí",
-      no: "No",
       navleQ: "¿Has presentado o estudiado para el NAVLE?",
       navle: { passed: "Aprobado", studying: "Estudiando", no: "No" },
       urgQ: "¿En cuánto tiempo te gustaría estar ejerciendo en EE. UU.?",
       urg: { asap: "Lo antes posible", year: "Este año", exploring: "Solo estoy explorando" },
+      comments: "Comentarios adicionales",
+      commentsPlaceholder:
+        "¿Algo más que quieras contarnos sobre tu experiencia o tu caso? (opcional)",
       error:
         "Hubo un error al enviar tu perfil. Intenta de nuevo o escríbenos directamente por WhatsApp (botón verde).",
       submit: "Enviar mi Perfil",
@@ -383,13 +383,12 @@ const COPY = {
       eng: { basic: "Basic", inter: "Intermediate", adv: "Advanced", fluent: "Fluent/Native" },
       natQ: "What is your nationality?",
       nat: { mx: "Mexican", ca: "Canadian", other: "Other" },
-      licenseQ: "Do you hold a current veterinary license?",
-      yes: "Yes",
-      no: "No",
       navleQ: "Have you taken or studied for the NAVLE?",
       navle: { passed: "Passed", studying: "Studying", no: "No" },
       urgQ: "How soon would you like to be practicing in the U.S.?",
       urg: { asap: "As soon as possible", year: "This year", exploring: "Just exploring" },
+      comments: "Additional comments",
+      commentsPlaceholder: "Anything else you'd like to share about your experience or case? (optional)",
       error:
         "There was an error submitting your profile. Please try again or message us directly on WhatsApp (green button).",
       submit: "Submit my Profile",
@@ -741,10 +740,10 @@ function FormSection() {
       universidad: form.universidad,
       ano_graduacion: year,
       nivel_ingles: form.nivel_ingles,
-      licencia_mexico: form.licencia_mexico === "Sí",
       navle_status: form.navle_status,
       vip_fast_track: vip,
     };
+    const comentarios = form.comentarios.trim();
 
     const params = new URLSearchParams(window.location.search);
     const utm: Record<string, string> = {};
@@ -758,26 +757,35 @@ function FormSection() {
     // DB host offline on 2026-07-20 and bounced a real lead) — HubSpot is the
     // failover so a sleeping database never loses a candidate again.
     const hubspotPromise = submitLeadToHubSpot(
-      { ...payload, urgencia: form.urgencia, nacionalidad: form.nacionalidad },
+      { ...payload, urgencia: form.urgencia, nacionalidad: form.nacionalidad, comentarios },
       utm,
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let supabaseErr: any = null;
     try {
+      const extra: Record<string, string> = { ...utm };
+      if (comentarios) extra.comentarios = comentarios;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let { error: err } = await (supabase as any)
         .from("candidates")
-        .insert({ ...payload, ...utm });
-      // Until the utm_* columns exist in the DB, an insert that includes them is
-      // rejected with "column not found", retry without UTM rather than losing the lead.
-      if (
+        .insert({ ...payload, ...extra });
+      // Columns from not-yet-applied migrations (utm_*, comentarios) surface as
+      // "column not found in schema cache" (PGRST204). Drop the offending field
+      // and retry rather than losing the lead. licencia_mexico is omitted
+      // entirely now that the question is gone — see the migration making it
+      // nullable; until that's applied this insert 23502s and HubSpot (above)
+      // is the failover, same as any other Supabase-side failure.
+      while (
         err &&
-        Object.keys(utm).length > 0 &&
-        (err.code === "PGRST204" || /utm/i.test(err.message ?? ""))
+        Object.keys(extra).length > 0 &&
+        (err.code === "PGRST204" || /schema cache/i.test(err.message ?? ""))
       ) {
+        const message = err.message ?? "";
+        const missing = Object.keys(extra).find((k) => message.includes(k)) ?? Object.keys(extra)[0];
+        delete extra[missing];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ({ error: err } = await (supabase as any).from("candidates").insert(payload));
+        ({ error: err } = await (supabase as any).from("candidates").insert({ ...payload, ...extra }));
       }
       supabaseErr = err;
     } catch (e) {
@@ -932,34 +940,6 @@ function FormSection() {
           </select>
         </Field>
 
-        <Field label={c.licenseQ}>
-          <div className="flex gap-3">
-            {([
-              { value: "Sí" as const, label: c.yes },
-              { value: "No" as const, label: c.no },
-            ]).map((opt) => (
-              <label
-                key={opt.value}
-                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-medium transition ${
-                  form.licencia_mexico === opt.value
-                    ? "border-primary bg-primary/5 text-primary"
-                    : "border-border bg-background text-foreground hover:bg-secondary"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="licencia"
-                  className="sr-only"
-                  checked={form.licencia_mexico === opt.value}
-                  onChange={() => update("licencia_mexico", opt.value)}
-                  required
-                />
-                {opt.label}
-              </label>
-            ))}
-          </div>
-        </Field>
-
         <Field label={c.navleQ}>
           <select
             name="navle_status"
@@ -1002,6 +982,18 @@ function FormSection() {
               </label>
             ))}
           </div>
+        </Field>
+
+        <Field label={c.comments}>
+          <textarea
+            name="comentarios"
+            rows={3}
+            maxLength={1000}
+            placeholder={c.commentsPlaceholder}
+            value={form.comentarios}
+            onChange={(e) => update("comentarios", e.target.value)}
+            className={inputCls}
+          />
         </Field>
 
         {error && (

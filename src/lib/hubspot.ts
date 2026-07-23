@@ -19,13 +19,14 @@ export type LeadForHubSpot = {
   universidad: string;
   ano_graduacion: number;
   nivel_ingles: string;
-  licencia_mexico: boolean;
   navle_status: string;
   vip_fast_track: boolean;
   /** "Lo antes posible" | "Este año" | "Solo explorando" — urgency to start (HubSpot-only, no DB column). */
   urgencia?: string;
   /** "Mexicana" | "Canadiense" | "Otra" — TN eligibility gate (HubSpot-only, no DB column). */
   nacionalidad?: string;
+  /** Free-text notes from the candidate, in their own words (may be Spanish, untranslated). */
+  comentarios?: string;
 };
 
 /**
@@ -87,8 +88,8 @@ function buildDetails(lead: LeadForHubSpot, utm: Record<string, string>): string
     `University: ${en(EN_UNIVERSIDAD, lead.universidad)}`,
     `Graduation year: ${lead.ano_graduacion}`,
     `English level: ${en(EN_INGLES, lead.nivel_ingles)}`,
-    `Licensed in Mexico: ${lead.licencia_mexico ? "Yes" : "No"}`,
     `NAVLE: ${en(EN_NAVLE, lead.navle_status)}`,
+    ...(lead.comentarios ? [`💬 Candidate's notes (own words, may be Spanish): ${lead.comentarios}`] : []),
   ];
   // Submit-time UTMs win; fall back to the first-touch UTMs (SPA navigation
   // strips query params, so the submit page usually no longer carries them).

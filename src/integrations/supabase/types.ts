@@ -17,10 +17,11 @@ export type Database = {
       candidates: {
         Row: {
           ano_graduacion: number
+          comentarios: string | null
           correo_electronico: string
           created_at: string
           id: string
-          licencia_mexico: boolean
+          licencia_mexico: boolean | null
           navle_status: string
           nivel_ingles: string
           nombre_completo: string
@@ -30,10 +31,11 @@ export type Database = {
         }
         Insert: {
           ano_graduacion: number
+          comentarios?: string | null
           correo_electronico: string
           created_at?: string
           id?: string
-          licencia_mexico: boolean
+          licencia_mexico?: boolean | null
           navle_status: string
           nivel_ingles: string
           nombre_completo: string
@@ -43,10 +45,11 @@ export type Database = {
         }
         Update: {
           ano_graduacion?: number
+          comentarios?: string | null
           correo_electronico?: string
           created_at?: string
           id?: string
-          licencia_mexico?: boolean
+          licencia_mexico?: boolean | null
           navle_status?: string
           nivel_ingles?: string
           nombre_completo?: string
