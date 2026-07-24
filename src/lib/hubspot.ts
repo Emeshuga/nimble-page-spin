@@ -307,6 +307,7 @@ export async function submitCanadianVetToHubSpot(lead: CanadianVetForHubSpot): P
         { name: "phone", value: lead.phone },
         { name: "brand", value: "VetBridge USA" },
         { name: "audience_type", value: "Veterinario" },
+        { name: "hot_lead", value: aLead ? "true" : "false" },
         ...leadSourceFields(),
         { name: "details", value: details },
       ],
@@ -343,6 +344,9 @@ export async function submitLeadToHubSpot(
   try {
     const [firstName, ...rest] = lead.nombre_completo.trim().split(/\s+/);
     const lastName = rest.join(" ");
+    // Same bar as the 🔥 A-LEAD tag in the details blob: accredited-school
+    // advantage (UNAM 2011-2025) + ready to start immediately.
+    const hot = lead.vip_fast_track && lead.urgencia === "Lo antes posible";
 
     const body = {
       fields: [
@@ -352,6 +356,7 @@ export async function submitLeadToHubSpot(
         { name: "phone", value: lead.telefono },
         { name: "brand", value: "VetBridge USA" },
         { name: "audience_type", value: "Veterinario" },
+        { name: "hot_lead", value: hot ? "true" : "false" },
         ...leadSourceFields(),
         { name: "details", value: buildDetails(lead, utm) },
       ],
