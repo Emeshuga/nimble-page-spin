@@ -235,7 +235,7 @@ const COPY = {
       items: [
         {
           q: "¿Cuánto cuesta el programa?",
-          a: "La evaluación de tu perfil es 100% gratuita. Existen opciones para que las clínicas patrocinadoras cubran gran parte de los costos, según tu perfil. Un coordinador te explicará tu caso específico sin ningún compromiso.",
+          a: "Nada. El programa no tiene ningún costo para ti como veterinario: las clínicas que contratan son las que cubren el proceso, incluyendo preparación NAVLE, licencia, visa y reubicación. Tu evaluación también es gratuita y sin compromiso.",
         },
         {
           q: "¿Necesito hablar inglés perfecto?",
@@ -413,7 +413,7 @@ const COPY = {
       items: [
         {
           q: "How much does the program cost?",
-          a: "Evaluating your profile is 100% free. There are options for sponsoring clinics to cover much of the cost, depending on your profile. A coordinator will explain your specific case with no obligation.",
+          a: "Nothing. The program has no cost to you as a veterinarian: the hiring clinics are the ones who cover the process, including NAVLE prep, licensing, visa, and relocation. Your evaluation is also free, with no obligation.",
         },
         {
           q: "Do I need perfect English?",
